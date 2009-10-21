@@ -1,0 +1,6 @@
+.DS_*
+log/*
+tmp/*
+db/*sqlite3
+db/development_structure.rb
+config/database.yml
