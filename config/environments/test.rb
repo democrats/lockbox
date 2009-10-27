@@ -30,3 +30,4 @@ config.action_mailer.delivery_method = :test
 # Gems
 config.gem "factory_girl", :source => "http://gemcutter.org"
 config.gem "shoulda", :source => "http://gemcutter.org"
+config.gem "jferris-mocha", :lib => "mocha", :source => "http://gems.github.com"
