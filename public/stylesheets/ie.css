@@ -1,0 +1,9 @@
+#main {
+  margin-top: -129px;
+}
+
+#content {
+  min-height: 375px;
+  height: auto !important;
+  height: 375px;
+}

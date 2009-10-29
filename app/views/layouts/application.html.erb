@@ -10,6 +10,9 @@
   <script type="text/javascript">
     Cufon.replace('h1#header_title');
   </script>
+  <!--[if IE]>
+  <%= stylesheet_link_tag 'ie' %>
+  <![endif]-->
 </head>
 <body>
   <div id="container">
@@ -27,5 +30,6 @@
       <%= render :partial => "shared/footer" %>
     </div>
   </div>
+  <script type="text/javascript"> Cufon.now(); </script>
 </body>
 </html>
