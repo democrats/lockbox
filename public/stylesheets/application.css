@@ -1,0 +1,110 @@
+body {
+  background-image: url('../images/horiz-tile-bg.jpg');
+  background-repeat: repeat-x;
+  background-color: #326698;
+  font-family: "Lucida Grande", Georgia;
+  color: #336699;
+}
+
+#container {
+  width: 1126px;
+  margin: 0 auto 0;
+}
+
+#header {
+  background-image: url('../images/header-bg.jpg');
+  background-repeat: no-repeat;
+  width: 800px;
+  height: 67px;
+  margin: 0 auto 0;
+}
+
+#main {
+  background-image: url('../images/bg-2.jpg');
+  background-repeat: no-repeat;
+  margin: 0px auto 0px;
+  padding-top: 75px;
+  width: 1120px;
+  position: relative;
+}
+
+#content {
+  min-height: 375px;
+  width: 800px;
+  position: relative;
+  left: 160px;
+  background-color: #FFF;
+  background-image: url('../images/column-footer.jpg');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  padding-bottom: 68px;
+}
+
+a {
+  color: #8899DD;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+div#footer {
+  font-size: 11px;
+  color: #FFF;
+  margin: 5px auto 0px;
+}
+
+div#copyright {
+  text-align: center;
+}
+
+div#disclaimer {
+  text-align: center;
+  border: 1px solid;
+  border-color: #FFF !important;
+  padding: 10px 0px;
+  margin: 5px auto 0px;
+  width: 580px;
+}
+
+div#footer ul {
+  text-align: center;
+  list-style: none;
+}
+
+div#footer ul li {
+  display: inline;
+  margin: 10px;
+}
+
+#title_box {
+  position: relative;
+  left: 565px;
+  width: 235px;
+  height: 66px;
+}
+
+#header_title {
+  text-align: center;
+  padding-top: 35px;
+  color: #FFF;
+  font-size: 17px;
+}
+
+#title_link_1 {
+  display: block;
+  position: relative;
+  bottom: 65px;
+  width: 300px;
+  height: 65px;
+}
+
+#title_link_2 {
+  display: block;
+  position: relative;
+  bottom: 130px;
+  left: 565px;
+  width: 235px;
+  height: 65px;
+}
