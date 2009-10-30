@@ -12,8 +12,8 @@ body {
 }
 
 #header {
-  background-image: url('../images/header-bg.jpg');
-  background-repeat: no-repeat;
+  background-image: url('../images/header-bg-horiz.jpg');
+  background-repeat: repeat-x;
   width: 800px;
   height: 67px;
   margin: 0 auto 0;
@@ -78,16 +78,50 @@ div#footer ul li {
   margin: 10px;
 }
 
-#title_box {
-  position: relative;
-  left: 565px;
+#site_title_box {
+  background: url('../images/header-bg-right.jpg');
+  float: right;
   width: 235px;
-  height: 66px;
+  height: 67px;
 }
 
-#header_title {
+#dem_party_title_box {
+  float: left;
+  position: relative;
+  width: 300px;
+  height: 67px;
+}
+
+h2#the, h1#democratic_party {
+  color: #FFF;
+}
+
+h2#the {
+  font-size: 12px;
+  position: relative;
+  left: 52px;
+  top: 20px;
+}
+
+h1#democratic_party {
+  position: relative;
+  top: 8px;
+  left: 26px;
+  font-size: 22px;
+}
+
+.large-letter {
+  font-size: 31px;
+}
+
+.P {
+  margin-right: -3px;
+}
+
+#site_title {
   text-align: center;
-  padding-top: 35px;
+  position: relative;
+  top: 35px;
   color: #FFF;
   font-size: 17px;
 }
@@ -95,7 +129,6 @@ div#footer ul li {
 #title_link_1 {
   display: block;
   position: relative;
-  bottom: 65px;
   width: 300px;
   height: 65px;
 }
@@ -103,8 +136,9 @@ div#footer ul li {
 #title_link_2 {
   display: block;
   position: relative;
-  bottom: 130px;
-  left: 565px;
+  float: right;
+  clear: both;
+  top: -67px;
   width: 235px;
   height: 65px;
 }
