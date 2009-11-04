@@ -151,3 +151,29 @@ h1 #party {
   width: 235px;
   height: 65px;
 }
+
+/* tables */
+
+table.advocacy-table
+{
+	font-size: 12px;
+	margin: 5px;
+	text-align: left;
+	border-collapse: collapse;
+}
+table.advocacy-table th
+{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 8px 8px;
+	color: #039;
+}
+table.advocacy-table td
+{
+	padding: 8px;
+	color: #669;
+}
+table.advocacy-table .odd
+{
+	background: #e8edff;
+}
