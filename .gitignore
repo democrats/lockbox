@@ -1,4 +1,5 @@
 .DS_*
+.idea/
 log/*
 tmp/*
 db/*sqlite3
