@@ -27,10 +27,8 @@ module GitCommands
 end
  
 namespace :git do
-  namespace :pull do
-    desc "Pull updates from Founding Father, the DNC rails template."
-    task :father do
-      GitCommands.pull_template
-    end
+  desc "Pull updates from Founding Father, the DNC rails template."
+  task :pull do
+    GitCommands.pull_template
   end
 end
