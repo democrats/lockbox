@@ -6,7 +6,7 @@ class CreatePartners < ActiveRecord::Migration
       t.string :phone_number
       t.string :email
       t.string :api_key
-      t.integer :max_requests
+      t.integer :max_requests, :default => 100
       
       t.timestamps
     end

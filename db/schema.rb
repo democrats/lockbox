@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(:version => 20091104170848) do
     t.string   "phone_number"
     t.string   "email"
     t.string   "api_key"
-    t.integer  "max_requests"
+    t.integer  "max_requests", :default => 100
     t.datetime "created_at"
     t.datetime "updated_at"
   end

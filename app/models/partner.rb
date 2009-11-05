@@ -2,6 +2,8 @@ class Partner < ActiveRecord::Base
   include RFC822
   validates_presence_of :api_key, :phone_number, :name, :organization, :email
   validates_format_of :email, :with => EmailAddressRegularExpression
+  validates_uniqueness_of :api_key
+  
   before_validation :create_api_key
 
 
@@ -13,13 +15,47 @@ class Partner < ActiveRecord::Base
     @attributes["phone_number"] = _phone_number.to_s.gsub(/[^0-9]+/, '')
   end
   
-  def self.authenticate(api_key)
-    #for now, if a partner with this key exists, allow them
-    Partner.find_by_api_key(api_key).nil? ? false : true
+  def cache_key
+    "#{Time.now.strftime("#{api_key}_%m%d%y_%H")}"
+  end
+  
+  def self.authenticate(api_key)  
+    p = Partner.find_by_api_key(api_key)
+    if p
+      if p.current_request_count < p.max_requests
+        p.increment_request_count
+        return true
+      else
+        return false
+      end
+    end
+    return false
+  end
+  
+  def current_request_count
+    count = Rails.cache.read(cache_key, :raw => true)
+    if count.nil?
+      count = 0
+      Rails.cache.write(cache_key, count, :raw => true)
+    end
+    count.to_i
+  end
+  
+  def requests_remaining
+    max_requests - current_request_count
+  end
+    
+  def increment_request_count
+    ret = Rails.cache.increment(cache_key)
+    if ret.nil?
+      ret = 1
+      Rails.cache.write(cache_key, ret, :raw => true)
+    end
+    ret.to_i
   end
   
   private
-
+  
   def secure_digest(*args)
     Digest::SHA1.hexdigest(args.flatten.join('--'))
   end
