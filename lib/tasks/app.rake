@@ -5,7 +5,7 @@ require 'rubygems'
 require 'net/ssh'
 
 module FoundingFather
-  def self.update
+  def self.setup
     name  = Rails.root.to_s.split("/").last
     print "Repo name: (#{name}) "
     input = $stdin.gets.sub("\n", "")
@@ -57,7 +57,7 @@ end
 
 namespace :app do
   desc "Configure your new app."
-  task :update do
-    FoundingFather.update
+  task :setup do
+    FoundingFather.setup
   end
 end
