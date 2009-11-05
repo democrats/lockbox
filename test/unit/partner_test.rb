@@ -1,7 +1,63 @@
 require 'test_helper'
 
 class PartnerTest < ActiveSupport::TestCase
-  context "a partner object" do
+  context "a saved partner object" do
+
+    setup do
+       @partner = Factory(:partner)
+       #don't overwrite the key that they think will be duplicated
+       Partner.any_instance.stubs(:create_api_key).returns(true)
+     end
+     
+    subject { @partner }
+    
+    should_validate_uniqueness_of :api_key
+    
+
+    
+
+    
+    should "not authenticate for invalid api key" do
+      assert_equal(false, Partner.authenticate("randomapikey"))
+    end
+    
+    should "not authenticate for blank api key" do
+      assert_equal(false, Partner.authenticate(''))
+      assert_equal(false, Partner.authenticate(nil))
+    end
+
+    should "authenticate if request count is below max requests" do
+      assert_equal(true, Partner.authenticate(@partner.api_key))
+    end
+
+    should "increment api current request count" do
+      count = @partner.current_request_count
+      Partner.authenticate(@partner.api_key)
+      assert_equal(count + 1, @partner.current_request_count)
+    end
+
+    should "not authenticate if request count has exceeded max requests" do
+      @partner.requests_remaining.times do
+        @partner.increment_request_count
+      end
+      assert_equal(0, @partner.requests_remaining)
+      assert_equal(false, Partner.authenticate(@partner.api_key))
+    end
+    
+    should "maintain remaining requests properly" do
+      assert_equal(100, @partner.requests_remaining)
+      @partner.increment_request_count
+      assert_equal(99, @partner.requests_remaining)
+      assert_equal(1, @partner.current_request_count)
+      @partner.increment_request_count
+      assert_equal(98, @partner.requests_remaining)
+      assert_equal(2, @partner.current_request_count)
+    end
+
+  end
+
+
+  context "an unsaved partner object" do
     setup { @partner = Partner.new }
     subject { @partner }
     should_validate_presence_of :name, :organization, :phone_number, :email
@@ -46,4 +102,7 @@ class PartnerTest < ActiveSupport::TestCase
       end
     end
   end
+  
+  
+  
 end
