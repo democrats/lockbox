@@ -12,8 +12,12 @@ class Partner < ActiveRecord::Base
   def phone_number=(_phone_number)
     @attributes["phone_number"] = _phone_number.to_s.gsub(/[^0-9]+/, '')
   end
-
-
+  
+  def self.authenticate(api_key)
+    #for now, if a partner with this key exists, allow them
+    Partner.find_by_api_key(api_key).nil? ? false : true
+  end
+  
   private
 
   def secure_digest(*args)

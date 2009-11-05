@@ -56,7 +56,7 @@ class LabeledBuilder < ActionView::Helpers::FormBuilder
   end
 
   def is_field_required?(field_name, options)
-    options[:required] || ((@object && @object.attribute_required?(field_name)) && !options.include?(:required))
+    options[:required] || ((@object && @object.respond_to?(:attribute_required?) && @object.attribute_required?(field_name)) && !options.include?(:required))
   end
 
   def labeled_fields_for(name, *args, &block)

@@ -2,7 +2,7 @@ require 'httparty'
 
 class LockBox
   include HTTParty
-  base_uri 'http://localhost:3000'
+  base_uri 'http://localhost:3001'
 
   def initialize(app)
     @app = app
@@ -14,8 +14,8 @@ class LockBox
 
   def call!(env)
     #attempt to authenticate any requests to /api
-    if env['PATH_INFO'] =~ /^\/api/i
-      if auth?(env)
+    if env['PATH_INFO'] =~ /^\/api\/([^\/]+)\//i
+      if auth?($1)
         return @app.call(env)
       else
         message = "Access Denied"
@@ -27,10 +27,8 @@ class LockBox
     end
   end
 
-  def auth?(env)
-    request = Rack::Request.new(env)
-    token = request.params['token']
-    return (self.class.get("/authenticate?token=#{token}").code == 200)
+  def auth?(api_key)
+    return (self.class.get("/authentication/#{api_key}").code == 200)
   end
 
 
