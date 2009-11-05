@@ -1,0 +1,30 @@
+<h1>Partners</h1>
+
+<ul>
+  <li><%= link_to "New Partner", new_admin_partner_path %></li>
+</ul>
+
+<table class="pretty-table">
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Organization</th>
+    <th>Phone Number</th>
+    <th>Email</th>
+    <th>API Key</th>
+    <th>Max Requests</th>
+  </tr>
+  <% @partners.each do |partner| %>
+  <tr class="<%= cycle("odd", "even")%>">
+    <td><%= link_to(partner.id, admin_partner_path(partner)) %></td>
+    <td><%= partner.name %></td>
+    <td><%= partner.organization %></td>
+    <td><%= partner.phone_number %></td>
+    <td><%= partner.email %></td>
+    <td><%= partner.api_key %></td>
+    <td><%= partner.max_requests %></td>
+  </tr>
+  <% end %>
+</table>
+
+<%= will_paginate @partners, :id => "pagination" %>
