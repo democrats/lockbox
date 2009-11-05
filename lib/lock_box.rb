@@ -2,7 +2,7 @@ require 'httparty'
 
 class LockBox
   include HTTParty
-  base_uri 'http://localhost:3000'
+  base_uri 'http://localhost:3001'
 
   def initialize(app)
     @app = app
@@ -30,7 +30,7 @@ class LockBox
   def auth?(env)
     request = Rack::Request.new(env)
     token = request.params['token']
-    return (self.class.get("/authenticate?token=#{token}").code == 200)
+    return (self.class.get("/authenticate/#{token}").code == 200)
   end
 
 
