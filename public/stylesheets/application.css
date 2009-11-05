@@ -151,3 +151,54 @@ h1 #party {
   width: 235px;
   height: 65px;
 }
+
+/* tables */
+
+table.pretty-table
+{
+	font-size: 12px;
+	margin: 5px;
+	text-align: left;
+	border-collapse: collapse;
+}
+table.pretty-table th
+{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 8px 8px;
+	color: #039;
+}
+table.pretty-table td
+{
+	padding: 8px;
+	color: #669;
+}
+table.pretty-table .odd
+{
+	background: #e8edff;
+}
+
+
+form fieldset {
+    margin-bottom: 10px;
+}
+
+form legend {
+    padding: 0 2px;
+    font-weight: bold;
+}
+
+form div.field label {
+    display: inline-block;
+    line-height: 1.8;
+    vertical-align: top;
+    width: 120px;
+}
+
+form div.field {
+    margin-bottom: 5px;
+}
+
+form {
+    margin: 20px 0px 20px 4px;
+}
