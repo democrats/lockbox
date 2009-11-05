@@ -43,6 +43,8 @@ module FoundingFather
       print "Linking new remote..."
       `git remote rm origin`
       `git remote add origin ssh://firefly.dnc.org/#{app_dir}`
+      `git config branch.master.remote origin`
+      `git config branch.master.merge refs/heads/master`
       `git push origin master`
       puts "done"
       puts "Remote Git Repo Setup Complete"
