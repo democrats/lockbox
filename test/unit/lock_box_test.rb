@@ -15,19 +15,19 @@ class LockBoxTest < Test::Unit::TestCase
     setup do
       successful_response = mock("MockResponse")
       successful_response.stubs(:code).returns(200)
-      LockBox.stubs(:get).with("/authenticate?token=123456").returns(successful_response)
+      LockBox.stubs(:get).with("/authentication/123456").returns(successful_response)
       bad_response = mock("MockResponse")
       bad_response.stubs(:code).returns(401)
-      LockBox.stubs(:get).with("/authenticate?token=").returns(bad_response)
+      LockBox.stubs(:get).with("/authentication/blah").returns(bad_response)
     end
 
     should "return 401 for a request that starts with /api with no api key" do
-      get "/api/some_action"
+      get "/api/blah/some_controller/some_action"
       assert_equal 401, last_response.status
     end
     
     should "return 200 for a request that starts with /api and has api key" do
-      get "/api/some_action?token=123456"
+      get "/api/123456/some_controller/some_action"
       assert_equal 200, last_response.status
     end
 
