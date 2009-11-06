@@ -34,4 +34,15 @@ class AuthenticationControllerTest < ActionController::TestCase
     
 
   end
+
+  context "with a partner that has no max requests" do
+    setup do
+      @partner = Factory(:partner, :max_requests => nil)
+    end
+
+    should "allow access" do
+      get :show, :id => @partner.api_key
+      assert_response 200
+    end
+  end
 end
