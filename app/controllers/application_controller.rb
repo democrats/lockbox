@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  ActiveScaffold.set_defaults do |config| 
+    config.ignore_columns.add [:created_at, :updated_at]
+  end
+
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 end
