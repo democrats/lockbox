@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :authentication, :only => [:show]
   
   map.resource :admin, :controller => "admin", :only => [:show] do |admin|
-    admin.resources :partners, :controller => "admin/partners"
+    admin.resources :partners, :controller => "admin/partners", :active_scaffold => true
   end
   
 end

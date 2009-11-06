@@ -19,7 +19,6 @@ Rails::Initializer.run do |config|
 
   # Gems
   config.gem "paperclip", :source => "http://gemcutter.org"
-  config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
   
   
   # Specify gems that this application depends on and have them installed with rake gems:install

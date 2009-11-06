@@ -22,11 +22,15 @@ class Partner < ActiveRecord::Base
   def self.authenticate(api_key)  
     p = Partner.find_by_api_key(api_key)
     if p
-      if p.current_request_count < p.max_requests
-        p.increment_request_count
-        return true
+      if p.max_requests.present?
+        if p.current_request_count < p.max_requests
+          p.increment_request_count
+          return true
+        else
+          return false
+        end
       else
-        return false
+        return true
       end
     end
     return false
