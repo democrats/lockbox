@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091104170848) do
+ActiveRecord::Schema.define(:version => 20091106213802) do
 
   create_table "partners", :force => true do |t|
     t.string   "name"
@@ -17,9 +17,11 @@ ActiveRecord::Schema.define(:version => 20091104170848) do
     t.string   "phone_number"
     t.string   "email"
     t.string   "api_key"
-    t.integer  "max_requests", :default => 100
+    t.integer  "max_requests"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "partners", ["api_key"], :name => "index_partners_on_api_key"
 
 end
