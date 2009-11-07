@@ -1,5 +1,9 @@
 /* Overridding CSS */
 
+h1,h2,h3,h4 {
+  margin: 0px;
+}
+
 .container {
 /* Use this calculation to determine the total width
    Total width = (columns * 40) - 30 */
@@ -65,6 +69,10 @@ body {
   height: 67px;
 }
 
+#site_title_box:hover, #dem_party_title_box:hover {
+  cursor: pointer;
+}
+
 #site_title_box {
   background: url('../images/header-bg-right.jpg');
   float: right;
@@ -92,7 +100,7 @@ h2#the {
 
 h1#democratic_party {
   position: relative;
-  top: 7px;
+  top: -1px;
   left: 25px;
   font-size: 22px;
 }
@@ -117,24 +125,6 @@ h1 #party {
   color: #FFF;
   font-size: 17px;
 }
-
-#title_link_1 {
-  display: block;
-  position: relative;
-  width: 300px;
-  height: 65px;
-}
-
-#title_link_2 {
-  display: block;
-  position: relative;
-  float: right;
-  clear: both;
-  top: -67px;
-  width: 235px;
-  height: 65px;
-}
-
 
 a {
   color: #8899DD;
@@ -174,8 +164,7 @@ div#footer ul li {
   margin: 10px;
 }
 
-
-/* tables */
+/* Tables */
 
 table.pretty-table
 {
@@ -201,27 +190,26 @@ table.pretty-table .odd
   background: #e8edff;
 }
 
-
 form fieldset {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 form legend {
-    padding: 0 2px;
-    font-weight: bold;
+  padding: 0 2px;
+  font-weight: bold;
 }
 
 form div.field label {
-    display: inline-block;
-    line-height: 1.8;
-    vertical-align: top;
-    width: 120px;
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+  width: 120px;
 }
 
 form div.field {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 form {
-    margin: 20px 0px 20px 4px;
+  margin: 20px 0px 20px 4px;
 }
