@@ -1,9 +1,11 @@
+body { behavior:url("../javscript/csshover.htc"); }
+
 #main {
-  margin-top: -129px;
+  min-height: 350px;
+  height: auto !important;
+  height: 350px;
 }
 
-#content {
-  min-height: 375px;
-  height: auto !important;
-  height: 375px;
+#site_title_box:hover, #dem_party_title_box:hover {
+  cursor: hand;
 }
