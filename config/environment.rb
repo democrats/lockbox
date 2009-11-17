@@ -19,7 +19,7 @@ Rails::Initializer.run do |config|
 
   # Gems
   config.gem "paperclip", :source => "http://gemcutter.org"
-  
+  config.gem "authlogic", :source => "http://gemcutter.org"
   
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"

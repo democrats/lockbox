@@ -5,7 +5,7 @@ class AdminControllerTest < ActionController::TestCase
   context "a logged in admin" do
 
     setup do
-      login
+      admin_login
     end
 
     should "be able to get admin page" do

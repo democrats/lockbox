@@ -2,11 +2,7 @@ require 'test_helper'
 
 class PartnersControllerTest < ActionController::TestCase
   context "creating a partner" do
-    setup { post :create, :partner => {:name => 'george washington',
-                                       :organization => "foo",
-                                       :phone_number => '5182076768',
-                                       :email => 'woodhull@gmail.com'
-                                       }}
+    setup { post :create, :partner => Factory.attributes_for(:partner)}
     should_respond_with :redirect
 
     should "create a partner" do
@@ -37,7 +33,7 @@ class PartnersControllerTest < ActionController::TestCase
 
   context "with a partner" do
     setup do
-      @partner = Factory(:partner)
+      session_for(:partner)
     end
 
     context "show" do
@@ -47,18 +43,5 @@ class PartnersControllerTest < ActionController::TestCase
       should_assign_to :partner
     end
   end
-
-  context "with many partners" do
-    setup do
-      3.times do
-        Factory(:partner)
-      end
-    end
-    context "index" do
-      setup {get :index}
-      should_respond_with :success
-      should_render_template 'index'
-      should_assign_to :partners
-    end
-  end
+  
 end

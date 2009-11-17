@@ -1,4 +1,6 @@
 class PartnersController < ApplicationController
+  skip_before_filter :require_user, :except => [:show]
+  
   def create
     @partner = Partner.new(params[:partner])
     if @partner.save
@@ -14,10 +16,6 @@ class PartnersController < ApplicationController
 
   def show
     @partner = Partner.find params[:id]
-  end
-
-  def index
-    @partners = Partner.all
   end
 
 end

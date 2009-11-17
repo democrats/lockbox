@@ -1,4 +1,5 @@
 class AuthenticationController < ApplicationController
+  skip_before_filter :require_user
 
   def show
     if Partner.authenticate(params[:id])

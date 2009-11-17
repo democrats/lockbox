@@ -1,7 +1,11 @@
+<%= error_messages_for :partner %>
+
 <% form_for @partner do |f| %>
   <%= f.text_field :name %>
   <%= f.text_field :phone_number %>
   <%= f.text_field :email %>
   <%= f.text_field :organization %>
+  <%= f.password_field :password %>
+  <%= f.password_field :password_confirmation %>
   <%= f.submit 'Save' %>
 <% end %>
