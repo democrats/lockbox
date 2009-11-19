@@ -35,6 +35,7 @@ end
 
 after "deploy:update",   "db:setup"
 after "deploy:update_code",   "db:setup"
+after "deploy:update_code", "files:copy_cron_jobs"
 after "deploy:setup",  "files:prepare"
 after "deploy:restart", "cache:clear"
 
@@ -44,6 +45,10 @@ namespace :files do
     run "mkdir -p #{deploy_to}/shared/config/"
     sudo "cp #{current_path}/config/instance_profiles/app/#{rails_env}/nginx.conf /dnc/sw32/nginx/conf/sites/#{APP_NAME}.conf"      
     run "scp viper1.dnc.org:/dnc/app/#{APP_NAME}/shared/config/database.yml #{deploy_to}/shared/config/database.yml"
+  end
+  
+  task :copy_cron_jobs, :roles => :cron do
+    sudo "cp #{latest_release}/config/instance_profiles/app/#{rails_env}/cron_jobs /etc/cron.d/#{APP_NAME}_cron"
   end
 end
 
