@@ -17,6 +17,7 @@ task :staging do
   role :app,  "firefly.dnc.org"
   role :web,  "firefly.dnc.org"
   role :db,   "firefly.dnc.org", :primary => true
+  role :cron, "firefly.dnc.org"
 end
 
 task :production do
