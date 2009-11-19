@@ -1,46 +1,94 @@
 require 'test_helper'
 
 class PartnersControllerTest < ActionController::TestCase
-  context "creating a partner" do
-    setup { post :create, :partner => Factory.attributes_for(:partner)}
-    should_respond_with :redirect
 
-    should "create a partner" do
-      Partner.count == 1
-    end   
-  end
-
-  context "trying to create an invalid partner" do
-    setup { post :create, :partner => {:name => 'george washington',
-                                       :organization => "foo",
-                                       :email => 'woodhull@gmail.com'
-                                       }}
-    should_respond_with :success
-    should_render_template :new
-    should_assign_to :partner
-
-    should "not create a partner" do
-      Partner.count == 0
-    end
-  end
-
-  context "new partner" do
-    setup { get :new}
-    should_respond_with :success
-    should_render_template 'new'
-    should_assign_to :partner
-  end
-
-  context "with a partner" do
+  context "Create" do
     setup do
-      session_for(:partner)
+      @partner = Factory.build(:partner)
+      @partner.stubs(:id).returns(1)
+      PartnerMailer.stubs(:deliver_confirmation)
     end
+    
+    context "Valid" do
+      setup do
+        @partner.stubs(:save).returns(true)
+        Partner.stubs(:new).returns(@partner)
+        post :create, :partner => Factory.attributes_for(:partner)
+      end
+      
+      should_redirect_to("partner path") { partner_path(@partner) }
+      should "deliver the cofirmation mail" do
+        assert_received(PartnerMailer, :deliver_confirmation) { |expect| expect.with(@partner) }
+      end
+    end
+    
+    context "Invalid" do
+      setup do
+        @partner.stubs(:save).returns(false)
+        Partner.stubs(:new).returns(@partner)
+        post :create, :partner => { }
+      end
+    
+      should_render_template :new
+      should "not deliver the confirmation mail" do
+        assert_not_received(PartnerMailer, :deliver_confirmation)
+      end
+    end
+    
+  end
 
-    context "show" do
-      setup {get :show, :id => @partner.id}
-      should_respond_with :success
-      should_render_template 'show'
-      should_assign_to :partner
+  context "New" do
+    setup do
+      get :new
+    end
+    
+    should_respond_with :success
+    should_assign_to :partner
+  end
+  
+  context "Show" do
+    setup do
+      stubbed_session_for(:partner)
+      get :show
+    end
+    
+    should_respond_with :success
+    should_assign_to :partner
+  end
+  
+  context "Edit" do
+    setup do
+      stubbed_session_for(:partner)
+      get :edit
+    end
+    
+    should_respond_with :success
+    should_assign_to :partner
+  end
+  
+  context "Update" do
+    setup do
+      @partner = Factory.build(:partner)
+    end
+    
+    context "Valid" do
+      setup do
+        @partner.stubs(:save).returns(true)
+        stubbed_session_for(@partner)
+        put :update, :partner => { }
+      end
+      
+      should_redirect_to("partner path") { partner_path(@partner) }
+    end
+    
+    context "Invalid" do
+      setup do
+        @partner.stubs(:save).returns(false)
+        stubbed_session_for(@partner)
+        put :update, :partner => { }
+      end
+      
+      should_render_template :edit
     end
   end
   

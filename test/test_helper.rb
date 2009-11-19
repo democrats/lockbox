@@ -44,9 +44,23 @@ class ActiveSupport::TestCase
      end
      PartnerSession.create(@partner)
    end
+   
+   def stubbed_session_for(partner)
+     @partner = partner
+     if @partner.is_a?(Symbol) || @partner.is_a?(String)
+       @partner = Factory.build(partner)
+     end
+     @controller.stubs(:current_user).returns(@partner)
+   end
 
    def current_user
      @partner ||= session_for(:partner)
+   end
+   
+   def assert_not_received(mock, expected_method_name)
+     matcher = have_received(expected_method_name)
+     yield(matcher) if block_given?
+     assert !matcher.matches?(mock), matcher.failure_message
    end
 
   private

@@ -9,8 +9,10 @@ ActionController::Routing::Routes.draw do |map|
   #   :only => [:update, :create], :name_prefix => "singular_"
 
 
-  map.resources :partners, :only => [:create, :show, :index, :new]
-  
+  map.resources :partners, :only => [:create, :index, :new]
+  map.resource :partner, :controller => "partners", :only => [:show, :edit, :update]
+  map.connect "/confirmation/:perishable_token", :controller => "confirmation",
+    :action => "update"
   map.resources :authentication, :only => [:show]
   
   map.resource :admin, :controller => "admin", :only => [:show] do |admin|

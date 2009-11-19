@@ -8,12 +8,8 @@ class PartnerSessionsController < ApplicationController
   end
   
   def create
-    # login_type = "Partnername"
-    # if params[:partner_session][:login] =~ REGEXP_EMAIL
-    #   login_type = "Email"
-    #   params[:partner_session][:email] = params[:partner_session].delete(:login)
-    # end
     @partner_session = PartnerSession.new(params[:partner_session])
+
     if @partner_session.save
       flash[:success] = "You have been signed in"
       redirect_back_or_default root_path

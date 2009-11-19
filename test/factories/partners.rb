@@ -7,6 +7,7 @@ Factory.define :partner do |p|
   p.api_key               { Factory.next(:api_key) }
   p.password              { "password" }
   p.password_confirmation { "password" }
+  p.confirmed             { true }
 end
 
 Factory.sequence(:api_key) do |n|

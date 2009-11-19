@@ -1,0 +1,5 @@
+<%= error_messages_for :partner %>
+
+<% form_for @partner, :url => partner_path, :html => { :method => :put } do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f, :submit_name => "Update" } %>
+<% end %>
