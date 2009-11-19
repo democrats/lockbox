@@ -24,6 +24,7 @@ task :production do
   role :app, "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
   role :web, "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
   role :db,  "viper1.dnc.org", :primary => true
+  role :cron, "viper1.dnc.org"
 end
 
 namespace :db do
