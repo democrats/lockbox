@@ -86,7 +86,6 @@ class FetchPasswordControllerTest < ActionController::TestCase
   context "Update" do
     setup do
       stubbed_session_for(:partner)
-      @partner = Factory.build(:partner)
     end
     
     context "Valid" do
