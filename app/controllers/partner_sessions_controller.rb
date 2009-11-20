@@ -15,8 +15,8 @@ class PartnerSessionsController < ApplicationController
       redirect_back_or_default root_path
     else
       @partner_session.errors.clear
-      flash[:error]  = "Email doesn't exist or bad Pasword"
-      flash[:notice] = "<a href='#{fetch_password_index_path}'>Did you forget your password?</a>"
+      flash.now[:error]  = "Email doesn't exist or bad Pasword"
+      flash.now[:notice] = "<a href='#{fetch_password_index_path}'>Did you forget your password?</a>"
       render :action => :new
     end
   end

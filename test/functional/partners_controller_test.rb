@@ -16,7 +16,7 @@ class PartnersControllerTest < ActionController::TestCase
         post :create, :partner => Factory.attributes_for(:partner)
       end
       
-      should_redirect_to("partner path") { partner_path(@partner) }
+      should_redirect_to("root_path") { root_path }
       should "deliver the cofirmation mail" do
         assert_received(PartnerMailer, :deliver_confirmation) { |expect| expect.with(@partner) }
       end

@@ -14,7 +14,8 @@ class PartnersController < ApplicationController
     
     if @partner.save
       PartnerMailer.deliver_confirmation(@partner)
-      redirect_to partner_path(@partner)
+      flash[:notice] = "A confirmation email has been sent to you"
+      redirect_to root_path
     else
       render :action => 'new'
     end

@@ -8,10 +8,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :fetch_password, :controller => "fetch_password", 
     :only => [:update, :create], :name_prefix => "singular_"
 
-
+  map.connect "/signup", :controller => "partners", :action => "new"
   map.resources :partners, :only => [:create, :index, :new]
   map.resource :partner, :controller => "partners", :only => [:show, :edit, :update]
-  map.connect "/confirmation/:perishable_token", :controller => "confirmation",
+  map.connect "/confirm/:perishable_token", :controller => "confirmation",
     :action => "update"
   map.resources :authentication, :only => [:show]
   
@@ -19,5 +19,5 @@ ActionController::Routing::Routes.draw do |map|
     admin.resources :partners, :controller => "admin/partners", :active_scaffold => true
   end
 
-  map.root :controller => "home", :action => "show"  
+  map.root :controller => "home", :action => "show"
 end
