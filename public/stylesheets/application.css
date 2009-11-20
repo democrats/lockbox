@@ -213,3 +213,7 @@ form div.field {
 form {
   margin: 20px 0px 20px 4px;
 }
+
+#session_header {
+  float: right;
+}
