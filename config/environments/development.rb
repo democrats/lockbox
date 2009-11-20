@@ -1,3 +1,5 @@
+App[:host] = "localhost:3000"
+
 # Settings specified here will take precedence over those in config/environment.rb
 
 

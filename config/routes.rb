@@ -4,9 +4,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "/login", :controller => 'partner_sessions', :action => "new"
   map.connect "/logout", :controller => 'partner_sessions', :action => "destroy"
   map.resources :partner_sessions, :only => :create
-  # map.resources :fetch_password, :only => [:index, :show]
-  # map.resource :fetch_password, :controller => "fetch_password", 
-  #   :only => [:update, :create], :name_prefix => "singular_"
+  map.resources :fetch_password, :only => [:index, :show]
+  map.resource :fetch_password, :controller => "fetch_password", 
+    :only => [:update, :create], :name_prefix => "singular_"
 
 
   map.resources :partners, :only => [:create, :index, :new]

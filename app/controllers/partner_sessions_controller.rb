@@ -16,7 +16,7 @@ class PartnerSessionsController < ApplicationController
     else
       @partner_session.errors.clear
       flash[:error]  = "Email doesn't exist or bad Pasword"
-      # flash[:notice] = "<a href='#{fetch_password_index_path}'>#{td("flash.notice")}</a>"
+      flash[:notice] = "<a href='#{fetch_password_index_path}'>Did you forget your password?</a>"
       render :action => :new
     end
   end
