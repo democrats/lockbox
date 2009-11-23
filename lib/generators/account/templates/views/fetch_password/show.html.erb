@@ -1,0 +1,6 @@
+<%%= error_messages_for :<%= singular_name %> %>
+<%% form_for @<%= singular_name %> || current_user, :url => singular_fetch_password_path, :html => { :method => :put } do |p| %>
+  <%%= p.password_field :password, :label => "Password" %>
+  <%%= p.password_field :password_confirmation, :label => "Password Confirmation" %>
+  <%%= submit_tag "Update" %>
+<%% end %>

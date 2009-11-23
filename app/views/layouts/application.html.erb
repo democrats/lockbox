@@ -30,6 +30,9 @@
         <%= render :partial => "shared/header" %>
       </div>
       <div id="main" class="span-24 last">
+        <div id="flash">
+          <%= flash_helper %>
+        </div>
         <%= yield %>
       </div>
       <div id="main_bottom" class="span-24 last">

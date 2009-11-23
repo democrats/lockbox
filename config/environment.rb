@@ -8,6 +8,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
 
+  App       = {}
   APP_NAME  = "some_name"
   APP_TITLE = "Some Title"
   # Settings in config/environments/* take precedence over those specified here.
