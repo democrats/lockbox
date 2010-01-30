@@ -1,0 +1,1 @@
+require 'required_attributes'
