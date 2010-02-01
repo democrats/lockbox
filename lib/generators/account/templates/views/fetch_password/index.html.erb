@@ -1,0 +1,4 @@
+<%% form_for @<%= singular_name %>, :url => singular_fetch_password_path do |p| %>
+  <%%= p.text_field :email, :label => "Email" %>
+  <%%= submit_tag "Fetch" %>
+<%% end %>

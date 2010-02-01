@@ -12,5 +12,4 @@ class ApplicationHelperTest < ActionView::TestCase
       assert_match /<div class=\"flash-error\">Error!<\/div>/, flash_helper
     end
   end
-
 end

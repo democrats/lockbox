@@ -1,0 +1,5 @@
+<%%= error_messages_for :<%= singular_name %> %>
+
+<%% form_for @<%= singular_name %>, :url => <%= singular_name %>_path, :html => { :method => :put } do |f| %>
+  <%%= render :partial => 'form', :locals => { :f => f, :submit_name => "Update" } %>
+<%% end %>

@@ -1,0 +1,11 @@
+<%% form_for @<%= singular_name %>_session do |p| %>
+  <p>
+    <%%= p.real_label :email %>
+    <%%= p.real_text_field :email %>
+  </p>
+  <p>
+    <%%= p.real_label :password %>
+    <%%= p.real_password_field :password %>
+  </p>
+  <%%= submit_tag "Login" %>
+<%% end %>
