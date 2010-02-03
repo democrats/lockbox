@@ -67,7 +67,7 @@ task :verify_rcov do
 
   #grab the last rcov level from a successful build (unsuccessful may not have created the file)
   last_build = Dir.new(project_root).entries.select{|f| f =~ /success/}.sort{|a, b| File.mtime(File.join(project_root, a)) <=> File.mtime(File.join(project_root, b))}.last
-  threshold = get_coverage(File.join(project_root, last_build, html_location))
+  threshold = last_build.nil? ? 0 : get_coverage(File.join(project_root, last_build, html_location))
   total_coverage = get_coverage(File.join(out, html_location))
 
   puts "Coverage: #{total_coverage}% (threshold: #{threshold}% from #{last_build})"
