@@ -5,17 +5,13 @@ class PartnerTest < ActiveSupport::TestCase
 
     setup do
        @partner = Factory(:partner)
-       #don't overwrite the key that they think will be duplicated
+       # don't overwrite the key that they think will be duplicated
        Partner.any_instance.stubs(:create_api_key).returns(true)
      end
      
     subject { @partner }
     
     should_validate_uniqueness_of :api_key
-    
-
-    
-
     
     should "not authenticate for invalid api key" do
       assert_equal(false, Partner.authenticate("randomapikey"))
@@ -56,7 +52,6 @@ class PartnerTest < ActiveSupport::TestCase
 
   end
 
-
   context "an unsaved partner object" do
     setup { @partner = Partner.new }
     subject { @partner }
@@ -94,15 +89,22 @@ class PartnerTest < ActiveSupport::TestCase
         end
       end
     end
-
-    context "api key" do
-      should "create api key before validations" do
-        @partner.valid?
-        assert @partner.api_key.present?
-      end
-    end
   end
   
-  
+  context "API Key" do
+    setup do
+      @partner = Factory.build(:partner)
+    end
+    
+    should "generate an API key on create only" do
+      assert_nil @partner.api_key
+      @partner.save
+      api_key = @partner.api_key
+      assert api_key.present?
+      @partner.name = "New Name"
+      @partner.save
+      assert_equal api_key, @partner.api_key
+    end
+  end
   
 end
