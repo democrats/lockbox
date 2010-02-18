@@ -8,10 +8,10 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
 
-  APP_NAME   = "some_name"
-  APP_TITLE  = "Some Title"
+  APP_NAME   = "lockbox"
+  APP_TITLE  = "lockbox"
   App        = {}
-  
+
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -43,8 +43,13 @@ Rails::Initializer.run do |config|
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
   config.time_zone = 'UTC'
+  
+  config.action_mailer.delivery_method = :sendmail
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
+
+ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com bcardarella@dnc.org)
+ExceptionNotifier.email_prefix = '[LOCKBOX]'
