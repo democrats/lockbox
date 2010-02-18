@@ -20,8 +20,8 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Gems
-  config.gem "paperclip", :source => "http://gemcutter.org"
-  config.gem "authlogic", :source => "http://gemcutter.org"
+  config.gem "paperclip"
+  config.gem "authlogic"
   
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"

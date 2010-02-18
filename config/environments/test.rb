@@ -29,6 +29,6 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 # Gems
-config.gem "factory_girl", :source => "http://gemcutter.org"
-config.gem "shoulda", :source => "http://gemcutter.org"
+config.gem "factory_girl"
+config.gem "shoulda"
 config.gem "jferris-mocha", :lib => "mocha", :source => "http://gems.github.com"
