@@ -4,11 +4,12 @@ class Partner < ActiveRecord::Base
   end
   
   include RFC822
-  validates_presence_of :api_key, :phone_number, :name, :organization, :email
+  validates_presence_of :phone_number, :name, :organization, :email
+  validates_presence_of :api_key, :on => :update
   validates_format_of :email, :with => EmailAddressRegularExpression
   validates_uniqueness_of :api_key
   
-  before_validation :create_api_key, :on => :create
+  before_create :create_api_key
   
   
   def phone_number
