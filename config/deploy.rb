@@ -2,7 +2,7 @@ APP_NAME = "lockbox"
 
 set :application, "#{APP_NAME}"
 set :scm, :git
-set :repository,  "ssh://deploy@firefly.dnc.org/dnc/git/#{APP_NAME}.git"
+set :repository,  "ssh://deploy@gitdev.dnc.org/dnc/git/#{APP_NAME}.git"
 
 set :deploy_to, "/dnc/app/#{APP_NAME}"
 
@@ -15,10 +15,10 @@ set :keep_releases, 4
 
 task :staging do
   set :rails_env, "staging"
-  role :app,  "firefly.dnc.org"
-  role :web,  "firefly.dnc.org"
-  role :db,   "firefly.dnc.org", :primary => true
-  role :cron, "firefly.dnc.org"
+  role :app,  "romulus.dnc.org"
+  role :web,  "romulus.dnc.org"
+  role :db,   "romulus.dnc.org", :primary => true
+  role :cron, "romulus.dnc.org"
 end
 
 task :production do
