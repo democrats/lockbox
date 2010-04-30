@@ -34,8 +34,8 @@ namespace :db do
     run "cp #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
   end
 end
-
-
+# 
+# 
 after "deploy:update",   "db:setup"
 after "deploy:update_code",   "db:setup"
 after "deploy:update_code", "files:copy_cron_jobs"

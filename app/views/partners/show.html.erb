@@ -1,2 +1,4 @@
-<h1>Show Partner</h1>
-API Key: <%= @partner.api_key %>
+<h1><%= @partner.name %></h1>
+
+API Key: <%= @partner.api_key %><br/>
+Requests left this hour: <%= @partner.unlimited? ?  'No Limit' : @partner.requests_remaining %>

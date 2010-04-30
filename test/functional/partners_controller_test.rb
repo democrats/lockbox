@@ -4,7 +4,7 @@ class PartnersControllerTest < ActionController::TestCase
 
   context "Create" do
     setup do
-      @partner = Factory.build(:partner)
+      @partner = Factory(:partner)
       @partner.stubs(:id).returns(1)
       PartnerMailer.stubs(:deliver_confirmation)
     end
@@ -16,7 +16,7 @@ class PartnersControllerTest < ActionController::TestCase
         post :create, :partner => Factory.attributes_for(:partner)
       end
       
-      should_redirect_to("root_path") { root_path }
+      should_redirect_to("partner page") { partner_path(@partner.api_key) }
       should "deliver the cofirmation mail" do
         assert_received(PartnerMailer, :deliver_confirmation) { |expect| expect.with(@partner) }
       end
@@ -49,7 +49,7 @@ class PartnersControllerTest < ActionController::TestCase
   context "Show" do
     setup do
       stubbed_session_for(:partner)
-      get :show
+      get :show,  :id => @partner.api_key
     end
     
     should_respond_with :success
@@ -59,7 +59,7 @@ class PartnersControllerTest < ActionController::TestCase
   context "Edit" do
     setup do
       stubbed_session_for(:partner)
-      get :edit
+      get :edit, :id => @partner.api_key      
     end
     
     should_respond_with :success
@@ -68,24 +68,25 @@ class PartnersControllerTest < ActionController::TestCase
   
   context "Update" do
     setup do
-      @partner = Factory.build(:partner)
+      @partner = Factory(:partner)
     end
     
     context "Valid" do
       setup do
         @partner.stubs(:save).returns(true)
         stubbed_session_for(@partner)
-        put :update, :partner => { }
+        put :update, :partner => { }, :id => @partner.api_key
       end
       
-      should_redirect_to("partner path") { partner_path(@partner) }
+      should_redirect_to("partner path") { partner_path(@partner.api_key) }
     end
     
     context "Invalid" do
       setup do
         @partner.stubs(:save).returns(false)
         stubbed_session_for(@partner)
-        put :update, :partner => { }
+        Partner.stubs(:find_by_api_key).returns(@partner)
+        put :update, :partner => { }, :id => @partner.api_key 
       end
       
       should_render_template :edit

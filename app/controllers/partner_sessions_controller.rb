@@ -1,7 +1,7 @@
 class PartnerSessionsController < ApplicationController
 
   skip_before_filter :require_user, :only => [:create, :new]
-  before_filter :require_no_user, :only => [:create, :new]
+  before_filter      :require_no_user, :only => [:create, :new]
   
   def new
     @partner_session = PartnerSession.new
@@ -12,7 +12,7 @@ class PartnerSessionsController < ApplicationController
 
     if @partner_session.save
       flash[:success] = "You have been signed in"
-      redirect_back_or_default root_path
+      redirect_back_or_default partners_path
     else
       @partner_session.errors.clear
       flash.now[:error]  = "Email doesn't exist or bad Pasword"

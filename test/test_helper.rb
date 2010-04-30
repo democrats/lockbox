@@ -48,7 +48,7 @@ class ActiveSupport::TestCase
    def stubbed_session_for(partner)
      @partner = partner
      if @partner.is_a?(Symbol) || @partner.is_a?(String)
-       @partner = Factory.build(partner)
+       @partner = Factory(partner)
      end
      @controller.stubs(:current_user).returns(@partner)
    end

@@ -20,7 +20,7 @@ class PartnerSessionsControllerTest < ActionController::TestCase
         post :create, :partner_session => { :email => @partner.email, 
                                          :password => @partner.password }
       end
-      should_redirect_to("root_path") { root_path }
+      should_redirect_to("partners path") { partners_path }
       should_set_the_flash_to "You have been signed in"
     end
     
