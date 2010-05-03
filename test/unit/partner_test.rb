@@ -23,7 +23,7 @@ class PartnerTest < ActiveSupport::TestCase
     end
 
     should "authenticate if request count is below max requests" do
-      assert_equal(true, Partner.authenticate(@partner.api_key))
+      assert(Partner.authenticate(@partner.api_key))
     end
 
     should "increment api current request count" do
@@ -50,6 +50,18 @@ class PartnerTest < ActiveSupport::TestCase
       assert_equal(2, @partner.current_request_count)
     end
 
+  end
+  
+  context "rate limit reset time" do
+    setup do
+      @partner = Factory(:partner)
+    end
+    
+    should "return the next midnight UTC as the reset time" do
+      now_utc = Time.now.utc
+      next_utc_midnight = 1.second.since(now_utc.end_of_day).to_i
+      assert_equal next_utc_midnight, @partner.max_requests_reset
+    end
   end
 
   context "an unsaved partner object" do

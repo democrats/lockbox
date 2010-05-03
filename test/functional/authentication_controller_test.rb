@@ -31,7 +31,26 @@ class AuthenticationControllerTest < ActionController::TestCase
       assert_response 401
     end
     
+    should "return Cache-Control header after successful auth" do
+      get :show, :id => @partner.api_key
+      expected_cc_header = ['public', "max-age=#{@partner.max_response_cache_time}", 'must-revalidate']
+      assert_equal expected_cc_header.sort, @response.headers['Cache-Control'].split(/,\s*/).sort
+    end
     
+    should "return Twitter-style rate limit headers after successful auth" do
+      # these headers are documented here: http://apiwiki.twitter.com/Rate-limiting
+      get :show, :id => @partner.api_key
+      expected_rl_headers = {
+        'X-RateLimit-Limit' => @partner.max_requests,
+        'X-RateLimit-Remaining' => @partner.requests_remaining,
+        'X-RateLimit-Reset' => @partner.max_requests_reset,
+      }
+      rl_headers_received = Hash.new
+      expected_rl_headers.keys.map { |header|
+        rl_headers_received[header] = @response.headers[header].to_i
+      }
+      assert_equal expected_rl_headers, rl_headers_received
+    end
 
   end
 
@@ -43,6 +62,13 @@ class AuthenticationControllerTest < ActionController::TestCase
     should "allow access" do
       get :show, :id => @partner.api_key
       assert_response 200
+    end
+    
+    should "not return rate limit headers after successful auth" do
+      get :show, :id => @partner.api_key
+      @response.headers.each_key do |header|
+        assert_no_match(/^X-RateLimit-/,header)
+      end
     end
   end
 end

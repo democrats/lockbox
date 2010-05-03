@@ -11,6 +11,11 @@ class Partner < ActiveRecord::Base
   
   before_create :create_api_key
   
+  MAX_RESPONSE_CACHE_TIME = 1.hour
+  
+  def max_response_cache_time
+    MAX_RESPONSE_CACHE_TIME
+  end
   
   def phone_number
     (self.attributes["phone_number"] || "").to_phone(:area_code => true)
@@ -33,10 +38,10 @@ class Partner < ActiveRecord::Base
   def self.authenticate(p)
     p = Partner.find_by_api_key(p) if p.is_a?(String)
     if p
-      return true if p.unlimited?
+      return p if p.unlimited?
       return false if p.current_request_count >= p.max_requests
       p.increment_request_count
-      return true
+      return p
     end
     return false
   end
@@ -50,12 +55,16 @@ class Partner < ActiveRecord::Base
     count.to_i
   end
 
+  def max_requests_reset
+    1.second.since(Time.now.utc.end_of_day).to_i
+  end
+
   def unlimited?
     max_requests.blank?
   end
   
   def requests_remaining
-    max_requests - current_request_count
+    max_requests.blank? ? nil : max_requests - current_request_count
   end
   
   def increment_request_count
