@@ -6,7 +6,7 @@ set :repository,  "ssh://git@gitdev.dnc.org/#{APP_NAME}.git"
 
 set :deploy_to, "/dnc/app/#{APP_NAME}"
 
-
+set(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LANG", "C") { run_locally(cmd) } } }
 
 set :user, "deploy"
 set :runner, "deploy"
