@@ -2,7 +2,7 @@ APP_NAME = "lockbox"
 
 set :application, "#{APP_NAME}"
 set :scm, :git
-set :repository,  "ssh://deploy@gitdev.dnc.org/dnc/git/#{APP_NAME}.git"
+set :repository,  "ssh://git@gitdev.dnc.org/#{APP_NAME}.git"
 
 set :deploy_to, "/dnc/app/#{APP_NAME}"
 
