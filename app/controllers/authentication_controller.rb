@@ -6,7 +6,7 @@ class AuthenticationController < ApplicationController
       if partner.max_requests.nil?
         expires_in partner.max_response_cache_time, :public => true, 'must-revalidate' => true
       else
-        response.headers["Cache-Control"] = "public, no-cache, must-revalidate"
+        response.headers["Cache-Control"] = "public, no-cache"
       end
       # can't use head() here because it stupidly alters the camelCase of these header names
       headers.merge!({'X-RateLimit-Limit' => partner.max_requests.to_s, 'X-RateLimit-Remaining' => partner.requests_remaining.to_s, 'X-RateLimit-Reset' => partner.max_requests_reset_time.to_s}) unless partner.max_requests.nil?

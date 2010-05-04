@@ -33,7 +33,7 @@ class AuthenticationControllerTest < ActionController::TestCase
     
     should "return Cache-Control header after successful auth" do
       get :show, :id => @partner.api_key
-      expected_cc_header = ['public', 'no-cache', 'must-revalidate']
+      expected_cc_header = ['public', 'no-cache']
       assert_equal expected_cc_header.sort, @response.headers['Cache-Control'].split(/,\s*/).sort
     end
     
