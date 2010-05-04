@@ -43,7 +43,7 @@ class AuthenticationControllerTest < ActionController::TestCase
       expected_rl_headers = {
         'X-RateLimit-Limit' => @partner.max_requests,
         'X-RateLimit-Remaining' => @partner.requests_remaining,
-        'X-RateLimit-Reset' => @partner.max_requests_reset,
+        'X-RateLimit-Reset' => @partner.max_requests_reset_time,
       }
       rl_headers_received = Hash.new
       expected_rl_headers.keys.map { |header|

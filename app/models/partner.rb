@@ -26,7 +26,8 @@ class Partner < ActiveRecord::Base
   end
   
   def cache_key
-    "#{Time.now.strftime("#{api_key}_%m%d%y_%H")}"
+    cache_timestamp = 1.hour.until(Time.at(max_requests_reset_time)).strftime("%m%d%y_%H")
+    "#{Time.now.strftime("#{api_key}_#{cache_timestamp}")}"
   end
   
   def self.find_and_authenticate(api_key)
@@ -55,8 +56,8 @@ class Partner < ActiveRecord::Base
     count.to_i
   end
 
-  def max_requests_reset
-    1.second.since(Time.now.utc.end_of_day).to_i
+  def max_requests_reset_time
+    1.hour.since(Time.parse(Time.now.utc.strftime("%Y-%m-%d %H:00:00"))).to_i
   end
 
   def unlimited?

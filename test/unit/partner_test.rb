@@ -57,10 +57,24 @@ class PartnerTest < ActiveSupport::TestCase
       @partner = Factory(:partner)
     end
     
-    should "return the next midnight UTC as the reset time" do
-      now_utc = Time.now.utc
-      next_utc_midnight = 1.second.since(now_utc.end_of_day).to_i
-      assert_equal next_utc_midnight, @partner.max_requests_reset
+    should "return the next hour UTC as the reset time" do
+      now_utc = Time.parse(Time.now.utc.strftime("%Y-%m-%d %H:00:00"))
+      next_utc_hour_epoch = 1.hour.since(now_utc).to_i
+      assert_equal next_utc_hour_epoch, @partner.max_requests_reset_time
+    end
+    
+    should "reset the rate limit at the reset time" do
+      before_reset = 1.second.until(Time.at(@partner.max_requests_reset_time))
+      after_reset = Time.at(@partner.max_requests_reset_time)
+      Time.stubs(:now).returns(before_reset)
+      @partner.requests_remaining.times do
+        @partner.increment_request_count
+      end
+      assert_equal(0, @partner.requests_remaining)
+      assert_equal(false, Partner.authenticate(@partner.api_key))
+      Time.stubs(:now).returns(after_reset)
+      assert_equal(@partner.max_requests, @partner.requests_remaining)
+      assert Partner.authenticate(@partner.api_key)
     end
   end
 
