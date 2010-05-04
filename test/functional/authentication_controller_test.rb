@@ -33,7 +33,7 @@ class AuthenticationControllerTest < ActionController::TestCase
     
     should "return Cache-Control header after successful auth" do
       get :show, :id => @partner.api_key
-      expected_cc_header = ['public', "max-age=#{@partner.max_response_cache_time}", 'must-revalidate']
+      expected_cc_header = ['public', 'no-cache', 'must-revalidate']
       assert_equal expected_cc_header.sort, @response.headers['Cache-Control'].split(/,\s*/).sort
     end
     
@@ -70,5 +70,12 @@ class AuthenticationControllerTest < ActionController::TestCase
         assert_no_match(/^X-RateLimit-/,header)
       end
     end
+    
+    should "return Cache-Control header after successful auth" do
+      get :show, :id => @partner.api_key
+      expected_cc_header = ['public', "max-age=#{@partner.max_response_cache_time}", 'must-revalidate']
+      assert_equal expected_cc_header.sort, @response.headers['Cache-Control'].split(/,\s*/).sort
+    end
+    
   end
 end
