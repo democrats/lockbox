@@ -55,6 +55,30 @@ class PartnersControllerTest < ActionController::TestCase
     should_respond_with :success
     should_assign_to :partner
   end
+
+  context "API Show" do
+    setup do
+      stubbed_session_for(:partner)
+    end
+    context "json" do
+      setup do
+        get :show,  :id => @partner.api_key, :format => 'json'
+      end
+
+      should_respond_with :success
+      should_assign_to :partner
+    end
+
+    context "jsonp" do
+      setup do
+        get :show,  :id => @partner.api_key, :format => 'jsonp', :variable => 'foo', :function => 'bar'
+      end
+
+      should_respond_with :success
+      should_assign_to :partner
+    end
+
+  end
   
   context "Edit" do
     setup do

@@ -164,6 +164,7 @@ div#footer ul li {
   margin: 10px;
 }
 
+
 /* Tables */
 
 table.pretty-table
@@ -189,6 +190,9 @@ table.pretty-table .odd
 {
   background: #e8edff;
 }
+
+/* forms */
+
 
 form fieldset {
   margin-bottom: 10px;

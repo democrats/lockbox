@@ -48,6 +48,7 @@ class PartnersController < ApplicationController
     if partner == current_user
       @partner = partner
     else
+      
       render :file => "#{Rails.public_path}/401.html", :status => :unauthorized
       return
     end
