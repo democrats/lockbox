@@ -10,6 +10,7 @@ class PartnersController < ApplicationController
     respond_to do |format|
       format.html {}
       format.json { render :json => @partner.to_json(:only => [:name, :api_key, :organization, :phone_number, :email]) }
+      format.jsonp {  render_jsonp(@partner.to_json)  }
     end
 
   end

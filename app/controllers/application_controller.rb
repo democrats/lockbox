@@ -13,6 +13,21 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-  
+  def render_jsonp(json, options={})
+    json = json.to_json if json.respond_to?(:to_json)
+    callback, variable = params[:callback], params[:variable]
+    response = begin
+      if callback && variable
+        "var #{variable} = #{json};\n#{callback}(#{variable});"
+      elsif variable
+        "var #{variable} = #{json};"
+      elsif callback
+        "#{callback}(#{json});"
+      else
+        json
+      end
+    end
+    render({:text => response}.merge(options))
+  end
   
 end

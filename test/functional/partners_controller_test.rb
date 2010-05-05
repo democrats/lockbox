@@ -71,7 +71,7 @@ class PartnersControllerTest < ActionController::TestCase
 
     context "jsonp" do
       setup do
-        get :show,  :id => @partner.api_key, :format => 'jsonp', :variable => 'foo', :function => 'bar'
+        get :show,  :id => @partner.api_key, :format => 'jsonp', :variable => 'foo', :callback => 'bar'
       end
 
       should_respond_with :success
