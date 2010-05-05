@@ -14,16 +14,16 @@ class PartnerTest < ActiveSupport::TestCase
     should_validate_uniqueness_of :api_key
     
     should "not authenticate for invalid api key" do
-      assert_equal(false, Partner.authenticate("randomapikey"))
+      assert_equal(false, Partner.authenticate("randomapikey").authorized)
     end
     
     should "not authenticate for blank api key" do
-      assert_equal(false, Partner.authenticate(''))
-      assert_equal(false, Partner.authenticate(nil))
+      assert_equal(false, Partner.authenticate('').authorized)
+      assert_equal(false, Partner.authenticate(nil).authorized)
     end
 
     should "authenticate if request count is below max requests" do
-      assert(Partner.authenticate(@partner.api_key))
+      assert(Partner.authenticate(@partner.api_key).authorized)
     end
 
     should "increment api current request count" do
@@ -37,7 +37,7 @@ class PartnerTest < ActiveSupport::TestCase
         @partner.increment_request_count
       end
       assert_equal(0, @partner.requests_remaining)
-      assert_equal(false, Partner.authenticate(@partner.api_key))
+      assert_equal(false, Partner.authenticate(@partner.api_key).authorized)
     end
     
     should "maintain remaining requests properly" do
@@ -57,10 +57,10 @@ class PartnerTest < ActiveSupport::TestCase
       @partner = Factory(:partner)
     end
     
-    should "return the next hour UTC as the reset time" do
-      now_utc = Time.parse(Time.now.utc.strftime("%Y-%m-%d %H:00:00"))
-      next_utc_hour_epoch = 1.hour.since(now_utc).to_i
-      assert_equal next_utc_hour_epoch, @partner.max_requests_reset_time
+    should "return the next hour as the reset time" do
+      this_hour = Time.parse(Time.now.strftime("%Y-%m-%d %H:00:00"))
+      next_hour_epoch = 1.hour.since(this_hour).to_i
+      assert_equal next_hour_epoch, @partner.max_requests_reset_time
     end
     
     should "reset the rate limit at the reset time" do
@@ -71,10 +71,10 @@ class PartnerTest < ActiveSupport::TestCase
         @partner.increment_request_count
       end
       assert_equal(0, @partner.requests_remaining)
-      assert_equal(false, Partner.authenticate(@partner.api_key))
+      assert_equal(false, Partner.authenticate(@partner.api_key).authorized)
       Time.stubs(:now).returns(after_reset)
       assert_equal(@partner.max_requests, @partner.requests_remaining)
-      assert Partner.authenticate(@partner.api_key)
+      assert Partner.authenticate(@partner.api_key).authorized
     end
   end
 

@@ -23,12 +23,21 @@ class AuthenticationControllerTest < ActionController::TestCase
       assert_equal(count + 1, @partner.current_request_count)
     end
     
-    should "return 401 once max_requests has been reached" do
+    should "return 420 once max_requests has been reached" do
+      # 420 is the code the Twitter rate limiting API uses
       @partner.requests_remaining.times do
         @partner.increment_request_count
       end
       get :show, :id => @partner.api_key
-      assert_response 401
+      assert_response 420
+    end
+    
+    should "include an error message in the body when rate limited" do
+      @partner.requests_remaining.times do
+        @partner.increment_request_count
+      end
+      get :show, :id => @partner.api_key
+      assert_match /Too many requests/, @response.body
     end
     
     should "return Cache-Control header after successful auth" do

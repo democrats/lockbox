@@ -1,0 +1,4 @@
+<div class="dialog">
+  <h1>Too many requests per hour. Mellow, dude.</h1>
+  <p>You have been rate limited. Please try again after <%= Time.at(@partner.max_requests_reset_time).strftime("%I:%M:%S %p %Z") %>.</p>
+</div>

@@ -32,19 +32,18 @@ class Partner < ActiveRecord::Base
   
   def self.find_and_authenticate(api_key)
     p = Partner.find_by_api_key(api_key)
-    auth = authenticate(p)
+    auth = authenticate(p).authorized
     {:partner => p, :authorized => auth, :may_cache => p.max_requests.blank?}
   end
 
   def self.authenticate(p)
-    p = Partner.find_by_api_key(p) if p.is_a?(String)
+    p = find_by_api_key(p) if p.is_a?(String)
     if p
-      return p if p.unlimited?
-      return false if p.current_request_count >= p.max_requests
       p.increment_request_count
-      return p
+    else
+      p = new
     end
-    return false
+    p
   end
   
   def current_request_count
@@ -57,7 +56,7 @@ class Partner < ActiveRecord::Base
   end
 
   def max_requests_reset_time
-    1.hour.since(Time.parse(Time.now.utc.strftime("%Y-%m-%d %H:00:00"))).to_i
+    1.hour.since(Time.parse(Time.now.strftime("%Y-%m-%d %H:00:00"))).to_i
   end
 
   def unlimited?
@@ -75,6 +74,17 @@ class Partner < ActiveRecord::Base
       Rails.cache.write(cache_key, ret, :raw => true)
     end
     ret.to_i
+  end
+  
+  def authorized
+    return false unless id
+    if unlimited?
+      true
+    elsif requests_remaining > 0
+      true
+    else
+      false
+    end
   end
   
   private
