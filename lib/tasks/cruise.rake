@@ -42,7 +42,7 @@ namespace :test do
   namespace :load do
     desc "loads database.yml and any other relevant configs for the test environment"
     task :config do
-      `cp /dnc/app/#{APP_NAME}/shared/config/database.yml /home/deploy/.cruise/projects/#{APP_NAME}/work/config/database.yml`
+      `cp /home/deploy/.cruise/projects/#{APP_NAME}/shared/config/database.yml /home/deploy/.cruise/projects/#{APP_NAME}/work/config/database.yml`
     end
   end
 end
