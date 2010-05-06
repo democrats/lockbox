@@ -1,4 +1,12 @@
 class Partner < ActiveRecord::Base
+  
+  class CredentialStore
+    def [](access_key_id)
+      p = Partner.find_by_slug(access_key_id)
+      p.api_key if p
+    end
+  end
+  
   acts_as_authentic do |c|
     c.maintain_sessions = false
   end
@@ -7,11 +15,15 @@ class Partner < ActiveRecord::Base
   validates_presence_of :phone_number, :name, :organization, :email
   validates_presence_of :api_key, :on => :update
   validates_format_of :email, :with => EmailAddressRegularExpression
-  validates_uniqueness_of :api_key
+  validates_uniqueness_of :api_key, :slug
   
-  before_create :create_api_key
+  before_create :create_api_key, :create_slug
   
   MAX_RESPONSE_CACHE_TIME = 1.hour
+  
+  def self.credential_store
+    @cr ||= CredentialStore.new
+  end
   
   def max_response_cache_time
     MAX_RESPONSE_CACHE_TIME
@@ -37,7 +49,9 @@ class Partner < ActiveRecord::Base
   end
 
   def self.authenticate(p)
-    p = find_by_api_key(p) if p.is_a?(String)
+    if p.is_a?(String)
+      p = find_by_api_key(p)
+    end
     if p
       p.increment_request_count
     else
@@ -99,5 +113,17 @@ class Partner < ActiveRecord::Base
   
   def create_api_key
     write_attribute :api_key, make_api_key
+  end
+  
+  def make_slug
+    if !organization.blank?
+      organization.underscore
+    else
+      name.underscore
+    end
+  end
+  
+  def create_slug
+    write_attribute :slug, make_slug
   end
 end

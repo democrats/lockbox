@@ -22,6 +22,7 @@ Rails::Initializer.run do |config|
   # Gems
   config.gem "paperclip"
   config.gem "authlogic"
+  config.gem "auth-hmac"
   
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
@@ -51,5 +52,5 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com bcardarella@dnc.org)
+ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com bcardarella@dnc.org morganw@dnc.org)
 ExceptionNotifier.email_prefix = '[LOCKBOX]'

@@ -12,9 +12,25 @@ class AuthenticationControllerTest < ActionController::TestCase
       assert_response 200
     end
     
+    should "return 200 for successful HMAC authentication" do
+      @partner.stubs(:api_key).returns('daad465deb7718a5d0db99345be41e3a1ea0de6d')
+      Partner.stubs(:find_by_slug).returns(@partner)
+      Partner.stubs(:find_by_api_key).returns(@partner)
+      Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
+      {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
+        @request.env[e] = value
+      end
+      get :show, :id => 'hmac'
+      assert_response 200
+    end
+    
     should "return 401 for unsuccessful authentication" do
       get :show, :id => 'potato'
       assert_response 401
+    end
+    
+    should "return 401 for unsuccessful HMAC authentication" do
+      # pending
     end
     
     should "increment current_request_count for this partner after successful auth" do
