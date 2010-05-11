@@ -22,7 +22,7 @@ module GitCommands
   
   def self.pull_template
     ensure_clean_working_directory!
-    run "git pull ssh://firefly.dnc.org/dnc/git/founding_father.git master"
+    run "git pull ssh://git@gitdev.dnc.org/founding_father.git master"
   end
 end
  
