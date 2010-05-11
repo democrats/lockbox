@@ -1,1 +1,20 @@
-<h1 class="title">Welcome to <%= APP_TITLE %></h1>
+<h1 class="title">API Services</h1>
+
+<p>
+  Lockbox is the DNC's infrastructure for managing partner access to our API services.   
+</p>
+
+<% if current_user %>
+  <div>
+    Access your <%= link_to 'Partner Page', partner_path(current_user.api_key) %>. 
+  </div>
+<% else %>
+  <div style="float:left; padding:20px;">
+    <h3><%= link_to 'Login', login_path %></h3>
+    To access information on your API key
+  </div>
+  <div style="float:left; padding:20px;">
+    <h3><%= link_to 'Signup', signup_path %></h3>
+    To get access to DNC API services
+  </div>
+<% end %>
