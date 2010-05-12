@@ -4,7 +4,12 @@ class LockBox
   include HTTParty
 
   def self.config
-    yaml_config = YAML.load_file(File.join(File.dirname(__FILE__),'..','config','lockbox.yml'))
+    if defined?(Rails)
+      root_dir = Rails.root
+    else
+      root_dir = '.'
+    end
+    yaml_config = YAML.load_file(File.join(root_dir,'config','lockbox.yml'))
     if defined?(Rails)
       yaml_config[Rails.env]
     else
