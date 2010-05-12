@@ -14,7 +14,6 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   def render_jsonp(json, options={})
-    json = json.to_json if json.respond_to?(:to_json)
     callback, variable = params[:callback], params[:variable]
     response = begin
       if callback && variable
