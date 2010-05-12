@@ -6,6 +6,7 @@ db/*sqlite3
 db/development_structure.*
 db/schema.*
 config/database.yml
+config/lockbox.yml
 test/tmp
 lockbox_middleware.gemspec
 pkg/

@@ -3,6 +3,17 @@ require 'httparty'
 class LockBox  
   include HTTParty
 
+  def self.config
+    yaml_config = YAML.load_file(File.join(File.dirname(__FILE__),'..','config','lockbox.yml'))
+    if defined?(Rails)
+      yaml_config[Rails.env]
+    else
+      yaml_config
+    end
+  end
+
+  base_uri config['base_uri']
+
   def initialize(app)
     @app = app
   end

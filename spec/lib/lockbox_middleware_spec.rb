@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rack/test'
 require 'lockbox_middleware'
 
-describe LockBox do
+describe 'LockBox' do
   include Rack::Test::Methods
 
   def app
@@ -10,17 +10,31 @@ describe LockBox do
     LockBox.new(Proc.new {|env| [200,{},"successfully hit rails app"]})
   end
   
+  def safely_edit_config_file(settings)
+    @config_file = File.join(File.dirname(__FILE__),'..','..','config','lockbox.yml')
+    @tmp_config_file = "#{@config_file}.testing"
+    FileUtils.cp(@config_file, @tmp_config_file)
+    config = YAML.load_file(@config_file)
+    settings.each_pair do |setting,value|
+      config[Rails.env][setting.to_s] = value
+    end
+    File.open( @config_file, 'w' ) do |out|
+      YAML.dump( config, out )
+    end
+  end
+  
   context "setting the base_uri" do
-    let(:base_uri) { "http://localhost:3001/" }
+    let(:base_uri) { "http://localhost:3001" }
     
-    before do
-      config = mock("YamlConfig")
-      config.stubs(:base_uri).returns(base_uri)
-      LockBox.stubs(:load_config).retuns(config)
+    it "should use the base_uri specified in the config" do
+      safely_edit_config_file({:base_uri => base_uri})
+      LockBox.base_uri.should == base_uri
     end
     
-    it "should use the base_uri specified in the config"
-      LockBox.base_uri.should == base_uri
+    after do
+      if @tmp_config_file && @config_file
+        FileUtils.mv(@tmp_config_file, @config_file)
+      end
     end
   end
   
@@ -36,7 +50,7 @@ describe LockBox do
       bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
       LockBox.stubs(:get).with("/authentication/blah", any_parameters).returns(bad_response)
     end
-
+  
     it "should return 401 for a request that starts with /api with invalid api key" do
       get "/api/some_controller/some_action?key=blah"
       assert_equal 401, last_response.status
@@ -102,7 +116,7 @@ describe LockBox do
         assert_equal value, last_response.headers[header]
       end
     end
-
+  
   end
   
   context "hitting API actions with HMAC auth" do
@@ -130,15 +144,15 @@ describe LockBox do
       assert_equal 200, last_response.status
     end
   end
-
+  
   context "hitting actions without API" do
-
+  
     it "should not try to authenticate a request that doesn't start with /api" do
       get "/"
       assert_equal 200, last_response.status
       assert_equal("successfully hit rails app", last_response.body)
     end
-
+  
   end
 
 end
