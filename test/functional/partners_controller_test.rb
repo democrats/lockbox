@@ -2,6 +2,16 @@ require 'test_helper'
 
 class PartnersControllerTest < ActionController::TestCase
 
+  context "Index" do
+    setup do
+      stubbed_session_for(:partner)
+      get :index
+    end
+    
+    should_redirect_to("partner path") { partner_path(@partner.api_key) }
+
+  end
+
   context "Create" do
     setup do
       @partner = Factory(:partner)
