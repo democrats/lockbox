@@ -2,7 +2,6 @@ require 'httparty'
 
 class LockBox  
   include HTTParty
-  base_uri 'http://localhost:3001'
 
   def initialize(app)
     @app = app

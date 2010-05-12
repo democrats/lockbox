@@ -10,6 +10,20 @@ describe LockBox do
     LockBox.new(Proc.new {|env| [200,{},"successfully hit rails app"]})
   end
   
+  context "setting the base_uri" do
+    let(:base_uri) { "http://localhost:3001/" }
+    
+    before do
+      config = mock("YamlConfig")
+      config.stubs(:base_uri).returns(base_uri)
+      LockBox.stubs(:load_config).retuns(config)
+    end
+    
+    it "should use the base_uri specified in the config"
+      LockBox.base_uri.should == base_uri
+    end
+  end
+  
   context "hitting API actions" do
     before do
       @max_age = 3600
