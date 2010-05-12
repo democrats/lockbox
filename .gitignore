@@ -7,3 +7,4 @@ db/development_structure.*
 db/schema.*
 config/database.yml
 test/tmp
+.idea/*
