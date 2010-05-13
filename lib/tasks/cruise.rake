@@ -1,4 +1,5 @@
-APP_NAME = "your app name here"
+#TODO: CHANGE THIS FOR YOUR APP
+APP_NAME = "founding_father" 
 
 desc "Cruise Control build task"
 task :cruise do
