@@ -10,7 +10,7 @@ class AuthenticationController < ApplicationController
   end
 
   def show
-    if params[:id] == 'hmac' # && !request.headers['Authorization'].blank?
+    if params[:id] == 'hmac' && !request.headers['Authorization'].blank?
       hmac_request = HmacRequest.new
       hmac_request.env = request.headers
       {'Content-Type' => 'Content-Type', 'Content-MD5' => 'Content-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
