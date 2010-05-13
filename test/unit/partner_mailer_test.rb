@@ -38,7 +38,7 @@ class PartnerMailerTest < ActionMailer::TestCase
     end
 
     should "be sent from out account" do
-      assert_equal "fetch_password@dnc.org", @email.from.first
+      assert_equal "test@dnc.org", @email.from.first
     end
 
     should "have the subject 'Fetch Password'" do
