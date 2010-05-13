@@ -26,4 +26,28 @@ class PartnerMailerTest < ActionMailer::TestCase
     end
   end
 
+  context "Fetch Password Email" do
+    setup do
+      @partner = Factory.build(:partner)
+      @partner.stubs(:perishable_token).returns.returns("1234")
+      @email = PartnerMailer.create_fetch_password(@partner)
+    end
+
+    should "deliver to the partner email" do
+      assert_equal @partner.email, @email.to.first
+    end
+
+    should "be sent from out account" do
+      assert_equal "fetch_password@dnc.org", @email.from.first
+    end
+
+    should "have the subject 'Fetch Password'" do
+      assert_equal "Fetch Password", @email.subject
+    end
+
+    should "contain the perishable token in the body" do
+      assert_match @partner.perishable_token, @email.body
+    end
+  end
+
 end
