@@ -117,9 +117,9 @@ class Partner < ActiveRecord::Base
   
   def make_slug
     if !organization.blank?
-      organization.underscore
+      organization.parameterize
     else
-      name.underscore
+      name.parameterize
     end
   end
   

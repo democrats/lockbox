@@ -115,6 +115,23 @@ class PartnerTest < ActiveSupport::TestCase
         end
       end
     end
+
+    context "slug" do
+      setup { @partner.name = 'name foo' }
+
+      should "be the underscored name" do
+        assert_equal("name-foo", @partner.send(:make_slug))
+      end
+
+      context "with an organization" do
+        setup { @partner.organization = 'org foo'}
+
+        should "be the underscored org name" do
+          assert_equal('org-foo', @partner.send(:make_slug))
+        end
+      end
+    end
+
   end
   
   context "API Key" do
