@@ -20,17 +20,21 @@ task :cruise do
     #                     :error_cyclo => "7",
     #                     :formater => "text"} #this needs to be set to "text"
     config.rcov     = { :test_files => ['test/**/*_test.rb',
-                                        'spec/**/*_spec.rb'],
-                        :rcov_opts => ["--sort coverage",
-                                       "--no-html",
-                                       "--text-coverage",
-                                       "--no-color",
-                                       "--profile",
-                                       "--rails",
-                                       "--exclude /gems/,/Library/,/rubygems/,spec",
-                                       "-Ilib:spec",
-                                       "-Ilib:test"]}
-  end
+                                     'spec/**/*_spec.rb'],
+                     :rcov_opts => ["--sort coverage",
+                                    "--aggregate rcov_data/rcov.data",
+                                    "--no-html",
+                                    "--text-coverage",
+                                    "--no-color",
+                                    "--profile",
+                                    "--rails",
+                                    "--exclude /gems/,/Library/,/rubygems/,spec",
+                                    "-Ilib:spec:test"],
+                     :environment => 'test'}
+   end
+   
+ `mkdir -p #{RAILS_ROOT}/rcov_data/`
+ `rm #{RAILS_ROOT}/rcov_data/rcov.data` rescue nil
   CruiseControl::invoke_rake_task 'test:load:config'
   CruiseControl::invoke_rake_task 'db:migrate'
   CruiseControl::invoke_rake_task 'db:test:prepare'
