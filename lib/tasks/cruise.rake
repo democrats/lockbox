@@ -22,13 +22,13 @@ task :cruise do
     config.rcov     = { :test_files => ['test/**/*_test.rb',
                                      'spec/**/*_spec.rb'],
                      :rcov_opts => ["--sort coverage",
-                                    "--aggregate rcov_data/rcov.data",
+                                    # "--aggregate rcov_data/rcov.data",
                                     "--no-html",
                                     "--text-coverage",
                                     "--no-color",
                                     "--profile",
                                     "--rails",
-                                    "--exclude /gems/,/Library/,/rubygems/,spec",
+                                    "--exclude /gems/,/Library/,/rubygems/,spec/,test",
                                     "-Ilib:spec:test"],
                      :environment => 'test'}
    end
