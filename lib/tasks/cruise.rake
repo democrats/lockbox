@@ -33,7 +33,7 @@ task :cruise do
   CruiseControl::invoke_rake_task 'test:load:config'
   CruiseControl::invoke_rake_task 'db:migrate'
   CruiseControl::invoke_rake_task 'db:test:prepare'
-  CruiseControl::invoke_rake_task 'test'
+  CruiseControl::invoke_rake_task 'default'
   CruiseControl::invoke_rake_task 'metrics:all'
   CruiseControl::invoke_rake_task 'verify_rcov'
 end
