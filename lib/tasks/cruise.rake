@@ -28,6 +28,7 @@ task :cruise do
                                        "--profile",
                                        "--rails",
                                        "--exclude /gems/,/Library/,/rubygems/,spec",
+                                       "-Ilib:spec",
                                        "-Ilib:test"]}
   end
   CruiseControl::invoke_rake_task 'test:load:config'
