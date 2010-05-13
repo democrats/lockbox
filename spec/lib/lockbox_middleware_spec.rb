@@ -125,9 +125,17 @@ describe 'LockBox' do
       successful_response.stubs(:code).returns(200)
       successful_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
       Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
-      expected_headers = {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC key-id:uxx+EgyzWBKBgS+Y8MzpcWcfy7k='], 'Referer' => 'http://example.org/api/some_controller/some_action'}
-      LockBox.stubs(:get).with("/authentication/hmac", {:headers => expected_headers}).returns(successful_response)
+      valid_headers = {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC key-id:uxx+EgyzWBKBgS+Y8MzpcWcfy7k='], 'Referer' => 'http://example.org/api/some_controller/some_action'}
+      LockBox.stubs(:get).with("/authentication/hmac", {:headers => valid_headers}).returns(successful_response)
+      
+      bad_response = mock("MockResponse")
+      bad_response.stubs(:code).returns(401)
+      bad_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
+      invalid_headers = {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => 'foo', 'Referer' => 'http://example.org/api/some_controller/some_action'}
+      LockBox.stubs(:get).with("/authentication/hmac", {:headers => invalid_headers}).returns(bad_response)
+      
       @path = "/api/some_controller/some_action"
+      
       hmac_request = Net::HTTP::Get.new(@path, {'Date' => Time.now.httpdate})
       store = mock("MockStore")
       store.stubs(:[]).with('key-id').returns("123456")
@@ -142,6 +150,15 @@ describe 'LockBox' do
       end
       get @path
       assert_equal 200, last_response.status
+    end
+    
+    it "should return 401 for an HMAC request with an invalid auth header" do
+      @hmac_headers['authorization'] = 'foo'
+      @hmac_headers.each_pair do |key,value|
+        header key, value
+      end
+      get @path
+      assert_equal 401, last_response.status
     end
   end
   
