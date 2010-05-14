@@ -1,0 +1,12 @@
+--- 
+production: 
+  base_uri: http://lockbox.dnc.org
+development: 
+  base_uri: http://localhost:3001
+cucumber: 
+  base_uri: http://localhost:3001
+test: 
+  base_uri: http://localhost:3001
+all:
+  protect_paths: 
+    - ^/api/
