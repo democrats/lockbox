@@ -12,11 +12,20 @@ class LockBox
       root_dir = '.'
     end
     yaml_config = YAML.load_file(File.join(root_dir,'config','lockbox.yml'))
+    return_config = {}
     if defined?(Rails)
-      yaml_config[Rails.env]
+      if !yaml_config['all'].nil?
+        return_config = yaml_config['all']
+        return_config.merge!(yaml_config[Rails.env])
+      else
+        return_config = yaml_config[Rails.env]
+      end
     else
-      yaml_config
+      yaml_config.each do |config_env|
+        return_config.merge!(config_env)
+      end
     end
+    return_config
   end
 
   base_uri config['base_uri']

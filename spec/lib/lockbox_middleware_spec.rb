@@ -10,13 +10,14 @@ describe 'LockBox' do
     LockBox.new(Proc.new {|env| [200,{},"successfully hit rails app"]})
   end
   
-  def safely_edit_config_file(settings)
+  def safely_edit_config_file(settings, env=nil)
+    env ||= Rails.env
     @config_file = File.join(File.dirname(__FILE__),'..','..','config','lockbox.yml')
     @tmp_config_file = "#{@config_file}.testing"
     FileUtils.cp(@config_file, @tmp_config_file)
     config = YAML.load_file(@config_file)
     settings.each_pair do |setting,value|
-      config[Rails.env][setting.to_s] = value
+      config[env][setting.to_s] = value
     end
     File.open( @config_file, 'w' ) do |out|
       YAML.dump( config, out )
@@ -44,7 +45,7 @@ describe 'LockBox' do
     let(:path3) { "/lookup/?$" }
     
     before :each do
-      safely_edit_config_file({:protect_paths => [path1, path2, path3]})
+      safely_edit_config_file({:protect_paths => [path1, path2, path3]}, 'all')
       successful_response = mock("MockResponse")
       successful_response.stubs(:code).returns(200)
       successful_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
