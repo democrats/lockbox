@@ -1,7 +1,9 @@
 require 'httparty'
+require 'lockbox_cache'
 
-class LockBox  
+class LockBox
   include HTTParty
+  include LockBoxCache
 
   def self.config
     if defined?(Rails)
@@ -21,6 +23,7 @@ class LockBox
 
   def initialize(app)
     @app = app
+    @cache = LockBoxCache::Cache.new
   end
 
   def call(env)
@@ -113,11 +116,11 @@ class LockBox
   end
 
   def auth_cache(api_key)
-    expiration = Rails.cache.read(cache_key(api_key))
+    expiration = @cache.read(cache_key(api_key))
     return nil if expiration.nil?
     expiration = Time.at(expiration)
     if expiration <= Time.now
-      Rails.cache.delete(cache_key(api_key))
+      @cache.delete(cache_key(api_key))
       nil
     elsif expiration > Time.now
       true
@@ -125,7 +128,7 @@ class LockBox
   end
 
   def cache_auth(api_key,expiration)
-    Rails.cache.write(cache_key(api_key),expiration.to_i)
+    @cache.write(cache_key(api_key),expiration.to_i)
   end
 
 end
