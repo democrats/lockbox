@@ -31,7 +31,58 @@ describe 'LockBox' do
       LockBox.base_uri.should == base_uri
     end
     
-    after do
+    after :each do
+      if @tmp_config_file && @config_file
+        FileUtils.mv(@tmp_config_file, @config_file)
+      end
+    end
+  end
+  
+  context "setting the protected paths" do
+    let(:path1) { "^/api/" }
+    let(:path2) { "^/foo/bar/" }
+    let(:path3) { "/lookup/?$" }
+    
+    before :each do
+      safely_edit_config_file({:protect_paths => [path1, path2, path3]})
+      successful_response = mock("MockResponse")
+      successful_response.stubs(:code).returns(200)
+      successful_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
+      LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(successful_response)
+      bad_response = mock("MockResponse")
+      bad_response.stubs(:code).returns(401)
+      bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
+      LockBox.stubs(:get).with("/authentication/invalid", any_parameters).returns(bad_response)
+    end
+    
+    it "should protect path1" do
+      get "/api/foo?key=invalid"
+      last_response.status.should == 401
+      get "/api/foo?key=123456"
+      last_response.status.should == 200
+    end
+    
+    it "should protect path2" do
+      get "/foo/bar/baz?key=invalid"
+      last_response.status.should == 401
+      get "/foo/bar/baz?key=123456"
+      last_response.status.should == 200
+    end
+    
+    it "should protect path3" do
+      get "/polling_place/lookup?key=invalid"
+      last_response.status.should == 401
+      get "/polling_place/lookup?key=123456"
+      last_response.status.should == 200
+    end
+    
+    it "should not protect other paths" do
+      get "/bar/baz"
+      last_response.status.should == 200
+      last_response.body.should == "successfully hit rails app"
+    end
+    
+    after :each do
       if @tmp_config_file && @config_file
         FileUtils.mv(@tmp_config_file, @config_file)
       end
@@ -39,7 +90,7 @@ describe 'LockBox' do
   end
   
   context "hitting API actions" do
-    before do
+    before :each do
       @max_age = 3600
       successful_response = mock("MockResponse")
       successful_response.stubs(:code).returns(200)
@@ -120,7 +171,7 @@ describe 'LockBox' do
   end
   
   context "hitting API actions with HMAC auth" do
-    before do
+    before :each do
       successful_response = mock("MockResponse")
       successful_response.stubs(:code).returns(200)
       successful_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})

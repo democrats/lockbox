@@ -29,31 +29,42 @@ class LockBox
   def call(env)
     dup.call!(env)
   end
+  
+  def protected_paths
+    self.class.config['protect_paths'].map do |path|
+      Regexp.new(path)
+    end
+  end
 
   def call!(env)
     #attempt to authenticate any requests to /api
     request = Rack::Request.new(env)
-    if env['PATH_INFO'] =~ /^\/api\/[^\/]+/i
-      authorized = false
-      key = request['key']
-      if key.blank?
-        key = 'hmac'
-      end
+    path_protected = false
+    protected_paths.each do |path|
+      if env['PATH_INFO'] =~ path
+        path_protected = true
+        authorized = false
+        key = request['key']
+        if key.blank?
+          key = 'hmac'
+        end
       
-      auth = auth_response(key,env)
-      authorized = auth[:authorized]
-      auth_headers = auth[:headers]
+        auth = auth_response(key,env)
+        authorized = auth[:authorized]
+        auth_headers = auth[:headers]
       
-      if authorized
-        app_response = @app.call(env)
-        app_headers = app_response[1]
-        response_headers = app_headers.merge(auth_headers)
-        return [app_response[0], response_headers, app_response[2]]
-      else
-        message = "Access Denied"
-        return [401, {'Content-Type' => 'text/plain', 'Content-Length' => "#{message.length}"}, message]
+        if authorized
+          app_response = @app.call(env)
+          app_headers = app_response[1]
+          response_headers = app_headers.merge(auth_headers)
+          return [app_response[0], response_headers, app_response[2]]
+        else
+          message = "Access Denied"
+          return [401, {'Content-Type' => 'text/plain', 'Content-Length' => "#{message.length}"}, message]
+        end
       end
-    else
+    end
+    unless path_protected
       #pass everything else straight through to app
       return @app.call(env)
     end
