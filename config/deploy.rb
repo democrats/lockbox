@@ -66,14 +66,14 @@ namespace :config do
   end
 end
 
+
 before "deploy:restart", "config:setup"
 before "deploy:migrate", "config:setup"
 before "pdf_generator:restart", "files:copy_log4j"
 before "pdf_generator:start", "files:copy_log4j"
-
 after  "deploy:setup", "deploy:unroot"
 after  "deploy:update_code", "files:compress", "files:copy_cron_jobs"
-after  "deploy:restart", "cache:clear", "pdf_generator:restart"
+after  "deploy:restart", "cache:clear"
 
 namespace :files do
   task :prepare do
@@ -90,6 +90,7 @@ namespace :files do
     end
 
     sudo "cp #{current_path}/config/instance_profiles/app/#{rails_env}/nginx.conf /dnc/local/nginx/conf/sites/#{APP_NAME}.conf"
+
   end
   
   task :copy_cron_jobs, :roles => :cron do
