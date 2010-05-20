@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'rack/test'
 require 'lockbox_middleware'
 
 describe 'LockBox' do

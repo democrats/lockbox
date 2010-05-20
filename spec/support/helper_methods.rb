@@ -29,9 +29,3 @@ module HelperMethods
      @request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("admin:10ckb0X")
    end
 end
-
-class Spec::Runner::Context
-  def before_context_eval
-    @context_eval_module.include HelperMethods
-  end
-end

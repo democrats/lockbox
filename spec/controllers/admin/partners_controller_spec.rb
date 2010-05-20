@@ -1,7 +1,8 @@
 require 'spec_helper'
 
-describe 'Admin::PartnersController' do
-  include Rack::Test::Methods
+describe Admin::PartnersController do
+  # include Rack::Test::Methods
+  include HelperMethods
   
   context "an admin" do
     before do

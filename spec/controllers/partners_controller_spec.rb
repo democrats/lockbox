@@ -1,7 +1,8 @@
 require 'spec_helper'
 
-describe 'PartnersController' do
-  include Rack::Test::Methods
+describe PartnersController do
+  # include Rack::Test::Methods
+  include HelperMethods
   
   context "Index" do
     before do
@@ -9,7 +10,7 @@ describe 'PartnersController' do
       get :index
     end
     
-    it { should_redirect_to("partner path") { partner_path(@partner.api_key) } }
+    it { should redirect_to partner_path(@partner.api_key) }
 
   end
 
@@ -27,7 +28,7 @@ describe 'PartnersController' do
         post :create, :partner => Factory.attributes_for(:partner)
       end
       
-      it { should_redirect_to("partner page") { partner_path(@partner.api_key) } }
+      it { should redirect_to partner_path(@partner.api_key) }
       
       it "should deliver the cofirmation mail" do
         assert_received(PartnerMailer, :deliver_confirmation) { |expect| expect.with(@partner) }
@@ -41,7 +42,7 @@ describe 'PartnersController' do
         post :create, :partner => { }
       end
     
-      it { should_render_template :new }
+      it { should render_template :new }
       
       it "should not deliver the confirmation mail" do
         assert_not_received(PartnerMailer, :deliver_confirmation)
@@ -55,8 +56,8 @@ describe 'PartnersController' do
       get :new
     end
     
-    it { should_respond_with :success }
-    it { should_assign_to :partner }
+    it { should respond_with :success }
+    it { should assign_to :partner }
   end
   
   context "Show" do
@@ -65,8 +66,8 @@ describe 'PartnersController' do
       get :show,  :id => @partner.api_key
     end
     
-    it { should_respond_with :success }
-    it { should_assign_to :partner }
+    it { should respond_with :success }
+    it { should assign_to :partner }
   end
 
   context "API Show" do
@@ -78,8 +79,8 @@ describe 'PartnersController' do
         get :show,  :id => @partner.api_key, :format => 'json'
       end
 
-      it { should_respond_with :success }
-      it { should_assign_to :partner }
+      it { should respond_with :success }
+      it { should assign_to :partner }
     end
 
     context "jsonp" do
@@ -87,8 +88,8 @@ describe 'PartnersController' do
         get :show,  :id => @partner.api_key, :format => 'jsonp', :variable => 'foo', :callback => 'bar'
       end
 
-      it { should_respond_with :success }
-      it { should_assign_to :partner }
+      it { should respond_with :success }
+      it { should assign_to :partner }
     end
 
   end
@@ -99,8 +100,8 @@ describe 'PartnersController' do
       get :edit, :id => @partner.api_key      
     end
     
-    it { should_respond_with :success }
-    it { should_assign_to :partner }
+    it { should respond_with :success }
+    it { should assign_to :partner }
   end
   
   context "Update" do
@@ -115,7 +116,7 @@ describe 'PartnersController' do
         put :update, :partner => { }, :id => @partner.api_key
       end
       
-      it { should_redirect_to("partner path") { partner_path(@partner.api_key) } }
+      it { should redirect_to partner_path(@partner.api_key) }
     end
     
     context "Invalid" do
@@ -123,10 +124,11 @@ describe 'PartnersController' do
         @partner.stubs(:save).returns(false)
         stubbed_session_for(@partner)
         Partner.stubs(:find_by_api_key).returns(@partner)
+        # debugger
         put :update, :partner => { }, :id => @partner.api_key 
       end
       
-      it { should_render_template :edit }
+      it { should render_template :edit }
     end
   end
 end
