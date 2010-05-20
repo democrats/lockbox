@@ -25,9 +25,13 @@ module HelperMethods
      assert !matcher.matches?(mock), matcher.failure_message
    end
 
-  private
+   def admin_login
+     @request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("admin:10ckb0X")
+   end
+end
 
-  def admin_login
-    @request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("admin:10ckb0X")
+class Spec::Runner::Context
+  def before_context_eval
+    @context_eval_module.include HelperMethods
   end
 end

@@ -1,9 +1,8 @@
 require 'spec_helper'
-require 'rack/test'
-
-include HelperMethods
 
 describe 'Admin::PartnersController' do
+  include Rack::Test::Methods
+  
   context "an admin" do
     before do
       @partner = Factory(:partner)

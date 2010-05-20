@@ -1,7 +1,8 @@
 require 'spec_helper'
-require 'rack/test'
 
 describe 'PartnersController' do
+  include Rack::Test::Methods
+  
   context "Index" do
     before do
       stubbed_session_for(:partner)
