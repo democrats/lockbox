@@ -13,7 +13,8 @@ javascripts:
   - Baskerville-Normal_500.font
 stylesheets:
 - admin:
-  
+  - screen
+  - application
 - application:
   - screen
   - application
