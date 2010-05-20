@@ -41,6 +41,7 @@ after "deploy:update_code",   "db:setup"
 after "deploy:update_code", "files:copy_cron_jobs"
 after "deploy:setup",  "files:prepare"
 after "deploy:restart", "cache:clear"
+after  "deploy:update_code", "files:compress"
 
 namespace :files do
   task :prepare do
@@ -54,8 +55,13 @@ namespace :files do
   task :copy_cron_jobs, :roles => :cron do
     sudo "cp #{latest_release}/config/instance_profiles/app/#{rails_env}/cron_jobs /etc/cron.d/#{APP_NAME}_cron"
   end
-end
 
+  task :compress do
+    package_files
+    compress_packaged_js_files
+    compress_packaged_css_files
+  end
+end
 
 namespace :deploy do
   [:start, :stop].each do |t|
@@ -100,4 +106,26 @@ def copy_file(src_path, dest_path)
   ensure
     sudo "rm -f /tmp/#{fname}"
   end
+end
+
+def package_files
+  run "cd #{latest_release} && rake asset:packager:build_all RAILS_ENV=#{rails_env}"
+end
+
+def compress_packages(type, extension)
+  dir = "#{latest_release}/public/#{type}"
+  files = capture "ls #{dir}"
+  files.each do |file_name|
+    next if file_name !~ /packaged\.#{extension}$/
+    file_path = "#{dir}/#{file_name}"
+    run "java -jar /dnc/app/java/yuicompressor-2.4.2.jar --charset utf-8 #{file_path} -o #{file_path}"
+  end
+end
+
+def compress_packaged_js_files
+  compress_packages('javascripts', 'js')
+end
+
+def compress_packaged_css_files
+  compress_packages('stylesheets', 'css')
 end

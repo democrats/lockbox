@@ -1,0 +1,21 @@
+--- 
+javascripts:
+- admin:
+  - prototype
+  - effects
+  - controls
+  - dragdrop
+  - application
+  - cufon-yui
+  - Baskerville-Normal_500.font
+- application:
+  - cufon-yui
+  - Baskerville-Normal_500.font
+stylesheets:
+- admin:
+  
+- application:
+  - screen
+  - application
+- ie:
+  - ie
