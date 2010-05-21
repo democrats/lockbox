@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe AuthenticationController do
-
+  integrate_views
+  
   context "with an existing partner" do
     subject { Factory(:partner) }
     
@@ -21,11 +22,11 @@ describe AuthenticationController do
       
       before do
         subject.stubs(:api_key).returns('daad465deb7718a5d0db99345be41e3a1ea0de6d')
-        Partner.stubs(:find_by_slug).returns(subject)
-        Partner.stubs(:find_by_api_key).returns(subject)
-        Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
-        {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
-          request.env[e] = value
+         Partner.stubs(:find_by_slug).returns(subject)
+         Partner.stubs(:find_by_api_key).returns(subject)
+         Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
+         {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
+           request.env[e] = value
         end
       end
       
@@ -36,7 +37,6 @@ describe AuthenticationController do
     
       it "should return 401 with invalid HMAC credentials" do
         request.env['X-Referer-Authorization'] = ['AuthHMAC foo:bar']
-        debugger
         get :show, :id => 'hmac'
         response.should_not be_success
         response.status.should =~ /401/
