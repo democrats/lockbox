@@ -1,0 +1,2 @@
+module FetchPasswordHelper
+end

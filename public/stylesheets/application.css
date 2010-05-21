@@ -1,0 +1,185 @@
+/* Overridding CSS */
+
+h1,h2,h3,h4 {
+  margin: 0px;
+}
+
+.container {
+/* Use this calculation to determine the total width
+   Total width = (columns * 40) - 30 */
+  width: 1250px;
+}
+body {
+  background-repeat: repeat-x;
+  background-color: #326698;
+  font-family: "Lucida Grande", Georgia;
+  color: #336699;
+}
+
+#main {
+  min-height: 350px;
+  margin-right: 0px;
+  background-color: #FFFFFF;
+}
+
+#main_bottom {
+  background-repeat: repeat-x;
+}
+
+#main_bottom, #main_bottom_left, #main_bottom_right {
+  height: 68px;
+}
+
+#main_bottom_left, #main_bottom_right {
+  width: 400px;
+}
+
+#main_bottom_left {
+  float: left;
+}
+
+#main_bottom_right {
+  float: right;
+}
+
+#left, #right {
+  min-height: 388px;
+  margin-right: 0px;
+}
+
+#left {
+}
+
+#right {
+}
+
+#center {
+  margin-right: 0px;
+}
+
+#header {
+  background-repeat: repeat-x;
+  height: 67px;
+}
+
+#site_title_box:hover {
+  cursor: pointer;
+}
+
+#site_title_box {
+  float: right;
+  width: 235px;
+  height: 67px;
+}
+
+.large-letter {
+  font-size: 33px;
+}
+
+.P {
+  margin-right: -3px;
+}
+
+#site_title {
+  text-align: center;
+  position: relative;
+  top: 35px;
+  color: #FFF;
+  font-size: 17px;
+}
+
+a {
+  color: #8899DD;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+div#footer {
+  font-size: 11px;
+  color: #FFF;
+  margin: 5px auto 0px;
+}
+
+div#copyright {
+  text-align: center;
+}
+
+div#disclaimer {
+  text-align: center;
+  border: 1px solid;
+  border-color: #FFF !important;
+  padding: 10px 0px;
+  margin: 5px auto 0px;
+  width: 580px;
+}
+
+div#footer ul {
+  text-align: center;
+  list-style: none;
+}
+
+div#footer ul li {
+  display: inline;
+  margin: 10px;
+}
+
+
+/* Tables */
+
+table.pretty-table
+{
+  font-size: 12px;
+  margin: 5px;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.pretty-table th
+{
+  font-size: 14px;
+  font-weight: normal;
+  padding: 8px 8px;
+  color: #039;
+}
+table.pretty-table td
+{
+  padding: 8px;
+  color: #669;
+}
+table.pretty-table .odd
+{
+  background: #e8edff;
+}
+
+/* forms */
+
+
+form fieldset {
+  margin-bottom: 10px;
+}
+
+form legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+
+form div.field label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+  width: 120px;
+}
+
+form div.field {
+  margin-bottom: 5px;
+}
+
+form {
+  margin: 20px 0px 20px 4px;
+}
+
+#session_header {
+  float: right;
+}

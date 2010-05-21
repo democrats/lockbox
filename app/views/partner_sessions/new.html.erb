@@ -1,0 +1,9 @@
+<% form_for @partner_session do |p| %>
+  <%= p.text_field :email %>
+  <%= p.password_field :password %>
+  <%= submit_tag "Login" %>
+<% end %>
+
+  <p>
+    <%= link_to "Did you forget your password?", fetch_password_index_path %>
+  </p>

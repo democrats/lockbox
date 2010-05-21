@@ -1,0 +1,25 @@
+= LockBox
+
+LockBox is a centralized API authentication service written by the DNC Innovation Lab. It lets your API 
+users share a single identity across multiple services.  
+It is licensed under the New BSD License (see the LICENSE file for details).
+
+It is a Ruby on Rails application on the server side, and Rack middleware on the client side
+(which means it integrates nicely with any modern Ruby web framework).
+
+Lockbox handles things like rate limiting, API key signup and management, and supports HMAC
+authentication as well as plain-text key exchange. 
+
+== Download
+
+Github: http://github.com/dnclabs/lockbox/tree/master
+
+== Authors
+
+Nathan Woodhull
+Chris Gill
+Brian Cardarella
+Wes Morgan
+
+Copyright 2010 Democratic National Committee
+All Rights Reserved.

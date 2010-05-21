@@ -1,0 +1,48 @@
+<h1><%= @partner.name %></h1>
+
+
+<table class="pretty-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+
+  <tr>
+    <td>API Key</td>
+    <td><%= @partner.api_key %></td>
+  </tr>
+  <tr class="odd">
+    <td>Unlimited Key</td>
+    <td><%= @partner.unlimited? ? 'Yes' : 'No' %></td>
+  </tr>
+  <tr>
+    <td>Organization</td>
+    <td><%= @partner.organization %></td>
+  </tr>
+  <tr class="odd">
+    <td>Phone Number</td>
+    <td><%= @partner.phone_number %></td>
+  </tr>
+
+  <tr>
+    <td>Email</td>
+    <td><%= @partner.email %></td>
+  </tr>
+
+  <% if !@partner.unlimited? %>
+    <tr class="odd">
+      <td>Requests Left this Hour</td>
+      <td><%= @partner.unlimited? ?  'No Limit' : @partner.requests_remaining %></td>
+    </tr>
+    <tr>
+      <td>Requests Allowed Per Hour</td>
+      <td><%=@partner.max_requests %></td>
+    </tr>
+    <tr class="odd">
+      <td>Rate Limit Reset Time</td>
+      <td><%=Time.at(@partner.max_requests_reset_time)%></td>
+    </tr>
+  <% end %> 
+</table>

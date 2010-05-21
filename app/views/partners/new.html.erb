@@ -1,0 +1,6 @@
+<h1>New Partner</h1>
+<%= error_messages_for :partner %>
+
+<% form_for @partner do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f, :submit_name => "Save" } %>
+<% end %>

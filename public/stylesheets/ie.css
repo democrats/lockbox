@@ -1,0 +1,11 @@
+body { behavior:url("../javscript/csshover.htc"); }
+
+#main {
+  min-height: 350px;
+  height: auto !important;
+  height: 350px;
+}
+
+#site_title_box:hover {
+  cursor: hand;
+}
