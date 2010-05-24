@@ -1,5 +1,5 @@
 # Settings specified here will take precedence over those in config/environment.rb
-App[:host] = "lockbox.dnc.org"
+App[:host] = "lockbox-dev.dnc.org"
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
