@@ -20,4 +20,5 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.root :controller => "home", :action => "show"
+  map.connect "/test_exception_notification/:id", :controller => 'application', :action => 'test_exception_notification'
 end

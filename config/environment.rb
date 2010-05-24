@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Gems
+
   config.gem "paperclip"
   config.gem "authlogic"
   config.gem "auth-hmac"
@@ -52,5 +53,11 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
+<<<<<<< HEAD
 ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com bcardarella@dnc.org morganw@dnc.org)
 ExceptionNotifier.email_prefix = '[LOCKBOX]'
+=======
+
+ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com cardarellab@dnc.org)
+ExceptionNotifier.email_prefix = "[#{App[:name]}]"
+>>>>>>> adding httparty gem for middleware to work, adding working exception notification and test action to verify it ahead of time
