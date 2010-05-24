@@ -1,16 +1,14 @@
-APP_NAME = "lockbox"
+require 'erb'
+APP_NAME = 'lockbox'
 
-set :application, "#{APP_NAME}"
+set(:real_revision) { source.local.query_revision(revision) { |cmd| with_env("LANG", "C") { run_locally(cmd) } } }
+set :application,   "#{APP_NAME}"
 set :scm, :git
-set :repository,  "ssh://git@gitdev.dnc.org/#{APP_NAME}.git"
-
-set :deploy_to, "/dnc/app/#{APP_NAME}"
-
-set(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LANG", "C") { run_locally(cmd) } } }
-
-set :user, "deploy"
-set :runner, "deploy"
-
+set :repository,    "ssh://git@gitdev.dnc.org/#{APP_NAME}.git"
+set :deploy_to,     "/dnc/app/#{APP_NAME}"
+set :shared_path,   "#{deploy_to}/shared"
+set :user,          "deploy"
+set :runner,        "deploy"
 set :keep_releases, 4
 
 task :staging do
@@ -23,39 +21,85 @@ end
 
 task :production do
   set :rails_env, "production"
-  role :app, "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
-  role :web, "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
-  role :db,  "viper1.dnc.org", :primary => true
-  role :cron, "viper1.dnc.org"
+  role :app,      "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
+  role :web,      "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
+  role :db,       "viper1.dnc.org", :primary => true
+  role :cron,     "viper1.dnc.org"
 end
 
-namespace :db do
+namespace :config do
+  namespace :deploy do
+    task :cold do
+      # Generate the database.yml file
+      puts "Please Enter #{rails_env} Database Credentials"
+      print "Database Username: "
+      db_username = $stdin.gets.sub('\n','')
+      print "Datbase Password: "
+      db_password = $stdin.gets.sub('\n','')
+      db_config   = ERB.new <<-EOF
+      base: &base
+        adapter: postgresql
+        encoding: utf8
+        hostname: localhost
+        pool: 5
+        timeout: 5000
+        username: #{db_username}
+        password: #{db_password}
+        
+      #{rails_env}:
+        database: #{application}_#{rails_env}
+        <<: *base
+      EOF
+      put db_config.result, "#{shared_path}/config/database.yml"
+      
+      # Create perm copies of client.yml and lockbox.yml
+      %w{lockbox}.each do |file|
+        run "cp #{latest_release}/config/#{file}.yml.example #{deploy_to}/shared/config/#{file}.yml"
+      end
+    end
+  end
+  
   task :setup do
-    run "cp #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
+    %w{database client lockbox}.each do |file|
+      run "cp #{deploy_to}/shared/config/#{file}.yml #{release_path}/config/#{file}.yml"
+    end
   end
 end
-# 
-# 
-after "deploy:update",   "db:setup"
-after "deploy:update_code",   "db:setup"
-after "deploy:update_code", "files:copy_cron_jobs"
-after "deploy:setup",  "files:prepare"
-after "deploy:restart", "cache:clear"
-after  "deploy:update_code", "files:compress"
+
+before "deploy:restart", "config:setup"
+before "deploy:migrate", "config:setup"
+before "pdf_generator:restart", "files:copy_log4j"
+before "pdf_generator:start", "files:copy_log4j"
+
+after  "deploy:setup", "deploy:unroot"
+after  "deploy:update_code", "files:compress", "files:copy_cron_jobs"
+after  "deploy:restart", "cache:clear", "pdf_generator:restart"
 
 namespace :files do
   task :prepare do
-    sudo "chown -R deploy:deploy #{deploy_to}"
     run "mkdir -p #{deploy_to}/shared/config/"
+    
+    servers = find_servers(:roles => 'app')
+    puts servers.inspect
+    if servers.length > 1
+      servers.first do |master|
+        %w{client lockbox database}.each do |file|
+          run "scp #{master}:/dnc/app/#{APP_NAME}/shared/config/#{file}.yml #{deploy_to}/shared/config/#{file}.yml"
+        end
+      end
+    end
 
-    sudo "cp #{current_path}/config/instance_profiles/app/#{rails_env}/nginx.conf /dnc/sw32/nginx/conf/sites/#{APP_NAME}.conf"      
-    run "scp viper1.dnc.org:/dnc/app/#{APP_NAME}/shared/config/database.yml #{deploy_to}/shared/config/database.yml"
+    sudo "cp #{current_path}/config/instance_profiles/app/#{rails_env}/nginx.conf /dnc/local/nginx/conf/sites/#{APP_NAME}.conf"
   end
   
   task :copy_cron_jobs, :roles => :cron do
     sudo "cp #{latest_release}/config/instance_profiles/app/#{rails_env}/cron_jobs /etc/cron.d/#{APP_NAME}_cron"
   end
-
+  
+  task :copy_log4j do
+    run "cp #{latest_release}/config/instance_profiles/app/#{rails_env}/log4j.properties #{latest_release}/pdf_thrift/thrift_java_server/log4j.properties"
+  end
+  
   task :compress do
     package_files
     compress_packaged_js_files
@@ -69,14 +113,32 @@ namespace :deploy do
     task t, :roles => :app do ; end
   end
 
-  task :restart do
+  task :restart, :roles => :app, :except => { :no_release => true }  do
     run "touch #{current_path}/tmp/restart.txt"
   end
-
+  
+  task :unroot do
+    sudo "chown -R deploy:deploy #{deploy_to}"
+  end
+  
+  desc <<-DESC
+    DNC Deploy
+    Deploys and starts a 'cold' application. This is useful if you have not \
+    deployed your application before, or if your application is (for some \
+    other reason) not currently running. It will deploy the code, run any \
+    pending migrations, and then instead of invoking 'deploy:restart', it will \
+    invoke 'deploy:start' to fire up the application servers.
+  DESC
+  task :cold do
+    update
+    files.prepare
+    config.deploy.cold
+    migrate
+    start
+  end
 end
 
 namespace :nginx do
-
   desc "reload the nginx.conf file gracefully if changes have been made to it"
   task :reload do
     sudo "pkill -HUP nginx"
@@ -88,23 +150,27 @@ namespace :nginx do
   end
 end
 
+namespace :pdf_generator do
+  desc "start server"
+  task :start do
+    sudo "/etc/init.d/pdfgeneratord start"
+  end
+  
+  desc "stop server"
+  task :stop do
+    sudo "/etc/init.d/pdfgeneratord stop"
+  end
+  
+  desc "restart server"
+  task :restart do
+    sudo "/etc/init.d/pdfgeneratord restart"
+  end
+end
+
 namespace :cache do
   desc "clear memcache if it is set to be the actioncontroller base cache_store"
   task :clear do
     run "#{current_path}/script/runner -e #{rails_env} 'ActionController::Base.cache_store.clear'"
-  end
-
-end
-
-#copies a file from src_path (on local computer) to dest_path (on remote computer)
-#assumes file can only be copied into /tmp and then moved via sudo cp
-def copy_file(src_path, dest_path)
-  begin
-    fname = File.basename(src_path)
-    put(File.read(src_path), "/tmp/#{fname}")
-    sudo "cp /tmp/#{fname} #{dest_path}"
-  ensure
-    sudo "rm -f /tmp/#{fname}"
   end
 end
 
