@@ -69,8 +69,7 @@ end
 
 before "deploy:restart", "config:setup"
 before "deploy:migrate", "config:setup"
-before "pdf_generator:restart", "files:copy_log4j"
-before "pdf_generator:start", "files:copy_log4j"
+
 after  "deploy:setup", "deploy:unroot"
 after  "deploy:update_code", "files:compress", "files:copy_cron_jobs"
 after  "deploy:restart", "cache:clear"
@@ -83,7 +82,7 @@ namespace :files do
     puts servers.inspect
     if servers.length > 1
       servers.first do |master|
-        %w{client lockbox database}.each do |file|
+        %w{lockbox database}.each do |file|
           run "scp #{master}:/dnc/app/#{APP_NAME}/shared/config/#{file}.yml #{deploy_to}/shared/config/#{file}.yml"
         end
       end
@@ -133,7 +132,6 @@ namespace :deploy do
   task :cold do
     update
     files.prepare
-    config.deploy.cold
     migrate
     start
   end
@@ -148,23 +146,6 @@ namespace :nginx do
   desc "restart nginx"
   task :restart do
     sudo "/etc/init.d/nginx restart"
-  end
-end
-
-namespace :pdf_generator do
-  desc "start server"
-  task :start do
-    sudo "/etc/init.d/pdfgeneratord start"
-  end
-  
-  desc "stop server"
-  task :stop do
-    sudo "/etc/init.d/pdfgeneratord stop"
-  end
-  
-  desc "restart server"
-  task :restart do
-    sudo "/etc/init.d/pdfgeneratord restart"
   end
 end
 
