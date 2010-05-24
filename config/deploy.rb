@@ -96,10 +96,6 @@ namespace :files do
     sudo "cp #{latest_release}/config/instance_profiles/app/#{rails_env}/cron_jobs /etc/cron.d/#{APP_NAME}_cron"
   end
   
-  task :copy_log4j do
-    run "cp #{latest_release}/config/instance_profiles/app/#{rails_env}/log4j.properties #{latest_release}/pdf_thrift/thrift_java_server/log4j.properties"
-  end
-  
   task :compress do
     package_files
     compress_packaged_js_files
