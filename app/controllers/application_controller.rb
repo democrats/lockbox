@@ -18,8 +18,6 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   
-
-  
   def test_exception_notification
     raise "EXCEPTION NOTIFICATION TEST" if params[:id] == 'blowup'
     render :text => 'Access Denied'

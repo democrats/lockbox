@@ -54,5 +54,5 @@ Rails::Initializer.run do |config|
 end
 
 ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com cardarellab@dnc.org)
-ExceptionNotifier.email_prefix = "[LOCKBOX]"
+ExceptionNotifier.email_prefix = "[LOCKBOX] "
 
