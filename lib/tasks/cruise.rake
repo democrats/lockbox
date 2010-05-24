@@ -10,8 +10,7 @@ task :cruise do
     #config.metrics  = [:saikuro, :stats, :flog, :flay, :reek, :rcov]
     config.metrics  = [:rcov]
     config.graphs   = [:rcov]
-    config.rcov     = { :test_files => ['test/**/*_test.rb',
-                                     'spec/**/*_spec.rb'],
+    config.rcov     = { :test_files => ['spec/**/*_spec.rb'],
                      :rcov_opts => ["--sort coverage",
                                     # "--aggregate rcov_data/rcov.data",
                                     "--no-html",
