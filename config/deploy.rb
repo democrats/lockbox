@@ -52,7 +52,7 @@ namespace :config do
       EOF
       put db_config.result, "#{shared_path}/config/database.yml"
       
-      # Create perm copies of client.yml and lockbox.yml
+      # Create a perm copy of lockbox.yml
       %w{lockbox}.each do |file|
         run "cp #{latest_release}/config/#{file}.yml.example #{deploy_to}/shared/config/#{file}.yml"
       end
@@ -60,7 +60,7 @@ namespace :config do
   end
   
   task :setup do
-    %w{database client lockbox}.each do |file|
+    %w{database lockbox}.each do |file|
       run "cp #{deploy_to}/shared/config/#{file}.yml #{release_path}/config/#{file}.yml"
     end
   end
