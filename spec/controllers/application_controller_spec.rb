@@ -28,9 +28,32 @@ describe ApplicationController do
         subject.expects(:render).with({:text => "var var = foo;\ncallback(var);"}).returns(true)
         subject.render_jsonp('foo')
       end
+
     end
   end
 
 
-  
+  context "Test Exception Notifier" do
+
+    it "raise exception when passed proper params" do
+      lambda { get :test_exception_notification, :id => 'blowup' }.should raise_exception(RuntimeError)
+    end
+
+    context "without proper params" do
+
+      before do
+        get :test_exception_notification
+      end
+
+      it "say access denied" do
+        @response.body.should == "Access Denied"
+      end
+
+    end
+
+
+  end
+
+
+
 end

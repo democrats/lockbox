@@ -1,5 +1,5 @@
 #TODO: CHANGE THIS FOR YOUR APP
-APP_NAME = "founding_father" 
+APP_NAME = "lockbox" 
 
 desc "Cruise Control build task"
 task :cruise do

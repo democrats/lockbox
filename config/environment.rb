@@ -8,9 +8,9 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
 
-  APP_NAME   = "lockbox"
-  APP_TITLE  = "lockbox"
-  App        = {}
+  App   = {}
+  App[:name] = "Lockbox"
+  App[:title] = "Lockbox"
 
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -53,11 +53,6 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-<<<<<<< HEAD
-ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com bcardarella@dnc.org morganw@dnc.org)
-ExceptionNotifier.email_prefix = '[LOCKBOX]'
-=======
-
 ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com cardarellab@dnc.org)
-ExceptionNotifier.email_prefix = "[#{App[:name]}]"
->>>>>>> adding httparty gem for middleware to work, adding working exception notification and test action to verify it ahead of time
+ExceptionNotifier.email_prefix = "[LOCKBOX]"
+
