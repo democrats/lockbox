@@ -1,4 +1,5 @@
-APP_NAME = "your app name here"
+#TODO: CHANGE THIS FOR YOUR APP
+APP_NAME = "lockbox" 
 
 desc "Cruise Control build task"
 task :cruise do
@@ -9,18 +10,7 @@ task :cruise do
     #config.metrics  = [:saikuro, :stats, :flog, :flay, :reek, :rcov]
     config.metrics  = [:rcov]
     config.graphs   = [:rcov]
-    # config.flay     = { :dirs_to_flay => ['app', 'lib']  }
-    # config.flog     = { :dirs_to_flog => ['app', 'lib']  }
-    # config.reek     = { :dirs_to_reek => ['app', 'lib']  }
-    # config.saikuro  = { :output_directory => 'scratch_directory/saikuro',
-    #                     :input_directory => ['app', 'lib'],
-    #                     :cyclo => "",
-    #                     :filter_cyclo => "0",
-    #                     :warn_cyclo => "5",
-    #                     :error_cyclo => "7",
-    #                     :formater => "text"} #this needs to be set to "text"
-    config.rcov     = { :test_files => ['test/**/*_test.rb',
-                                     'spec/**/*_spec.rb'],
+    config.rcov     = { :test_files => ['spec/**/*_spec.rb'],
                      :rcov_opts => ["--sort coverage",
                                     # "--aggregate rcov_data/rcov.data",
                                     "--no-html",

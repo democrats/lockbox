@@ -8,9 +8,9 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
 
-  APP_NAME   = "lockbox"
-  APP_TITLE  = "lockbox"
-  App        = {}
+  App   = {}
+  App[:name] = "Lockbox"
+  App[:title] = "Lockbox"
 
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Gems
+
   config.gem "paperclip"
   config.gem "authlogic"
   config.gem "auth-hmac"
@@ -52,5 +53,6 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com bcardarella@dnc.org morganw@dnc.org)
-ExceptionNotifier.email_prefix = '[LOCKBOX]'
+ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com cardarellab@dnc.org)
+ExceptionNotifier.email_prefix = "[LOCKBOX] "
+
