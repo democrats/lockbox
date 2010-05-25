@@ -16,10 +16,10 @@ Github: http://github.com/dnclabs/lockbox/tree/master
 
 == Authors
 
-Nathan Woodhull
-Chris Gill
-Brian Cardarella
-Wes Morgan
+- Nathan Woodhull
+- Chris Gill
+- Brian Cardarella
+- Wes Morgan
 
-Copyright 2010 Democratic National Committee
+Copyright 2010 Democratic National Committee,
 All Rights Reserved.
