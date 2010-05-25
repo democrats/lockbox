@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <title><%= App[:title] %></title>
+</head>
+<body>
+
+  <table width="700" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+    <tr>
+      <td style="padding:0px 50px;">
+        <table width="600" cellpadding="0" cellspacing="0" align="center" bgcolor="#ffffff">
+          <tr>
+            <td style="padding:10px;font-size:12px;font-family:Arial, Helvetica,Verdana,sans-serif;">
+              Welcome!
+              <br/>
+              <br/>
+              You need to confirm you email address before you can use this site:
+
+              <%= link_to "#{root_url}confirm/#{@partner.perishable_token}", "#{root_url}confirm/#{@partner.perishable_token}" %>
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
