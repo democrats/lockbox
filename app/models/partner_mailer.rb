@@ -3,7 +3,7 @@ class PartnerMailer < ActionMailer::Base
   def confirmation(partner)
     set_host
     recipients partner.email
-    from "test@dnc.org"
+    from "test@foo.org"
     subject "Partner Account Confirmation"
     body :partner => partner
   end
@@ -11,7 +11,7 @@ class PartnerMailer < ActionMailer::Base
   def fetch_password(partner)
     set_host
     recipients partner.email
-    from "test@dnc.org"
+    from "test@foo.org"
     subject "Fetch Password"
     body :partner => partner
   end
