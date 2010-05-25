@@ -6,11 +6,8 @@ javascripts:
   - controls
   - dragdrop
   - application
-  - cufon-yui
-  - Baskerville-Normal_500.font
 - application:
-  - cufon-yui
-  - Baskerville-Normal_500.font
+  - application
 stylesheets:
 - admin:
   - screen
