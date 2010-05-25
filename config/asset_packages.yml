@@ -1,0 +1,19 @@
+--- 
+javascripts:
+- admin:
+  - prototype
+  - effects
+  - controls
+  - dragdrop
+  - application
+- application:
+  - application
+stylesheets:
+- admin:
+  - screen
+  - application
+- application:
+  - screen
+  - application
+- ie:
+  - ie
