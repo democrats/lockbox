@@ -15,7 +15,7 @@ describe PartnerMailer do
     end
     
     it "should be sent from out account" do
-      subject.from.first.should == "test@dnc.org"
+      subject.from.first.should == "test@foo.org"
     end
     
     its(:subject) { should == "Partner Account Confirmation" }
@@ -36,7 +36,7 @@ describe PartnerMailer do
     end
 
     it "should be sent from out account" do
-      subject.from.first.should == "test@dnc.org"
+      subject.from.first.should == "test@foo.org"
     end
 
     its(:subject) { should == "Fetch Password" }
