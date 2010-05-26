@@ -57,7 +57,7 @@ describe PartnerSessionsController do
     let(:current_partner_session) { mock("partner_session") }
 
     before do
-      # activate_authlogic
+      activate_authlogic
       partner = Factory(:partner)
       current_partner_session.stubs(:record => partner)
       current_partner_session.stubs(:destroy => true)
