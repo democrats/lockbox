@@ -116,6 +116,8 @@ class LockBox
     auth_response.headers.each_pair do |h,v|
       if h =~ /^X-RateLimit-/
         headers[h] = v
+      elsif h =~ /^X-LockBox-/
+        headers[h] = v
       end
     end
     headers

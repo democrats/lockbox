@@ -221,3 +221,7 @@ form {
 #session_header {
   float: right;
 }
+
+div.content-wrapper {
+  margin: 10px;
+}
