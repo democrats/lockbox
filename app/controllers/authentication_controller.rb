@@ -33,6 +33,7 @@ class AuthenticationController < ApplicationController
       headers.merge!({'X-RateLimit-Limit' => @partner.max_requests.to_s,
         'X-RateLimit-Remaining' => @partner.requests_remaining.to_s,
         'X-RateLimit-Reset' => @partner.max_requests_reset_time.to_s}) unless @partner.max_requests.nil?
+      headers.merge!({'X-LockBox-API-Key' => key})
       render :nothing => true, :status => :ok
     elsif @partner.requests_remaining <= 0
       render :four_two_oh, :status => 420

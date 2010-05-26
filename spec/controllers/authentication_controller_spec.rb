@@ -11,6 +11,11 @@ describe AuthenticationController do
       response.should be_success
     end
     
+    it "should return the API key in a header" do
+      get :show, :id => subject.api_key
+      response.headers['X-LockBox-API-Key'].should == subject.api_key
+    end
+    
     it "should return 401 for unsuccessful authentication" do
       get :show, :id => 'potato'
       response.should_not be_success
@@ -70,7 +75,7 @@ describe AuthenticationController do
     it "should return Cache-Control header after successful auth" do
       get :show, :id => subject.api_key
       expected_cc_header = ['public', 'no-cache']
-      @response.headers['Cache-Control'].split(/,\s*/).sort.should eql(expected_cc_header.sort)
+      response.headers['Cache-Control'].split(/,\s*/).sort.should eql(expected_cc_header.sort)
     end
     
     it "should return Twitter-style rate limit headers after successful auth" do

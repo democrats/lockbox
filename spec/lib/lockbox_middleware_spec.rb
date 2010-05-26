@@ -106,28 +106,28 @@ describe 'LockBox' do
   
     it "should return 401 for a request that starts with /api with invalid api key" do
       get "/api/some_controller/some_action?key=blah"
-      assert_equal 401, last_response.status
+      last_response.status.should == 401
     end
       
     it "should return 200 for a request that starts with /api and has api key" do
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 200, last_response.status
+      last_response.status.should == 200
     end
     
     it "should cache lockbox responses for max-age when Cache-Control allows it" do
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 200, last_response.status
+      last_response.status.should == 200
       bad_response = mock("MockResponse")
       bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
       bad_response.stubs(:code).returns(401)
       LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(bad_response)
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 200, last_response.status
+      last_response.status.should == 200
     end
     
     it "should expire cached lockbox responses when max-age seconds have passed" do
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 200, last_response.status
+      last_response.status.should == 200
       bad_response = mock("MockResponse")
       bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
       bad_response.stubs(:code).returns(401)
@@ -135,7 +135,7 @@ describe 'LockBox' do
       expired_time = @max_age.seconds.since(Time.now)
       Time.stubs(:now).returns(expired_time)
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 401, last_response.status
+      last_response.status.should == 401
     end
     
     it "should not cache lockbox responses when Cache-Control does not allow it" do
@@ -144,13 +144,13 @@ describe 'LockBox' do
       successful_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
       LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(successful_response)
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 200, last_response.status
+      last_response.status.should == 200
       bad_response = mock("MockResponse")
       bad_response.stubs(:code).returns(401)
       bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
       LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(bad_response)
       get "/api/some_controller/some_action?key=123456"
-      assert_equal 401, last_response.status
+      last_response.status.should == 401
     end
     
     it "should pass along the rate limit headers to the client if they exist" do
@@ -166,7 +166,7 @@ describe 'LockBox' do
       get "/api/some_controller/some_action?key=123456"
       headers.each_pair do |header,value|
         # just tests that the headers are present; the stubs above ensure the values are what we expect
-        assert_equal value, last_response.headers[header]
+        last_response.headers[header].should == value
       end
     end
   
@@ -202,7 +202,7 @@ describe 'LockBox' do
         header key, value
       end
       get @path
-      assert_equal 200, last_response.status
+      last_response.status.should == 200
     end
     
     it "should return 401 for an HMAC request with an invalid auth header" do
@@ -211,7 +211,7 @@ describe 'LockBox' do
         header key, value
       end
       get @path
-      assert_equal 401, last_response.status
+      last_response.status.should == 401
     end
   end
   
@@ -219,8 +219,8 @@ describe 'LockBox' do
   
     it "should not try to authenticate a request that doesn't start with /api" do
       get "/"
-      assert_equal 200, last_response.status
-      assert_equal("successfully hit rails app", last_response.body)
+      last_response.status.should == 200
+      last_response.body.should == "successfully hit rails app"
     end
   
   end
