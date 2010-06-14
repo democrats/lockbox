@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe PartnersController do
-  # include Rack::Test::Methods
   include HelperMethods
   
   context "Index" do
@@ -30,7 +29,7 @@ describe PartnersController do
       
       it { should redirect_to partner_path(@partner.api_key) }
       
-      it "should deliver the cofirmation mail" do
+      it "should deliver the confirmation mail" do
         assert_received(PartnerMailer, :deliver_confirmation) { |expect| expect.with(@partner) }
       end
     end
@@ -105,27 +104,26 @@ describe PartnersController do
   end
   
   context "Update" do
-    before do
-      @partner = Factory(:partner)
-    end
-    
     context "Valid" do
+      let(:partner) { Factory(:partner) }
+      
       before do
-        @partner.stubs(:save).returns(true)
-        stubbed_session_for(@partner)
-        put :update, :partner => { }, :id => @partner.api_key
+        partner.stubs(:save).returns(true)
+        stubbed_session_for(partner)
+        put :update, :partner => { }, :id => partner.api_key
       end
       
-      it { should redirect_to partner_path(@partner.api_key) }
+      it { should redirect_to partner_path(partner.api_key) }
     end
     
     context "Invalid" do
+      let(:partner) { Factory(:partner) }
+      
       before do
-        @partner.stubs(:save).returns(false)
-        stubbed_session_for(@partner)
-        Partner.stubs(:find_by_api_key).returns(@partner)
-        # debugger
-        put :update, :partner => { }, :id => @partner.api_key 
+        partner.stubs(:save).returns(false)
+        stubbed_session_for(partner)
+        Partner.stubs(:find_by_api_key).returns(partner)
+        put :update, :partner => { }, :id => partner.api_key 
       end
       
       it { should render_template :edit }

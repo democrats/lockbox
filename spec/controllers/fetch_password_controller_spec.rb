@@ -12,7 +12,7 @@ describe FetchPasswordController do
     
     it "should respond with successful status" do
       get :index
-      response.should be_success
+      should respond_with :success
     end
     
     it "should create a new instance of Partner" do
@@ -37,9 +37,7 @@ describe FetchPasswordController do
         get :show, :id => perishable_token
       end
       
-      it "should respond with success" do
-        response.should be_success
-      end
+      it { should respond_with :success }
     end
     
     context "Does not authenticate" do
@@ -49,9 +47,7 @@ describe FetchPasswordController do
         get :show, :id => perishable_token
       end
       
-      it "should redirect to the fetch password page" do
-        response.should redirect_to fetch_password_index_path
-      end
+      its(:response) { should redirect_to fetch_password_index_path }
     end
   end
   
@@ -84,7 +80,7 @@ describe FetchPasswordController do
       let(:partner) { Partner.new(:email => "bademail@test.com") }
       
       before do
-        Partner.stubs(:find_by_email).returns(nil)
+        Partner.stubs(:find_by_email)
         PartnerMailer.stubs(:deliver_fetch_password)
       end
       

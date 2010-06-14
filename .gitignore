@@ -1,5 +1,4 @@
 .DS_*
-.idea/
 log/*
 tmp/*
 db/*sqlite3
@@ -11,4 +10,5 @@ test/tmp
 .idea/*
 lockbox_middleware.gemspec
 pkg/
-.idea/*
+.rvmrc
+
