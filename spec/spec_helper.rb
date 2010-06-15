@@ -9,7 +9,7 @@ if File.exists?("#{env_file}.rb")
   require 'authlogic/test_case'
 else
   require 'rubygems'
-  require 'jferris-mocha'
+  require 'mocha' # gem install jferris-mocha, not regular mocha
 end
 
 # Requires supporting files with custom matchers and macros, etc,
