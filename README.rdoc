@@ -5,10 +5,11 @@ users share a single identity across multiple services.
 It is licensed under the New BSD License (see the LICENSE file for details).
 
 It is a Ruby on Rails application on the server side, and Rack middleware on the client side
-(which means it integrates nicely with any modern Ruby web framework).
+(which means it integrates nicely with any modern Ruby web framework). As of v1.2.0, there is an
+unfortunate Rails dependency in the middleware gem. Hopefully we'll get rid of that soon.
 
 Lockbox handles things like rate limiting, API key signup and management, and supports HMAC
-authentication as well as plain-text key exchange. 
+authentication as well as plain-text key exchange. We are working on replacing HMAC with OAuth 2.0.
 
 == Configuration
 
