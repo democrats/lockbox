@@ -1,5 +1,6 @@
 require 'httparty'
 require 'lockbox_cache'
+require 'auth-hmac'
 
 class LockBox
   include HTTParty
@@ -13,16 +14,15 @@ class LockBox
     end
     yaml_config = YAML.load_file(File.join(root_dir,'config','lockbox.yml'))
     return_config = {}
-    if defined?(Rails)
+    environment = Rails.env if defined? Rails
+    environment ||= ENV['RACK_ENV']
+    environment ||= 'test'
+    if !environment.nil?
       if !yaml_config['all'].nil?
         return_config = yaml_config['all']
-        return_config.merge!(yaml_config[Rails.env])
+        return_config.merge!(yaml_config[environment])
       else
-        return_config = yaml_config[Rails.env]
-      end
-    else
-      yaml_config.each do |config_env|
-        return_config.merge!(config_env)
+        return_config = yaml_config[environment]
       end
     end
     return_config

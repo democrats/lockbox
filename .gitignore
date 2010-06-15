@@ -11,4 +11,4 @@ test/tmp
 lockbox_middleware.gemspec
 pkg/
 .rvmrc
-
+.bundle/

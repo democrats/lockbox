@@ -10,6 +10,28 @@ It is a Ruby on Rails application on the server side, and Rack middleware on the
 Lockbox handles things like rate limiting, API key signup and management, and supports HMAC
 authentication as well as plain-text key exchange. 
 
+== Configuration
+
+LockBox needs a configuration file named "lockbox.yml" in order to work. In a Rack app (incl. Rails),
+this file should be placed in app_root/config/lockbox.yml.
+
+You should define (for each of your environments), the base_uri of your app and the relative paths you want
+to protect with LockBox.
+
+Here's an example lockbox.yml:
+
+  production: 
+    base_uri: http://lockbox.foo.org
+  development: 
+    base_uri: http://localhost:3001
+  cucumber: 
+    base_uri: http://localhost:3001
+  test: 
+    base_uri: http://localhost:3001
+  all:
+    protect_paths: 
+      - ^/api/
+
 == Download
 
 Github: http://github.com/dnclabs/lockbox/tree/master

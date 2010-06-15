@@ -11,7 +11,9 @@ describe 'LockBox' do
   end
   
   def safely_edit_config_file(settings, env=nil)
-    env ||= Rails.env
+    env ||= Rails.env if defined?(Rails)
+    env ||= ENV['RACK_ENV']
+    env ||= 'test'
     @config_file = File.join(File.dirname(__FILE__),'..','..','config','lockbox.yml')
     @tmp_config_file = "#{@config_file}.testing"
     FileUtils.cp(@config_file, @tmp_config_file)
