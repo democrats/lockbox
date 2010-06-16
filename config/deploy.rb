@@ -128,6 +128,7 @@ namespace :deploy do
   task :cold do
     update
     files.prepare
+    config.deploy.cold
     migrate
     start
   end
