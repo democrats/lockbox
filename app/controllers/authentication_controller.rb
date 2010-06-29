@@ -3,9 +3,16 @@ class AuthenticationController < ApplicationController
 
   class HmacRequest
     attr_accessor :env
+    
     def initialize
       @env = {}
     end
+    
+    def path
+      @env['Referer'] =~ /^(?:http:\/\/)?[^\/]*(\/.*)$/
+      $1
+    end
+    
     undef :method
   end
 
@@ -44,7 +51,7 @@ class AuthenticationController < ApplicationController
 
   def hmac_auth(request)
     credential_store = Partner.credential_store
-    authhmac = AuthHMAC.new(credential_store, {:authenticate_referrer => true})
+    authhmac = AuthHMAC.new(credential_store)
     if authhmac.authenticated?(request)
       request.env['HTTP_AUTHORIZATION'] =~ /^AuthHMAC ([^:]+):/
       access_key_id = $1

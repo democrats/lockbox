@@ -1,3 +1,5 @@
+require 'mocha'
+
 module Mocha
   module API
     def setup_mocks_for_rspec

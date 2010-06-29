@@ -74,10 +74,10 @@ class AuthHMAC
   class CanonicalString < String # :nodoc:
     include Headers
     
-    def initialize(request, authenticate_referrer=false)
+    def initialize(request)
       self << request_method(request) + "\n"
       self << header_values(headers(request)) + "\n"
-      self << request_path(request, authenticate_referrer)
+      self << request_path(request)
     end
     
     private
@@ -112,17 +112,12 @@ class AuthHMAC
         find_header(%w(CONTENT-MD5 CONTENT_MD5), headers)
       end
       
-      def request_path(request, authenticate_referrer)
-        if authenticate_referrer
-          headers(request)['Referer'] =~ /^(?:http:\/\/)?[^\/]*(\/.*)$/
-          path = $1
+      def request_path(request)
+        # Try unparsed_uri in case it is a Webrick request
+        path = if request.respond_to?(:unparsed_uri)
+          request.unparsed_uri
         else
-          # Try unparsed_uri in case it is a Webrick request
-          path = if request.respond_to?(:unparsed_uri)
-            request.unparsed_uri
-          else
-            request.path
-          end
+          request.path
         end
         
         path[/^[^?]*/]
@@ -154,15 +149,13 @@ class AuthHMAC
     # Defaults
     @service_id = self.class.name
     @signature_class = @@default_signature_class
-    @authenticate_referrer = false
 
     unless options.nil?
       @service_id = options[:service_id] if options.key?(:service_id)
       @signature_class = options[:signature] if options.key?(:signature) && options[:signature].is_a?(Class)
-      @authenticate_referrer = options[:authenticate_referrer] || options[:authenticate_referer]
     end
     
-    @signature_method = lambda { |r,ar| @signature_class.send(:new, r, ar) }
+    @signature_method = lambda { |r| @signature_class.send(:new, r) }
   end
 
   # Generates canonical signing string for given request
@@ -242,11 +235,11 @@ class AuthHMAC
 
   def signature(request, secret)
     digest = OpenSSL::Digest::Digest.new('sha1')
-    Base64.encode64(OpenSSL::HMAC.digest(digest, secret, canonical_string(request, @authenticate_referrer))).strip
+    Base64.encode64(OpenSSL::HMAC.digest(digest, secret, canonical_string(request))).strip
   end
 
-  def canonical_string(request, authenticate_referrer=false)
-    @signature_method.call(request, authenticate_referrer)
+  def canonical_string(request)
+    @signature_method.call(request)
   end
   
   def authorization_header(request)
@@ -255,169 +248,5 @@ class AuthHMAC
 
   def authorization(request, access_key_id, secret)
     "#{@service_id} #{access_key_id}:#{signature(request, secret)}"      
-  end
-  
-  # Integration with Rails
-  #
-  class Rails # :nodoc:
-    module ControllerFilter # :nodoc:
-      module ClassMethods
-        # Call within a Rails Controller to initialize HMAC authentication for the controller.
-        #
-        # * +credentials+ must be a hash that indexes secrets by their access key id.
-        # * +options+ supports the following arguments:
-        #   * +failure_message+: The text to use when authentication fails.
-        #   * +only+: A list off actions to protect.
-        #   * +except+: A list of actions to not protect.
-        #   * +hmac+: Options for HMAC creation. See AuthHMAC#initialize for options.
-        #
-        def with_auth_hmac(credentials, options = {})
-          unless credentials.nil?
-            self.credentials = credentials
-            self.authhmac_failure_message = (options.delete(:failure_message) or "HMAC Authentication failed")
-            self.authhmac = AuthHMAC.new(self.credentials, options.delete(:hmac))
-            before_filter(:hmac_login_required, options)
-          else
-            $stderr.puts("with_auth_hmac called with nil credentials - authentication will be skipped")
-          end
-        end
-      end
-      
-      module InstanceMethods # :nodoc:
-        def hmac_login_required
-          unless hmac_authenticated?
-            response.headers['WWW-Authenticate'] = 'AuthHMAC'
-            render :text => self.class.authhmac_failure_message, :status => :unauthorized
-          end
-        end
-        
-        def hmac_authenticated?
-          self.class.authhmac.nil? ? true : self.class.authhmac.authenticated?(request)
-        end
-      end
-      
-      unless defined?(ActionController)
-        begin
-          require 'rubygems'
-          gem 'actionpack'
-          gem 'activesupport'
-          require 'action_controller'
-          require 'active_support'
-        rescue
-          nil
-        end
-      end
-      
-      if defined?(ActionController::Base)        
-        ActionController::Base.class_eval do
-          class_inheritable_accessor :authhmac
-          class_inheritable_accessor :credentials
-          class_inheritable_accessor :authhmac_failure_message
-        end
-        
-        ActionController::Base.send(:include, ControllerFilter::InstanceMethods)
-        ActionController::Base.extend(ControllerFilter::ClassMethods)
-      end
-    end
-    
-    module ActiveResourceExtension  # :nodoc:
-      module BaseHmac # :nodoc:
-        def self.included(base)
-          base.extend(ClassMethods)
-          
-          base.class_inheritable_accessor :hmac_access_id
-          base.class_inheritable_accessor :hmac_secret
-          base.class_inheritable_accessor :use_hmac
-          base.class_inheritable_accessor :hmac_options
-        end
-        
-        module ClassMethods
-          # Call with an Active Resource class definition to sign
-          # all HTTP requests sent by that class with the provided
-          # credentials.
-          #
-          # Can be called with either a hash or two separate parameters
-          # like so:
-          #
-          #   class MyResource < ActiveResource::Base
-          #     with_auth_hmac("my_access_id", "my_secret")
-          #   end
-          # 
-          # or
-          #
-          #   class MyOtherResource < ActiveResource::Base
-          #     with_auth_hmac("my_access_id" => "my_secret")
-          #   end
-          #
-          #
-          # This has only been tested with Rails 2.1 and since it is virtually a monkey
-          # patch of the internals of ActiveResource it might not work with past or
-          # future versions.
-          #
-          def with_auth_hmac(access_id, secret = nil, options = nil)
-            if access_id.is_a?(Hash)
-              self.hmac_access_id = access_id.keys.first
-              self.hmac_secret = access_id[self.hmac_access_id]
-            else
-              self.hmac_access_id = access_id
-              self.hmac_secret = secret
-            end
-            self.use_hmac = true
-            self.hmac_options = options
-            
-            class << self
-              alias_method_chain :connection, :hmac
-            end
-          end
-          
-          def connection_with_hmac(refresh = false) # :nodoc: 
-            c = connection_without_hmac(refresh)
-            c.hmac_access_id = self.hmac_access_id
-            c.hmac_secret = self.hmac_secret
-            c.use_hmac = self.use_hmac
-            c.hmac_options = self.hmac_options
-            c
-          end          
-        end
-        
-        module InstanceMethods # :nodoc:
-        end
-      end
-      
-      module Connection # :nodoc:
-        def self.included(base)
-          base.send :alias_method_chain, :request, :hmac
-          base.class_eval do
-            attr_accessor :hmac_secret, :hmac_access_id, :use_hmac, :hmac_options
-          end
-        end
-
-        def request_with_hmac(method, path, *arguments)
-          if use_hmac && hmac_access_id && hmac_secret
-            arguments.last['Date'] = Time.now.httpdate if arguments.last['Date'].nil?
-            temp = "Net::HTTP::#{method.to_s.capitalize}".constantize.new(path, arguments.last)
-            AuthHMAC.sign!(temp, hmac_access_id, hmac_secret, hmac_options)
-            arguments.last['Authorization'] = temp['Authorization']
-          end
-          
-          request_without_hmac(method, path, *arguments)
-        end
-      end
-            
-      unless defined?(ActiveResource)
-        begin
-          require 'rubygems'
-          gem 'activeresource'
-          require 'activeresource'
-        rescue
-          nil
-        end
-      end
-      
-      if defined?(ActiveResource)
-        ActiveResource::Base.send(:include, BaseHmac)        
-        ActiveResource::Connection.send(:include, Connection)
-      end     
-    end
   end
 end

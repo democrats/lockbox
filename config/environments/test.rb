@@ -30,7 +30,7 @@ config.action_mailer.delivery_method = :test
 
 # Gems
 config.gem "factory_girl", :version => "1.2.3"
-config.gem "jferris-mocha", :lib => "mocha"
+config.gem "jferris-mocha", :lib => false # mocha gets required in spec/support/mocha.rb; doing it here causes weird problems
 # config.gem "mocha", :version => "~> 0.9.8"
 config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
 config.gem "shoulda", :version => "2.10.2"

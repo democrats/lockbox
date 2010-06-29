@@ -107,7 +107,7 @@ class LockBox
       end
     end
     caching_allowed = (cache_max_age > 0 && cache_public)
-    expiration = cache_max_age.seconds.since(Time.now)
+    expiration = Time.at(Time.now.to_i + cache_max_age)
     cache_auth(api_key,expiration) if caching_allowed
   end
 

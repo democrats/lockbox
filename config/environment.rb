@@ -23,7 +23,7 @@ Rails::Initializer.run do |config|
 
   config.gem "paperclip"
   config.gem "authlogic"
-  config.gem "auth-hmac"
+  config.gem "dnclabs-auth-hmac", :lib => 'auth-hmac'
   
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
