@@ -133,7 +133,7 @@ describe 'LockBox' do
       bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
       bad_response.stubs(:code).returns(401)
       LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(bad_response)
-      expired_time = @max_age.seconds.since(Time.now)
+      expired_time = Time.at(Time.now.to_i + @max_age)
       Time.stubs(:now).returns(expired_time)
       get "/api/some_controller/some_action?key=123456"
       last_response.status.should == 401
@@ -160,7 +160,7 @@ describe 'LockBox' do
       headers = {
         'X-RateLimit-Limit' => '100',
         'X-RateLimit-Remaining' => '99',
-        'X-RateLimit-Reset' => 1.hour.from_now.to_i.to_s
+        'X-RateLimit-Reset' => (Time.now.to_i + 3600).to_s
       }
       successful_response.stubs(:headers).returns(headers.merge({'Cache-Control' => 'public,no-cache'}))
       LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(successful_response)
