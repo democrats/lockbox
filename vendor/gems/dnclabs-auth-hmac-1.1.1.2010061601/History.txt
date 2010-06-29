@@ -1,3 +1,9 @@
+== 1.1.1.2010061601 2010-06-16 (dnclabs)
+
+* Gutted Rails monkey-patching
+* Added Rack support (this means it works with Rails 2.3 as Rack middleware)
+* Switched out hoe for jeweler+gemcutter
+
 == 1.1.1 2009-10-01
 
 * Fixed bug in headers on recent versions of Ruby.
