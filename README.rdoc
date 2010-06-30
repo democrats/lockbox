@@ -4,12 +4,29 @@ LockBox is a centralized API authentication service written by the DNC Innovatio
 users share a single identity across multiple services.  
 It is licensed under the New BSD License (see the LICENSE file for details).
 
-It is a Ruby on Rails application on the server side, and Rack middleware on the client side
-(which means it integrates nicely with any modern Ruby web framework). As of v1.2.0, there is an
-unfortunate Rails dependency in the middleware gem. Hopefully we'll get rid of that soon.
+The server is a Ruby on Rails application, while the client is pure Rack middleware (which means it
+integrates nicely with any modern Ruby web framework, including Rails 2.3+).
 
 Lockbox handles things like rate limiting, API key signup and management, and supports HMAC
-authentication as well as plain-text key exchange. We are working on replacing HMAC with OAuth 2.0.
+authentication as well as plain-text key exchange.
+
+== Client Installation
+
+  gem install lockbox_middleware
+  
+=== Rails 2
+
+Add the following lines to the "config/environment.rb" file:
+  
+  config.gem 'lockbox_middleware'
+  config.middleware.use 'LockBox'
+  
+You may want to restrict the "config.middleware.use" line to the config/environments/production.rb file so that
+your test and development environments aren't trying to access the LockBox server.
+
+=== Rails 3
+
+Untested.
 
 == Configuration
 
@@ -32,6 +49,9 @@ Here's an example lockbox.yml:
   all:
     protect_paths: 
       - ^/api/
+
+The 'all' section of the yaml file is a LockBox-specific shortcut so you can DRY up your protected path definitions.
+Settings in more specific environments will override those in the 'all' section.
 
 == Download
 
