@@ -11,6 +11,8 @@ set :user,          "deploy"
 set :runner,        "deploy"
 set :keep_releases, 4
 
+ssh_options[:keys] = %w(~/.ssh/authorized_keys)
+
 task :staging do
   set :rails_env, "staging"
   role :app,  "romulus.dnc.org"
@@ -21,10 +23,10 @@ end
 
 task :production do
   set :rails_env, "production"
-  role :app,      "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
-  role :web,      "viper1.dnc.org", "viper2.dnc.org", "viper3.dnc.org"
-  role :db,       "viper1.dnc.org", :primary => true
-  role :cron,     "viper1.dnc.org"
+  role :app,      "viper4.dnc.org", "viper5.dnc.org"#, "viper6.dnc.org"
+  role :web,      "viper4.dnc.org", "viper5.dnc.org"#, "viper6.dnc.org"
+  role :db,       "viper4.dnc.org", :primary => true
+  role :cron,     "viper4.dnc.org"
 end
 
 namespace :config do
@@ -80,11 +82,14 @@ namespace :files do
     
     servers = find_servers(:roles => 'app')
     puts servers.inspect
+    # puts "servers.length: #{servers.length}"
     if servers.length > 1
-      servers.first do |master|
-        %w{lockbox database}.each do |file|
-          run "scp #{master}:/dnc/app/#{APP_NAME}/shared/config/#{file}.yml #{deploy_to}/shared/config/#{file}.yml"
-        end
+      master = servers.first
+      # puts "Master server: #{master}"
+      %w{lockbox database}.each do |file|
+        cmd = "scp #{master}:/dnc/app/#{APP_NAME}/shared/config/#{file}.yml #{deploy_to}/shared/config/#{file}.yml"
+        # puts "Running #{cmd}"
+        run cmd
       end
     end
 
