@@ -39,5 +39,12 @@ describe LockBoxCache::Cache do
       cache.read(:foo).should == 'bar'
       Rails.cache.read(:foo).should be_nil
     end
+    
+    it "should still delete shit" do
+      cache = LockBoxCache::Cache.new(false)
+      cache.write(:foo, 'bar')
+      cache.delete(:foo)
+      cache.read(:foo).should be_nil
+    end
   end
 end
