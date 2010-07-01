@@ -37,8 +37,8 @@ module LockBoxCache
       end
     end
     
-    def initialize
-      if defined?(Rails)
+    def initialize(use_rails_cache=true)
+      if use_rails_cache && defined?(Rails)
         @cache = RailsCache.new
       else
         @cache = HashCache.new

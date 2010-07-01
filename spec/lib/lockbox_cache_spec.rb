@@ -33,12 +33,11 @@ describe LockBoxCache::Cache do
   end
   
   context "in a Rack app" do
-    # doesn't work, oh well
-    # it "should still work" do
-    #   remove_const(Rails)
-    #   cache = LockBox::Cache.new
-    #   cache.write(:foo, 'bar')
-    #   cache.read(:foo).should == 'bar'
-    # end
+    it "should still work" do
+      cache = LockBoxCache::Cache.new(false)
+      cache.write(:foo, 'bar')
+      cache.read(:foo).should == 'bar'
+      Rails.cache.read(:foo).should be_nil
+    end
   end
 end
