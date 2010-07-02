@@ -69,7 +69,7 @@ class LockBox
           return [app_response[0], response_headers, app_response[2]]
         else
           message = "Access Denied"
-          return [401, {'Content-Type' => 'text/plain', 'Content-Length' => "#{message.length}"}, message]
+          return [401, {'Content-Type' => 'text/plain', 'Content-Length' => "#{message.length}"}, [message]]
         end
       end
     end

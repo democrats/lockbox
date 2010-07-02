@@ -109,6 +109,12 @@ describe 'LockBox' do
       get "/api/some_controller/some_action?key=blah"
       last_response.status.should == 401
     end
+    
+    it "should return an array as the response body when access is denied" do
+      # Rack compliance thing
+      env = Rack::MockRequest.env_for "/api/some_controller/some_action?key=blah"
+      app.call(env)[2].should be_an_instance_of(Array)
+    end
       
     it "should return 200 for a request that starts with /api and has api key" do
       get "/api/some_controller/some_action?key=123456"
