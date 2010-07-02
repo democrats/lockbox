@@ -7,7 +7,7 @@ describe 'LockBox' do
 
   def app
     # Initialize our LockBox middleware with an "app" that just always returns 200, if it gets .called
-    LockBox.new(Proc.new {|env| [200,{},"successfully hit rails app"]})
+    LockBox.new(Proc.new {|env| [200,{'Content-Type' => 'text/plain'},["successfully hit rails app"]]})
   end
   
   def safely_edit_config_file(settings, env=nil)
@@ -105,20 +105,30 @@ describe 'LockBox' do
       LockBox.stubs(:get).with("/authentication/blah", any_parameters).returns(bad_response)
     end
   
-    it "should return 401 for a request that starts with /api with invalid api key" do
-      get "/api/some_controller/some_action?key=blah"
-      last_response.status.should == 401
-    end
+    context "with invalid api key" do
+      it "should return 401 for a protected path request" do
+        get "/api/some_controller/some_action?key=blah"
+        last_response.status.should == 401
+      end
     
-    it "should return an array as the response body when access is denied" do
-      # Rack compliance thing
-      env = Rack::MockRequest.env_for "/api/some_controller/some_action?key=blah"
-      app.call(env)[2].should be_an_instance_of(Array)
+      it "should return an array as the response body" do
+        # Rack compliance thing
+        env = Rack::MockRequest.env_for "/api/some_controller/some_action?key=blah"
+        app.call(env)[2].should be_an_instance_of(Array)
+      end
     end
       
-    it "should return 200 for a request that starts with /api and has api key" do
-      get "/api/some_controller/some_action?key=123456"
-      last_response.status.should == 200
+    context "with valid api key" do
+      it "should return 200 for a request that starts with /api and has api key" do
+        get "/api/some_controller/some_action?key=123456"
+        last_response.status.should == 200
+      end
+    
+      it "should have a Content-Type header" do
+        # Rack compliance bug
+        env = Rack::MockRequest.env_for "/api/some_controller/some_action?key=123456"
+        app.call(env)[1].should include('Content-Type')
+      end
     end
     
     it "should cache lockbox responses for max-age when Cache-Control allows it" do
