@@ -1,48 +1,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" lang="en-US">
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script> 
-  <%= javascript_include_merged :application %>
+  <meta charset="UTF-8" />
   <title><%= APP_TITLE %></title>
-  <%= stylesheet_link_merged :application %>
-  <!--[if IE]>
-  <%= stylesheet_link_merged :ie %>
-  <![endif]-->
+  <%= stylesheet_link_merged :new_layout %>
+  <link rel="pingback" href="http://open-staging.democrats.org/xmlrpc.php" />
+  <meta name='robots' content='noindex,nofollow' />
 </head>
-<body>
-  <div id="container" class="container">
-    <div id="left" class="span-4">
+<body class="single single-post">
+  <a href="http://open-staging.democrats.org"><img id="site-logo" width="470" height="120" src="http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_logo.png" alt="Open.Dems Logo" /></a>
+  <p id="tagline"><span id="tagline-prefix">//</span> Resources from the DNC's Technology, New Media and Targeting Teams</p>
+  <div class="menu">
+    <ul>
+      <li id="blog-link"><a href="http://open-staging.democrats.org">Blog</li>
+      <li id="open-api-link"><a href="#">Open API</a></li>
+      <li id="open-source-link"><a href="https://github.com/organizations/dnclabs">Open Source</a></li>
+      <li id="signup-link"><a href="#">Signup</a></li>
+    </ul>
+    <img style="margin-left: -1px;" src="http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_rightend_nav.png" width="38" height="57" />
+  </div><!-- .menu -->
+    <!--end header-->
+
+  <div id="container">
+    <div id="content" role="main">
+      <div class="post-column">
+        <div class="post type-post hentry category-blog">
+          <div class="post-inner">              
+            <div class="entry-content">
+              <div id="flash">
+                <%= flash_helper %>
+              </div>
+              <%= yield %>
+            </div><!-- .entry-content -->
+            <div class="entry-utility">
+            </div><!-- .entry-utility -->
+          </div><!-- .post-inner -->
+        </div><!-- #post-## -->
+      </div><!-- .post-column -->
     </div>
-    <div id="center" class="span-24">
-      <div id="header" class="span-24 last">
-        <%= render :partial => "shared/header" %>
-      </div>
-      <div id="main" class="span-24 last">
-        <div id="session_header">
-          <%= session_header %>
-        </div>
-        <div id="flash">
-          <%= flash_helper %>
-        </div>
-        <div class="content-wrapper">
-          <%= yield %>
-        </div>
-      </div>
-      <div id="main_bottom" class="span-24 last">
-        <div id="main_bottom_left">
-        </div>
-        <div id="main_bottom_right">
-        </div>
-      </div>
-      <div id="footer" class = "span-24 last">
-        <%= render :partial => "shared/footer" %>
-      </div>
+    </div><!-- #content -->
+    <div id="footer">
+      <p id="footer-legal">Paid for by the Democratic National Committee &mdash; 430 South Capitol Street SE, Washington, D.C., 20003. This communication is not authorized by any candidate or candidate's committee.</p>
+      <img id="footer-logo" width="312" height="105" src="http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_dems_footer.png" />
     </div>
-    <div id="right" class="span-4 last">
-    </div>
-  </div>
 </body>
 </html>

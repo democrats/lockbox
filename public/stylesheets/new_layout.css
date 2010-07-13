@@ -1,0 +1,382 @@
+/*
+Theme Name: OpenDems
+Theme URI: http://open.democrats.org/
+Description: WordPress theme for open.democrats.org
+Author: DNC Innovation Lab & New Media Team
+Author URI: http://open.democrats.org/
+Version: 1.0
+*/
+
+/* header */
+
+body {
+  background: #fff url('/images/opendems_bg.png') repeat-x;
+  font-family: Helvetica, sans-serif;
+  padding-left: 5em;
+  padding-right: 5em;
+  margin-bottom: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+
+#container p {
+ margin:1em 0; 
+}
+#container {
+  min-width:900px; 
+}
+
+#site-logo {
+  margin: 0 0;
+}
+
+#tagline-prefix {
+  vertical-align: -15%;
+  font-size: small;
+}
+
+#tagline {
+  margin: -35px 0 0 12px;
+  color: #04346b;
+  font-size: x-small;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/*
+#open-api-link {
+  display: none;
+}
+
+#signup-link {
+  display: none;
+}
+*/
+
+div.menu {
+  margin-top: 2em;
+  height: 57px;
+}
+
+div.menu ul {
+  float: left;
+}
+
+div.menu ul li {
+  display: inline;
+  float: left;
+  text-transform: uppercase;
+  padding: 17px 1em 0 1em;
+  margin: 0 1px 0 0;
+  height: 40px;
+  background: #fff url('/images/opendems_btn_bg.png') repeat-x;
+}
+
+div.menu ul li.current-page {
+  background: transparent url() no-repeat;
+  color: #7dc0ff;
+}
+
+div.menu ul li:hover {
+  display: inline;
+  float: left;
+  text-transform: uppercase;
+  padding: 17px 1em 0 1em;
+  height: 40px;
+  background: transparent url() no-repeat;
+/* seems the same as the background of the page /*
+/*  background: #fff url('images/opendems_btn_bg_hover.png') repeat-x;*/
+}
+
+div.menu ul li a {
+  color: #04346b;
+}
+
+div.menu ul li:hover a {
+  color: #7dc0ff;
+}
+
+
+/* loop */
+
+.alignright {
+  float: right;
+}
+
+.alignleft {
+  float: left;
+}
+
+.post {
+  color: #969696;
+  font-size: 12pt;
+  padding-top: 15px;
+}
+
+.category-label a {
+  color: #e0f1ff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.post-column {
+  margin-bottom: 2em;
+  padding: 0.5em 0;
+  background: #fff url('/images/opendems_crosshatch.png') repeat-x;
+}
+
+.post .main-loop {
+  border-top: 3px solid #e6e6e6;
+  padding-bottom: 32px;
+  padding-top: 1em;
+}
+
+#first-post {
+  border-top: none;
+}
+
+.post-inner {
+  margin: 0 5%;
+}
+
+.post img.alignright {
+  margin: 0 0 1em 1em;
+}
+
+h2.entry-title {
+  margin: 0 0 0 30px;
+}
+
+h2.entry-title a {
+  text-transform: uppercase;
+  color: #04346b;
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+.entry-excerpt {
+  margin-left: 30px;
+}
+
+.entry-content {
+  margin-left: 30px;
+}
+
+.more-link {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #FD6F2B;
+  font-size: 12pt;
+}
+
+.excerpt-images {
+  margin: 0;
+  float: right;
+  margin-left: 1em;
+}
+
+.attachment-thumbnail {
+  border: 2px solid #d9ecfe;
+}
+
+.attachment-full {
+  border: 2px solid #d9ecfe;
+}
+
+.attachment-medium {
+  border: 2px solid #d9ecfe;
+}
+
+.comment-link {
+  background: #fff url('images/opendems_comment_count.png') no-repeat;
+  width: 21px;
+  height: 26px;
+  float: left;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.comment-link a {
+  color: #fff;
+  font-size: small;
+  vertical-align: -1px;
+}
+
+.post-edit-link {
+  font-size: x-small;
+}
+
+.category-what-we-do .entry-title {
+  margin: 0 0 0.5em 0;
+}
+
+.category-what-we-do .entry-title a {
+  color: #e0f1ff;
+}
+
+.category-what-we-do .entry-excerpt p {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 32pt;
+  color: #D6D6D6;
+  line-height: 80%;
+  font-weight: bold;
+  letter-spacing: -2px;
+}
+
+
+/* sidebar */
+
+.widget-area {
+  background: #fff url('images/opendems_crosshatch.png') repeat-x;
+  float: right;
+  width: 312px;
+  padding-top: 2em;
+}
+
+h3.widget-title {
+  display: none;
+}
+
+.widget-container {
+  background-color: #d7e4ae;
+  margin-top: -4px;
+}
+
+.widget-container ul li {
+  border-bottom: 2px solid #fff;
+}
+
+.widget-container ul li {
+  padding: 1em;
+  font-size: x-small;
+}
+
+.widget-container ul li .entry-content a {
+  color: #fff;
+}
+
+.widget-container ul li .entry-meta {
+  display: block;
+  margin-top: 0.5em;
+  text-transform: uppercase;
+  color: #969696;
+}
+
+.widget-container ul li .entry-meta a {
+  color: #969696;
+}
+
+
+/* footer */
+
+#footer {
+  background-color: #a9a2a2;
+  height: 5em;
+  margin: 10em -5.5em 0 -5.5em;
+  min-width:1235px;
+  position: relative;
+}
+
+#footer-legal {
+  float: left;
+  position: absolute;
+  width: 650px;
+  bottom: 10px;
+  left: 150px;
+  padding: 0.5em 1em 0.5em 1em;
+  border: 1px solid #fff;
+  font-size: x-small;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#footer-logo {
+  position: absolute;
+  bottom: 0;
+  right: 5.5em;
+}
+
+
+/* added July */
+
+h1 {
+  color: #40346B;
+  font-size: 12pt;
+  font-weight:bold;
+  text-transform: uppercase;
+  padding-bottom:6px;
+}
+
+/* Tables */
+
+table.pretty-table
+{
+  font-size: 12px;
+  margin: 5px;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.pretty-table th
+{
+  font-size: 14px;
+  font-weight: normal;
+  padding: 8px 8px;
+  color: #039;
+}
+table.pretty-table td
+{
+  padding: 8px;
+  color: #669;
+}
+table.pretty-table .odd
+{
+  background: #e8edff;
+}
+
+/* forms */
+
+
+form fieldset {
+  margin-bottom: 10px;
+}
+
+form legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+
+form div.field label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+  width: 120px;
+}
+
+form div.field {
+  margin-bottom: 5px;
+}
+
+form {
+  margin: 20px 0px 20px 4px;
+}
+
+#flash .flash-success, #flash .flash-notice, #flash .flash-error   {
+  background-color: yellow; /* change later */
+  padding: 10px 10px;
+  margin-bottom: 20px;
+}

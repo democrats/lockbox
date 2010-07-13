@@ -9,6 +9,9 @@ javascripts:
 - application:
   - application
 stylesheets:
+- new_layout:
+  - reset
+  - new_layout
 - admin:
   - screen
   - application
