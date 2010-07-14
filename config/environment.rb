@@ -8,8 +8,8 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
 
-  App   = {}
-  App[:name] = "Lockbox"
+  App         = {}
+  App[:name]  = "Lockbox"
   App[:title] = "Lockbox"
 
   # Settings in config/environments/* take precedence over those specified here.
