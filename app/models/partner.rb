@@ -15,7 +15,8 @@ class Partner < ActiveRecord::Base
   validates_presence_of :phone_number, :name, :organization, :email
   validates_presence_of :api_key, :on => :update
   validates_format_of :email, :with => EmailAddressRegularExpression
-  validates_uniqueness_of :api_key, :slug
+  validates_uniqueness_of :api_key
+  validates_uniqueness_of :slug
   
   before_create :create_api_key, :create_slug
   
@@ -117,7 +118,7 @@ class Partner < ActiveRecord::Base
   
   def make_slug
     if !organization.blank?
-      organization.parameterize
+      "#{organization}-#{name}".parameterize
     else
       name.parameterize
     end
