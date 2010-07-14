@@ -11,14 +11,14 @@ class Partner < ActiveRecord::Base
     c.maintain_sessions = false
   end
   
+  before_validation :create_api_key, :create_slug
+  
   include RFC822
   validates_presence_of :phone_number, :name, :organization, :email
   validates_presence_of :api_key, :on => :update
   validates_format_of :email, :with => EmailAddressRegularExpression
   validates_uniqueness_of :api_key
   validates_uniqueness_of :slug
-  
-  before_create :create_api_key, :create_slug
   
   MAX_RESPONSE_CACHE_TIME = 1.hour
   
