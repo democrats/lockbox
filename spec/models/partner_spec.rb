@@ -116,22 +116,25 @@ describe Partner do
     end
 
     context "slug" do
-      before do
+      it "should be the underscored name" do
         subject.name = 'Name Foo'
         subject.organization = nil
-      end
-
-      it "should be the underscored name" do
         subject.send(:make_slug).should == "name-foo"
       end
 
       context "with an organization" do
-        before do
-          subject.organization = 'org foo'
-        end
-
         it "should be the underscored org name" do
-          subject.send(:make_slug).should == 'org-foo'
+          subject.organization = 'My Big Org'
+          subject.name = nil
+          subject.send(:make_slug).should == 'my-big-org'
+        end
+      end
+      
+      context "with a name & organization" do
+        it "should be the underscored org name and partner's name" do
+          subject.organization = 'My Big Org'
+          subject.name = 'My Name'
+          subject.send(:make_slug).should == 'my-big-org-my-name'
         end
       end
     end
