@@ -93,6 +93,20 @@ describe PartnersController do
 
   end
   
+  context "not logged in" do
+    context "while attempting to access the show partner page" do
+      let(:partner) { Factory(:partner) }
+      
+      before do
+        get :show, :id => partner.id
+      end
+      
+      it "should redirect me to the login page" do
+        response.should redirect_to(login_path)
+      end
+    end
+  end
+  
   context "Edit" do
     before do
       stubbed_session_for(:partner)

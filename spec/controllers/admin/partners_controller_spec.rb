@@ -52,4 +52,7 @@ describe Admin::PartnersController do
       assert Partner.find_by_email("something@somewhere.com")
     end
   end
+  
+
+  
 end
