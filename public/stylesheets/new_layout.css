@@ -66,6 +66,16 @@ a:hover {
 }
 */
 
+div.logout {
+  float: right;
+  margin: 1em 1em 0 0;
+  font-size: small;
+}
+
+div.logout a {
+  color: #04346b;
+}
+
 div.menu {
   margin-top: 2em;
   height: 57px;
