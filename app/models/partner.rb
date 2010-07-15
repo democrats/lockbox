@@ -120,6 +120,8 @@ class Partner < ActiveRecord::Base
       "#{organization}-#{name}".parameterize
     elsif name.present?
       name.parameterize
+    else
+      rand(36**8).to_s(36)
     end
   end
   
