@@ -11,7 +11,7 @@ class Partner < ActiveRecord::Base
     c.maintain_sessions = false
   end
   
-  before_validation :create_api_key, :create_slug
+  before_validation_on_create :create_api_key, :create_slug
   
   include RFC822
   validates_presence_of :phone_number, :name, :organization, :email
@@ -119,8 +119,10 @@ class Partner < ActiveRecord::Base
   def make_slug
     if !organization.blank?
       "#{organization}-#{name}".parameterize
-    else
+    elsif !name.blank?
       name.parameterize
+    else
+      rand(36**8).to_s(36)
     end
   end
   
