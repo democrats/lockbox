@@ -11,11 +11,10 @@ class Partner < ActiveRecord::Base
     c.maintain_sessions = false
   end
   
-  before_validation :create_api_key, :create_slug
+  before_validation_on_create :create_api_key, :create_slug
   
   include RFC822
-  validates_presence_of :phone_number, :name, :organization, :email
-  validates_presence_of :api_key, :on => :update
+  validates_presence_of :phone_number, :name, :organization, :email, :api_key
   validates_format_of :email, :with => EmailAddressRegularExpression
   validates_uniqueness_of :api_key
   validates_uniqueness_of :slug
@@ -113,13 +112,13 @@ class Partner < ActiveRecord::Base
   end
   
   def create_api_key
-    write_attribute :api_key, make_api_key
+    write_attribute :api_key, make_api_key unless api_key.present?
   end
   
   def make_slug
-    if !organization.blank?
+    if organization.present?
       "#{organization}-#{name}".parameterize
-    else
+    elsif name.present?
       name.parameterize
     end
   end
