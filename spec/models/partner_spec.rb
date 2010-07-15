@@ -5,11 +5,6 @@ describe Partner do
     subject { Factory(:partner) }
     
     context "uniqueness of api key" do
-      before do
-         # don't overwrite the key that they think will be duplicated
-         Partner.any_instance.stubs(:create_api_key).returns(true)
-      end
-    
       it { should validate_uniqueness_of :api_key }
     end
     
