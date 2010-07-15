@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe PartnersController do
+  integrate_views
   include HelperMethods
   
   context "Index" do
@@ -10,7 +11,6 @@ describe PartnersController do
     end
     
     it { should redirect_to partner_path(@partner.api_key) }
-
   end
 
   context "Create" do
@@ -67,6 +67,10 @@ describe PartnersController do
     
     it { should respond_with :success }
     it { should assign_to :partner }
+    
+    it "should display a logout link" do
+      response.body.should =~ /href="\/logout"/
+    end
   end
 
   context "API Show" do
@@ -103,6 +107,10 @@ describe PartnersController do
       
       it "should redirect me to the login page" do
         response.should redirect_to(login_path)
+      end
+      
+      it "should not display a logout link" do
+        response.body.should_not =~ /href="\/logout"/
       end
     end
   end
