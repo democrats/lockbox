@@ -126,6 +126,6 @@ class Partner < ActiveRecord::Base
   end
   
   def create_slug
-    write_attribute :slug, make_slug
+    write_attribute :slug, make_slug unless slug.present?
   end
 end

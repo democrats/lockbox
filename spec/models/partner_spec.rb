@@ -8,6 +8,10 @@ describe Partner do
       it { should validate_uniqueness_of :api_key }
     end
     
+    context "uniqueness of slug" do
+      it { should validate_uniqueness_of :slug }
+    end
+    
     it "should not authenticate for invalid api key" do
       Partner.authenticate("randomapikey").authorized.should be_false
     end
@@ -111,14 +115,28 @@ describe Partner do
     end
 
     context "slug" do
-      it "should be the underscored name" do
+      it "should only generate on create" do
+        subject.slug.should be_nil
+        subject.save
+        subject.slug.should_not be_nil
+      end
+      
+      it "should not change when the object is modified" do
+        subject.save
+        lambda {
+          subject.name = "Foo"
+          subject.save.should be_true
+        }.should_not change(subject, :slug)
+      end
+      
+      it "should be the parameterized name" do
         subject.name = 'Name Foo'
         subject.organization = nil
         subject.send(:make_slug).should == "name-foo"
       end
 
       context "with an organization" do
-        it "should be the underscored org name" do
+        it "should be the parameterized org name" do
           subject.organization = 'My Big Org'
           subject.name = nil
           subject.send(:make_slug).should == 'my-big-org'
@@ -126,7 +144,7 @@ describe Partner do
       end
       
       context "with a name & organization" do
-        it "should be the underscored org name and partner's name" do
+        it "should be the parameterized org name and partner's name" do
           subject.organization = 'My Big Org'
           subject.name = 'My Name'
           subject.send(:make_slug).should == 'my-big-org-my-name'
