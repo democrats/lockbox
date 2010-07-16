@@ -27,7 +27,8 @@ describe PartnersController do
         post :create, :partner => Factory.attributes_for(:partner)
       end
       
-      it { should redirect_to partner_path(@partner.api_key) }
+      it { should set_the_flash.to(/confirmation email/) }
+      it { should redirect_to root_path }
       
       it "should deliver the confirmation mail" do
         assert_received(PartnerMailer, :deliver_confirmation) { |expect| expect.with(@partner) }
@@ -47,7 +48,6 @@ describe PartnersController do
         assert_not_received(PartnerMailer, :deliver_confirmation)
       end
     end
-    
   end
 
   context "New" do
