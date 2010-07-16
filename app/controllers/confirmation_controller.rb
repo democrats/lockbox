@@ -7,7 +7,7 @@ class ConfirmationController < ApplicationController
     @partner.confirmed = true
     @partner.save
     PartnerSession.create(@partner)
-    flash[:success]    = "You account has been confirmed."
+    flash[:success]    = "Your account has been confirmed."
     redirect_to root_path
   end
 
