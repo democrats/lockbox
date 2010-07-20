@@ -296,7 +296,7 @@ h3.widget-title {
 #footer {
   background-color: #a9a2a2;
   height: 5em;
-  margin: 10em -5.5em 0 -5.5em;
+  margin: 10em -5em 0 -5em;
   min-width:1235px;
   position: relative;
 }
@@ -318,7 +318,7 @@ h3.widget-title {
 #footer-logo {
   position: absolute;
   bottom: 0;
-  right: 5.5em;
+  right: 5em;
 }
 
 
