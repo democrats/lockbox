@@ -11,6 +11,7 @@ javascripts:
 stylesheets:
 - new_layout:
   - reset
+  - screen
   - new_layout
 - admin:
   - screen
