@@ -71,6 +71,45 @@ describe Partner do
         Partner.authenticate(subject.api_key).authorized.should be_true
       end
     end
+
+    context "with a protected application" do
+      before(:each) do
+        @pa = Factory(:protected_application)
+        subject.protected_applications.push(@pa)
+        subject.save!
+      end
+
+      it "should have a protected application" do
+        subject.protected_applications.count.should == 1
+        subject.protected_applications.first.should == @pa
+      end
+
+      it "should be authorized for the application" do
+        subject.authorized_for_application?(@pa.name).should == true
+      end
+
+      it "should be authorized" do
+          subject.authorized(@pa.name).should == true
+      end
+    end
+
+    context "without a protected application" do
+      before(:each) do
+        @pa = Factory(:protected_application)
+      end
+
+      it "should not have a protected application" do
+        subject.protected_applications.count.should == 0
+      end
+
+      it "should not be authorized for the application" do
+        subject.authorized_for_application?(@pa.name).should == false
+      end
+
+      it "should not be authorized" do
+        subject.authorized(@pa.name).should == false
+      end
+    end
   end
 
   context "an unsaved partner object" do

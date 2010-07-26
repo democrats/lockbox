@@ -11,6 +11,10 @@ describe 'LockBox' do
   end
   
   def safely_edit_config_file(settings, env=nil)
+    Object.class_eval do
+      remove_const LockBox.to_s if const_defined? :LockBox
+    end
+
     env ||= Rails.env if defined?(Rails)
     env ||= ENV['RACK_ENV']
     env ||= 'test'
@@ -24,6 +28,7 @@ describe 'LockBox' do
     File.open( @config_file, 'w' ) do |out|
       YAML.dump( config, out )
     end
+    load 'lib/lockbox_middleware.rb'
   end
   
   context "setting the base_uri" do
@@ -196,13 +201,13 @@ describe 'LockBox' do
       successful_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
       Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
       valid_headers = {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC key-id:uxx+EgyzWBKBgS+Y8MzpcWcfy7k='], 'Referer' => 'http://example.org/api/some_controller/some_action'}
-      LockBox.stubs(:get).with("/authentication/hmac", {:headers => valid_headers}).returns(successful_response)
+      LockBox.stubs(:get).with("/authentication/hmac", {:headers => valid_headers, :request => {:application_name => 'test'}}).returns(successful_response)
       
       bad_response = mock("MockResponse")
       bad_response.stubs(:code).returns(401)
       bad_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
       invalid_headers = {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => 'foo', 'Referer' => 'http://example.org/api/some_controller/some_action'}
-      LockBox.stubs(:get).with("/authentication/hmac", {:headers => invalid_headers}).returns(bad_response)
+      LockBox.stubs(:get).with("/authentication/hmac", {:headers => invalid_headers, :request => {:application_name => 'test'}}).returns(bad_response)
       
       @path = "/api/some_controller/some_action"
       

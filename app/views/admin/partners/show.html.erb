@@ -1,0 +1,15 @@
+<h1><%= @partner.name %></h1>
+
+<%= link_to 'Edit', edit_admin_partner_path(@partner)  %>
+
+<%= render :partial => 'shared/partner' %>
+
+<% if @protected_applications.any? %>
+  <h3>Applications</h3>
+
+  <%= table_helper @protected_applications, [
+          {:enabled => Proc.new{|app| ( @partner.protected_applications.include?(app) ? 'Yes' : 'No'  ) }},
+          {:name => Proc.new{|app| link_to(app.name, admin_protected_application_path(app)) }}
+
+  ]%>
+<% end %>

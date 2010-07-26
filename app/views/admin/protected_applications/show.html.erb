@@ -1,0 +1,6 @@
+<h1><%= @protected_application.name %></h1>
+
+<%= @protected_application.description %>
+
+<h3>Enabled Partners</h3>
+<%= table_helper @protected_application.partners, [:name, :api_key] %>

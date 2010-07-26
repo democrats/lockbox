@@ -1,0 +1,9 @@
+<h1>Partners</h1>
+
+
+<%= table_helper @partners, [ {:name => Proc.new{|partner| link_to(partner.name, admin_partner_path(partner)) }},
+                                           :api_key,
+                                           {:edit => Proc.new{|app| link_to('edit', edit_admin_partner_path(app)) }},
+                                           {:delete => Proc.new{|app| link_to('delete', admin_partner_path(app),  :method => 'delete',  :confirm => "Are you sure you want to delete this partner?") }}
+]%>
+

@@ -1,0 +1,10 @@
+<h1>Protected Applications</h1>
+
+<%= link_to 'New Partner', new_admin_protected_application_path %>
+
+<%= table_helper @protected_applications, [ {:name => Proc.new{|app| link_to(app.name, admin_protected_application_path(app)) }},
+                                           :description,
+                                           {:edit => Proc.new{|app| link_to('edit', edit_admin_protected_application_path(app)) }},
+                                           {:delete => Proc.new{|app| link_to('delete', admin_protected_application_path(app),  :method => 'delete',  :confirm => "Are you sure you want to delete this application?") }}
+]%>
+

@@ -12,7 +12,9 @@
 <body class="single single-post">
   <div id="page">
   <% if current_user %><div class="logout"><a href="<%= logout_path %>">Logout</a></div><% end %>
-  <a href="http://open.democrats.org"><img id="site-logo" width="470" height="120" src="http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_logo.png" alt="Open.Dems Logo" /></a>
+  <a href="http://open.democrats.org">
+    <%= image_tag 'opendems_logo.png', :id=>"site-logo", :width=>"470", :height =>"120",  :alt => "Open.Dems Logo" %>
+  </a>
   <p id="tagline"><span id="tagline-prefix">//</span> Resources from the DNC's Technology, New Media and Targeting Teams</p>
   <div class="menu">
     <ul>
@@ -42,7 +44,9 @@
     </div><!-- #content -->
     <div id="footer-content">
     <p id="footer-legal">Paid for by the Democratic National Committee &mdash; 430 South Capitol Street SE, Washington, D.C., 20003. This communication is not authorized by any candidate or candidate's committee.</p>
-    <img id="footer-logo" width="312" height="105" src="http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_dems_footer.png" />
+    <a href="http://democrats.org/">
+      <%= image_tag 'opendems_dems_footer.png', :id => "footer-logo", :width => "312", :height =>"105" %>      
+    </a>
     </div>
     </div><!-- #page -->
     <div id="footer">
