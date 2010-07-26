@@ -10,7 +10,7 @@ body {
   height: 100%;
 }
 
-#logout {
+.logout {
   margin-top: 2em;
   float: right;
   font-size: x-small;
@@ -26,6 +26,10 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+
+h1 {
+  font-size:1.6em;
 }
 
 a {
@@ -138,7 +142,6 @@ ul.post-categories a {
 }
 
 .post-column {
-  margin-right: 330px;
   margin-bottom: 2em;
   padding: 40px 0;
   background: #fff url('http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_crosshatch.png') repeat-x;
@@ -434,6 +437,10 @@ span.entry-content {
 
 /* footer */
 
+#footer-content p {
+  margin: 0px;
+}
+
 #footer {
   background-color: #a9a2a2;
   height: 80px;
@@ -462,5 +469,122 @@ span.entry-content {
   width: 312px;
   margin-top: -80px;
   margin-right: 30px;
+}
+
+
+
+/* Tables */
+
+table.pretty-table
+{
+  font-size: 12px;
+  margin: 5px;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.pretty-table th
+{
+  font-size: 14px;
+  font-weight: normal;
+  padding: 8px 8px;
+  color: #039;
+}
+table.pretty-table td
+{
+  padding: 8px;
+  color: #669;
+}
+table.pretty-table .odd
+{
+  background: #e8edff;
+}
+
+/* forms */
+
+
+form fieldset {
+  margin-bottom: 10px;
+}
+
+form legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+
+form div.field label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+  width: 210px;
+}
+
+form div.field {
+  margin-bottom: 5px;
+}
+
+form {
+  margin: 20px 0px 20px 4px;
+}
+
+
+div.fieldWithErrors {
+    display: inline;
+    color: #8A1F11;
+
+}
+
+div.fieldWithErrors input, div.fieldWithErrors textarea {
+    border-color: #FBC2C4;
+}
+
+div.errorExplanation  h2 {
+    color: #8A1F11;
+    text-transform: none;
+
+}
+
+div.errorExplanation {
+    background: #FBE3E4 none repeat scroll 0 0;
+    border-color: #FBC2C4;
+    color: #8A1F11;
+}
+#flash {
+  margin: 0;
+  padding-top:15px;
+  width:800px;
+}
+
+div#flash > div {
+  margin: 20px 20px 20px 0px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+}
+
+div.flash-notice {
+    background: #E6EFC2 none repeat scroll 0 0;
+    border-color: #C6D880;
+    color: #264409;
+}
+
+div.flash-error {
+    background: #FBE3E4 none repeat scroll 0 0;
+    border-color: #FBC2C4;
+    color: #8A1F11;
+}
+
+
+div.error, div.errorExplanation, div.notice {
+    border: 2px solid #DDDDDD;
+    margin-bottom: 1em;
+    padding: 0.8em;
+}
+
+#session_header {
+  float: right;
+}
+
+div.content-wrapper {
+  margin: 10px;
 }
 
