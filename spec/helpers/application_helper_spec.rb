@@ -9,4 +9,13 @@ describe ApplicationHelper do
       end
     end
   end
+
+  context "Table Helper" do
+    before(:each){ 3.times { Factory(:partner)} }
+
+    it "should create a table from a collection" do
+      helper.table_helper(Partner.all, [:name,
+                              {:name_2 => Proc.new{|e| e.name }}]).should == ""
+    end
+  end
 end
