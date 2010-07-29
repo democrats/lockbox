@@ -5,8 +5,10 @@ require 'auth-hmac'
 class LockBox
   include HTTParty
   include LockBoxCache
+  @@config = nil
 
   def self.config
+    return @@config if @@config
     if defined?(Rails)
       root_dir = Rails.root
     else
@@ -25,7 +27,7 @@ class LockBox
         return_config = yaml_config[environment]
       end
     end
-    return_config
+    @@config = return_config
   end
 
   base_uri config['base_uri']
@@ -87,7 +89,7 @@ class LockBox
         return {:authorized => cached_auth, :headers => {}}
       end
     end
-    auth_response = self.class.get("/authentication/#{api_key}", {:headers => auth_headers(env)})
+    auth_response = self.class.get("/authentication/#{api_key}", {:headers => auth_headers(env), :request => {:application_name => LockBox.config['application_name']}})
     authorized = (auth_response.code == 200)
     cache_response_if_allowed(api_key, auth_response) if authorized
     {:authorized => authorized, :headers => response_headers(auth_response)}

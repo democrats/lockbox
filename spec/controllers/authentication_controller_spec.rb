@@ -2,9 +2,15 @@ require 'spec_helper'
 
 describe AuthenticationController do
   integrate_views
-  
+
+
+
+
   context "with an existing partner" do
-    subject { Factory(:partner) }
+    before(:each) do
+      @partner = Factory(:partner)
+    end
+    subject { @partner }
     
     it "should return 200 for successful authentication" do
       get :show, :id => subject.api_key
@@ -93,6 +99,29 @@ describe AuthenticationController do
       rl_headers_received.should eql(expected_rl_headers)
     end
 
+    context "with a protected application" do
+      before(:each) do
+        @pa = Factory(:protected_application)
+        @partner.protected_applications.push(@pa)
+        @partner.save!
+      end
+
+      it "should allow access to the application name" do
+        get :show, {:id => @partner.api_key, :application_name => @pa.name}
+        response.should be_success
+      end
+
+      it "should not allow access to other application names" do
+        get :show, {:id => @partner.api_key, :application_name => 'crazycrazy'}
+        response.should be_success
+      end
+
+      it "should allow access with no application name" do
+        get :show, :id => @partner.api_key
+        response.should be_success
+      end
+    end
+
   end
 
   context "with a partner that has no max requests" do
@@ -117,4 +146,6 @@ describe AuthenticationController do
     end
     
   end
+
+
 end

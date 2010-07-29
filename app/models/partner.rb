@@ -1,5 +1,39 @@
+# == Schema Information
+# Schema version: 20100726221934
+#
+# Table name: partners
+#
+#  id                  :integer         not null, primary key
+#  name                :string(255)
+#  organization        :string(255)
+#  phone_number        :string(255)
+#  api_key             :string(255)
+#  max_requests        :integer         default(100)
+#  email               :string(255)     not null
+#  crypted_password    :string(255)     not null
+#  password_salt       :string(255)     not null
+#  persistence_token   :string(255)     not null
+#  single_access_token :string(255)     not null
+#  perishable_token    :string(255)     not null
+#  login_count         :integer         default(0), not null
+#  failed_login_count  :integer         default(0), not null
+#  last_request_at     :datetime
+#  current_login_at    :datetime
+#  last_login_at       :datetime
+#  current_login_ip    :string(255)
+#  last_login_ip       :string(255)
+#  active              :boolean         default(TRUE)
+#  confirmed           :boolean
+#  created_at          :datetime
+#  updated_at          :datetime
+#  slug                :string(255)
+#
+
 class Partner < ActiveRecord::Base
-  
+
+  has_and_belongs_to_many :protected_applications
+
+
   class CredentialStore
     def [](access_key_id)
       p = Partner.find_by_slug(access_key_id)
@@ -90,14 +124,23 @@ class Partner < ActiveRecord::Base
     ret.to_i
   end
   
-  def authorized
+  def authorized(application_name = '')
     return false unless id
+    return false if !authorized_for_application?(application_name)
     if unlimited?
       true
     elsif requests_remaining > 0
       true
     else
       false
+    end
+  end
+
+  def authorized_for_application?(application_name)
+    if application_name.blank?
+      return true
+    else
+      return protected_applications.collect{|pa| pa.name}.include?(application_name)
     end
   end
   

@@ -1,0 +1,12 @@
+<% form_for [:admin, @partner] do  | f |%>
+  <%= f.text_field :max_requests  %>
+
+
+  <%= table_helper @protected_applications, [
+          {:enabled => Proc.new{|pa| ( check_box_tag "partner[protected_application_ids][]", pa.id, @partner.protected_applications.include?(pa) ) }},
+          {:name => Proc.new{|pa| link_to(pa.name, admin_protected_application_path(pa)) }}
+
+  ]%>
+
+  <%= submit_tag 'Save' %>
+<% end %>

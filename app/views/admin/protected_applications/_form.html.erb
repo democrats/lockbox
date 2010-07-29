@@ -1,0 +1,5 @@
+<% form_for [:admin, @protected_application] do  | f |%>
+  <%= f.text_field :name %>
+  <%= f.text_field :description %>
+  <%= submit_tag 'Save' %>
+<% end %>
