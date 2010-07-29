@@ -32,9 +32,23 @@ describe Admin::ProtectedApplicationsController do
       assert_raise(ActiveRecord::RecordNotFound) {  Partner.find(@protected_application.id) }
     end
 
+    it "should not be able to destroy a protected application" do
+      ProtectedApplication.any_instance.stubs(:destroy).returns(false)
+      assert ProtectedApplication.find(@protected_application.id)
+      delete :destroy, :id => @protected_application.id
+      assert_redirected_to admin_protected_applications_path
+      assert ProtectedApplication.find(@protected_application.id)
+    end
+
     it "should be able to update a protected application" do
       put :update, :id => @protected_application.id, :protected_application => Factory.attributes_for(:protected_application, :name => 'crazyname')
       assert_equal("crazyname", @protected_application.reload.name)
+    end
+
+     it "should not be able to update a protected application" do
+       Factory(:protected_application, :name => 'crazyname')
+       put :update, :id => @protected_application.id, :protected_application => Factory.attributes_for(:protected_application, :name => 'crazyname')
+       assert_template 'edit'
     end
 
     it "should be able to get new page" do
@@ -47,6 +61,13 @@ describe Admin::ProtectedApplicationsController do
       post :create, :protected_application => {:name => "crazyname", :description => 'foo'}
       assert_equal(count + 1, ProtectedApplication.count)
       assert ProtectedApplication.find_by_name("crazyname")
+    end
+
+    it "should not be able to create a protected app that already exists" do
+      Factory(:protected_application, :name => 'crazyname')
+      count = ProtectedApplication.count
+      post :create, :protected_application => {:name => "crazyname", :description => 'foo'}
+      assert_equal(count, ProtectedApplication.count)
     end
   end
 
