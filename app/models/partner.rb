@@ -73,7 +73,7 @@ class Partner < ActiveRecord::Base
   
   def cache_key
     cache_timestamp = 1.hour.until(Time.at(max_requests_reset_time)).strftime("%m%d%y_%H")
-    "#{Time.now.strftime("#{api_key}_#{cache_timestamp}")}"
+    "expires_#{Time.now.strftime("#{api_key}_#{cache_timestamp}")}"
   end
   
   def self.find_and_authenticate(api_key)
@@ -84,7 +84,9 @@ class Partner < ActiveRecord::Base
 
   def self.authenticate(p)
     if p.is_a?(String)
-      p = find_by_api_key(p)
+      p = Rails.cache.fetch("partner_find_by_key_#{p}", :expires_in => 1.minute) do
+       find_by_api_key(p)
+      end
     end
     if p
       p.increment_request_count if !p.unlimited?
@@ -95,6 +97,7 @@ class Partner < ActiveRecord::Base
   end
   
   def current_request_count
+    return 0 if new_record?
     count = Rails.cache.read(cache_key, :raw => true)
     if count.nil?
       count = 0
@@ -112,10 +115,11 @@ class Partner < ActiveRecord::Base
   end
   
   def requests_remaining
-    max_requests.blank? ? nil : max_requests - current_request_count
+    unlimited? ? nil : max_requests - current_request_count
   end
   
   def increment_request_count
+    return 0 if new_record?
     ret = Rails.cache.increment(cache_key)
     if ret.nil?
       ret = 1
@@ -125,7 +129,7 @@ class Partner < ActiveRecord::Base
   end
   
   def authorized(application_name = '')
-    return false unless id
+    return false if new_record?
     return false if !authorized_for_application?(application_name)
     if unlimited?
       true
@@ -140,7 +144,10 @@ class Partner < ActiveRecord::Base
     if application_name.blank?
       return true
     else
-      return protected_applications.collect{|pa| pa.name}.include?(application_name)
+      protect_app = Rails.cache.fetch("partner_apps_#{api_key}_#{application_name}", :expires_in => 1.minute) do
+        protected_applications.collect{|pa| pa.name}.include?(application_name)
+      end
+      return protect_app
     end
   end
   

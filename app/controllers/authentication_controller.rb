@@ -30,7 +30,7 @@ class AuthenticationController < ApplicationController
 
     @partner = Partner.authenticate(key)
 
-    if @partner.authorized
+    if @partner.authorized(params[:application_name])
       if @partner.unlimited?
         expires_in @partner.max_response_cache_time, :public => true, 'must-revalidate' => true
       else
@@ -42,7 +42,7 @@ class AuthenticationController < ApplicationController
         'X-RateLimit-Reset' => @partner.max_requests_reset_time.to_s}) unless @partner.unlimited?
       headers.merge!({'X-LockBox-API-Key' => key})
       render :nothing => true, :status => :ok
-    elsif @partner.requests_remaining <= 0
+    elsif !@partner.unlimited? && @partner.requests_remaining <= 0
       render :four_two_oh, :status => 420
     else
       head 401
