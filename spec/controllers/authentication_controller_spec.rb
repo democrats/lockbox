@@ -113,7 +113,8 @@ describe AuthenticationController do
 
       it "should not allow access to other application names" do
         get :show, {:id => @partner.api_key, :application_name => 'crazycrazy'}
-        response.should be_success
+        response.should_not be_success
+        response.status.should =~ /401/
       end
 
       it "should allow access with no application name" do
