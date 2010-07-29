@@ -13,3 +13,4 @@ lockbox_middleware.gemspec
 pkg/
 .rvmrc
 .bundle/
+*.swp
