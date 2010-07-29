@@ -86,8 +86,8 @@ class Partner < ActiveRecord::Base
     if p.is_a?(String)
       p = find_by_api_key(p)
     end
-    if p && !p.unlimited?
-      p.increment_request_count
+    if p
+      p.increment_request_count if !p.unlimited?
     else
       p = new
     end
