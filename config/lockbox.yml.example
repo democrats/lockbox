@@ -1,12 +1,16 @@
 --- 
 production: 
   base_uri: http://lockbox.foo.org
+  application_name: 'foo'
 development: 
   base_uri: http://localhost:3001
+  application_name: 'foo'
 cucumber: 
   base_uri: http://localhost:3001
+  application_name: 'foo'
 test: 
   base_uri: http://localhost:3001
+  application_name: 'foo'  
 all:
   protect_paths: 
     - ^/api/
