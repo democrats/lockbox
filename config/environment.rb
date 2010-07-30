@@ -53,6 +53,6 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com cardarellab@dnc.org)
+ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com)
 ExceptionNotifier.email_prefix = "[LOCKBOX] "
 
