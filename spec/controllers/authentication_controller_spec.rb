@@ -3,9 +3,6 @@ require 'spec_helper'
 describe AuthenticationController do
   integrate_views
 
-
-
-
   context "with an existing partner" do
     before(:each) do
       @partner = Factory(:partner)
@@ -16,7 +13,7 @@ describe AuthenticationController do
       get :show, :id => subject.api_key
       response.should be_success
     end
-    
+
     it "should return the API key in a header" do
       get :show, :id => subject.api_key
       response.headers['X-LockBox-API-Key'].should == subject.api_key
@@ -29,29 +26,72 @@ describe AuthenticationController do
     end
     
     context "using HMAC authentication" do
-      subject { Factory(:partner) }
-      
-      before do
-        subject.stubs(:api_key).returns('daad465deb7718a5d0db99345be41e3a1ea0de6d')
-         Partner.stubs(:find_by_slug).returns(subject)
-         Partner.stubs(:find_by_api_key).returns(subject)
-         Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
-         {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
-           request.env[e] = value
+
+      context "on a GET request" do
+        subject { Factory(:partner) }
+
+        before do
+          subject.stubs(:api_key).returns('daad465deb7718a5d0db99345be41e3a1ea0de6d')
+          Partner.stubs(:find_by_slug).returns(subject)
+          Partner.stubs(:find_by_api_key).returns(subject)
+          Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
+          {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
+            request.env[e] = value
+          end
         end
+        
+        it "should return 200 with valid HMAC credentials" do
+          get :show, :id => 'hmac'
+          response.should be_success
+        end
+
+        it "should return 401 with invalid HMAC credentials" do
+          request.env['X-Referer-Authorization'] = ['AuthHMAC foo:bar']
+          get :show, :id => 'hmac'
+          response.should_not be_success
+          response.status.should =~ /401/
+        end
+
       end
-      
-      it "should return 200 with valid HMAC credentials" do
-        get :show, :id => 'hmac'
-        response.should be_success
+
+      context "on a POST request" do
+        subject { Factory(:partner) }
+
+        before do
+          subject.stubs(:api_key).returns('daad465deb7718a5d0db99345be41e3a1ea0de6d')
+           Partner.stubs(:find_by_slug).returns(subject)
+           Partner.stubs(:find_by_api_key).returns(subject)
+           Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
+           {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:e1ADdHE14mG8jb8G64ax2VflT6k='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
+             request.env[e] = value
+          end
+        end
+
+        it "should return 200 with valid HMAC credentials from a POST with no body" do
+          request.env['X-Referer-Method'] = 'POST'
+          request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
+          require 'ruby-debug'
+          get :show, :id => 'hmac'
+          response.should be_success
+        end
+
+        it "should return 200 with valid HMAC credentials from a POST with a body" do
+          request.env['X-Referer-Method'] = 'POST'
+          request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
+          request.env['X-Referer-Content-MD5'] = '7677da04ebf69f3c5ad4bfaf6528e1d7'
+          request.env['X-Referer-Authorization'] = ['AuthHMAC cherry tree cutters:WCHbGQJZfAyiU65kyulX3E2D6bk=']
+          get :show, :id => 'hmac'
+          response.should be_success
+        end
+
+        it "should return 401 with valid HMAC credentials from a POST with no Content-Type header" do
+          request.env['X-Referer-Method'] = 'POST'
+          get :show, :id => 'hmac'
+          response.status.should =~ /401/
+        end
+
       end
     
-      it "should return 401 with invalid HMAC credentials" do
-        request.env['X-Referer-Authorization'] = ['AuthHMAC foo:bar']
-        get :show, :id => 'hmac'
-        response.should_not be_success
-        response.status.should =~ /401/
-      end
     end
     
     it "should increment current_request_count for this partner after successful auth" do
