@@ -1,6 +1,6 @@
 <h1>Protected Applications</h1>
 
-<%= link_to 'New Partner', new_admin_protected_application_path %>
+<%= link_to 'New Protected Application', new_admin_protected_application_path %>
 
 <%= table_helper @protected_applications, [ {:name => Proc.new{|app| link_to(app.name, admin_protected_application_path(app)) }},
                                            :description,

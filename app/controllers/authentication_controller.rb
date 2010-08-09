@@ -20,7 +20,7 @@ class AuthenticationController < ApplicationController
     if params[:id] == 'hmac'
       hmac_request = HmacRequest.new
       hmac_request.env = request.headers
-      {'Content-Type' => 'Content-Type', 'Content-MD5' => 'Content-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
+      {'Content-Type' => 'CONTENT-TYPE', 'Content-MD5' => 'CONTENT-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
         hmac_request.env[e] = hmac_request.env["X-Referer-#{h}"] unless hmac_request.env["X-Referer-#{h}"].blank?
       end
       key = hmac_auth(hmac_request)
