@@ -1,7 +1,121 @@
-<h1>New Partner</h1>
+<h1>New API Key Partner</h1>
 <%= error_messages_for :partner %>
 
 <% form_for @partner do |f| %>
-  <%= render :partial => 'form', :locals => { :f => f, :submit_name => "Save" } %>
+
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <h3>DNC API Terms of Use</h3>
+
+  <p>
+  This document sets forth the terms on which the Democratic National Committee ("DNC") makes one or more application programming interfaces (the "DNC APIs") available for use by licensees. By accessing any of the DNC APIs, you and the organization identified in your registration form, if any, ("you") agree to be bound by the following terms of use ("API Terms of Use").  If you do not agree to the API Terms of Use, you are not licensed to use the DNC APIs and you must not make any use of any DNC APIs.
+  </p>
+
+  <strong>1.  DNC APIs.</strong>
+
+  <p>
+  The DNC APIs consists of various application program interfaces which will enable approved developers to create applications that interface with certain DNC code, data or content.  The specific DNC APIs that are available for request are specified on the Open.Dems API Information page located at http://open.democrats.org/category/open-api/ (the "API Information Page").  Each API is licensed and approved separately by the DNC.  From time to time, the DNC may release subsequent versions of the DNC APIs and will require you to obtain and use the most recent version. New versions may not be compatible with your previous implementation.  In some cases, different or additional terms of use may apply to a particular DNC API, in which case the applicable terms shall be specified when you register for the API or in information for such API on the API Information Page.
+  </p>
+
+  <strong>2.  Limited and Standard License to DNC APIs.</strong>
+
+  <p>
+  If you are approved by the DNC for use of a particular DNC API, which approval shall be at the sole discretion of the DNC, you will be issued an API key (the "API Key") and upon issuance of such API Key, the DNC grants you a non-exclusive, revocable, nonsublicensable, nontransferable license (the "License") to download and use the approved DNC APIs in connection with website application developed by you (the "Application"), subject to the terms and conditions set forth in these API Terms of Use,. All rights not expressly granted to you are reserved by the DNC.  The License does not include any right to access any DNC or other content, and the use of any APIs that require access to DNC or other data requires a separate license agreement with respect to any data or content used in connection with such DNC API except as otherwise expressly provided.  You may apply for either a "limited" or a "standard" License by so indicating in the registration form you submit for the particular DNC API you are requesting.  Such Licenses are identical except as expressly set forth in the conditions and restrictions set forth below.  You may request to convert from a limited to a standard License by emailing innovationlab@dnc.org.  You agree to provide accurate identification, contact, and other information as required in the registration process.
+  </p>
   
+  <strong>3.  License Conditions and Restrictions.</strong>
+
+  <p>
+  The License is subject to the following conditions and restrictions:
+  </p>
+
+<ul>
+  <li>All calls to the DNC API by you must reference the API Key issued to you for that API as an approved licensee.  You may not use or attempt to use any API Key not issued to you or that has been terminated.</li>
+  <li>	You agree that you will provide the Application to users on terms that include the following language: <br/>
+        THIS APPLICATION USES AN APPLICATION PROGRAMMING INTERFACE ("API") THAT IS PROVIDED BY THE DNC ON AN "AS IS" BASIS WITHOUT ANY WARRANTIES OF ANY KIND, AND THE DNC EXPRESSLY DISCLAIMS ALL WARRANTIES, EXPRESS, IMPLIED OR ARISING BY LAW, WITH RESPECT TO THE API INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL THE DNC BE LIABLE TO YOU FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE, CONSEQUENTIAL OR OTHER DAMAGES OF ANY KIND ARISING IN ANY WAY OUT OF THE USE OF THE API OR THIS APPLICATION, EVEN IF THE DNC IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  </li>
+  <li>You agree to keep your API Keys confidential, and not to share them with any third party. This license is personal to you, and any other affiliates must seek and obtain their own license and API Keys.  This obligation will survive any termination of the license granted under these API Terms of Use or your use of any of the DNC APIs.</li>
+  <li>If you have a standard License, you must include an "Open.Dems" logo, in the form set forth at http://lockbox.dnc.org/images/opendems_logo.png, on your website in a prominent location on the web page that hosts the Application and prominently link to http://open.democrats.org from such web page.</li>
+  <li>You agree not to decompile, disassemble, reverse engineer, or modify any portion of the DNC APIs.</li>
+  <li>You agree not to charge users for access to the Application or make any other commercial use of the DNC APIs except as expressly agreed to in writing by the DNC.</li>
+  <li>The number of calls allowed per 1 hour period to the API is limited as set forth on the API Information Page.  The limits differ for each type of License (limited vs. standard) and may differ for different APIs.  The DNC may change such limits at any time in its sole discretion without notice to you.</li>
+  <li>Any personal information you collect in connection with your application will be collected, used, stored and shared solely in accordance with applicable law and with an appropriate privacy policy, which shall be prominently posted on your website on the page from which the Application is accessed.</li>
+  <li>You agree that with respect to the Voter Registration API, you will not (a) collect or deliver any voter registration forms, but will only enable users to print the voter registration form generated by the API and mail such forms in themselves; (b) limit who can use the voter registration application based on partisan affiliation or any other non-technical criteria; or (c) store, share or use any information provided by the user in connection with the voter registration form except as expressly permitted by local law.</li>
+</ul>
+
+
+  <strong>4.  Acceptable Use.</strong>
+
+  <p>
+  You agree not to use the DNC APIs in any manner, or in connection with any product, service or application, that is misleading, fraudulent, defamatory, inappropriate, abusive, or unlawful or that infringes or violates any rights of or harms in any manner the public, your end users, the DNC or any other person or entity.  In addition, you agree that your use of the DNC API and any Applications, products or services offered or used in connection therewith, will comply in all respects with, and will not violate in any manner, any applicable law rule or regulation, including without limitation federal, state and local voter registration laws.
+  </p>
+
+  <strong>5.  Limited Relationship.</strong>
+
+  <p>
+  Your relationship with the DNC is merely that of a licensee and nothing in these API Terms of Use shall be construed as creating an employer-employee relationship, agency, partnership, or joint venture. While you may publicly refer to the fact that you have implemented the DNC API, you agree not make any other public statements that assert or imply any other relationship with the DNC, unless you have the DNC's prior written approval.
+  </p>
+
+
+  <strong>6.  Representations and Warranties.</strong>
+
+  <p>
+  You represent and warrant that (a) you have the authority to bind the organization (if any) identified in your registration form for the DNC APIs; (b) your Application and the use thereof by your users does not infringe upon or violate the rights of any third party of any applicable law, rule or regulation; (c) you will post and fully comply with an appropriate privacy policy and comply with all applicable privacy and data security laws, rules and regulations in connection with any information collected in connection with your Application or any other use of the DNC APIs; and (d) your Application shall not contain, be bundled with, or otherwise enable any viruses, Trojan horses, trap doors, back doors, worms, time bombs, cancelbots, adware, spyware or other computer programming routines that will damage, detrimentally interfere with, surreptitiously intercept or expropriate any system, data or personal information
+  </p>
+
+  <strong>7.  Indemnity.</strong>
+
+  <p>
+  You agree to hold defend, indemnify and hold the DNC, and its subsidiaries, affiliates, officers, agents, employees, volunteers and suppliers, harmless from and against any and all claims, losses, damages (actual and consequential), suits, actions, judgments, costs and expenses, including attorneys' fees, arising out of or in any way relating to your Applications and any related products and services, the use of the DNC APIs by you or your end users, or the breach or alleged breach of any of your representations or warranties.
+  </p>
+
+  <strong>8.  DISCLAIMER OF WARRANTY.</strong>
+
+  <p>
+  THE DNC PROVIDES THE DNC APIS "AS IS," "WITH ALL FAULTS" AND "AS AVAILABLE."  THE ENTIRE RISK AS TO QUALITY, PERFORMANCE, FUNCTIONALITY, ACCURACY, SAFETY AND EFFORT IS WITH YOU, AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE THAT RESULTS FROM THE USE OF ANY DNC API, INCLUDING, BUT NOT LIMITED TO, ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA.  THE DNC DOES NOT REPRESENT OR WARRANT THAT ANY OF THE DNC APIS WILL BE FREE OF INACCURACIES, ERRORS, VIRUSES, BUGS, OR INTERRUPTIONS, OR WILL BE RELIABLE, ACCURATE, AVAILABLE, COMPLETE, SECURE OR OTHERWISE VALID.  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE DNC AND ITS SUPPLIERS MAKE NO REPRESENTATIONS, WARRANTIES OF ANY KIND, EXPRESS, IMPLIED OR ARISING BY LAW WITH RESPECT TO THE DNC APIS.  THE DNC EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES OR CONDITIONS, EXPRESS, STATUTORY AND IMPLIED, INCLUDING WITHOUT LIMITATION (A) WARRANTIES OR CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, WORKMANSHIP, ACCURACY, TITLE, QUIET ENJOYMENT, NO ENCUMBRANCES, NO LIENS AND NON-INFRINGEMENT, (B) WARRANTIES OR CONDITIONS ARISING THROUGH COURSE OF DEALING OR USAGE OF TRADE, AND (C) WARRANTIES OR CONDITIONS OF UNINTERRUPTED OR ERROR-FREE ACCESS OR USE.
+  </p>
+
+  <strong>9.  LIABILITY LIMITATION; EXCLUSIVE REMEDY.</strong>
+
+  <p>
+    IN NO EVENT WILL THE DNC OR ANY SUPPLIER BE LIABLE FOR ANY DAMAGES, INCLUDING WITHOUT LIMITATION ANY DIRECT, INDIRECT, CONSEQUENTIAL, SPECIAL, INCIDENTAL, OR PUNITIVE DAMAGES ARISING OUT OF, BASED ON, OR RESULTING FROM THE DNC APIS, THESE API TERMS OF USE OR YOUR USE OF OR INABILITY TO USE THE  DNC APIS, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. THE EXCLUSION OF DAMAGES UNDER THIS PARAGRAPH IS INDEPENDENT OF YOUR EXCLUSIVE REMEDY AND SURVIVES IN THE EVENT SUCH REMEDY FAILS OF ITS ESSENTIAL PURPOSE OR IS OTHERWISE DEEMED UNENFORCEABLE. THESE LIMITATIONS AND EXCLUSIONS APPLY WITHOUT REGARD TO WHETHER THE DAMAGES ARISE FROM (A) BREACH OF CONTRACT, (B) BREACH OF WARRANTY, (C) NEGLIGENCE, OR (D) ANY OTHER CAUSE OF ACTION, TO THE EXTENT SUCH EXCLUSION AND LIMITATIONS ARE NOT PROHIBITED BY APPLICABLE LAW. IF YOU DO NOT AGREE WITH ANY PART OF THESE API TERMS OF USE, OR YOU HAVE ANY DISPUTE OR CLAIM AGAINST THE DNC OR ITS SUPPLIERS WITH RESPECT TO THESE TERMS OF USE OR THE DNC APIS, THEN YOUR SOLE AND EXCLUSIVE REMEDY IS TO DISCONTINUE USING THE DNC APIS.  IN NO EVENT WILL THE DNC'S LIABILITY IN ANY MANNER CONNECTION WITH THE API, WHETHER IN  EXCEED THE AMOUNT YOU PAY TO THE DNC FOR THE USE THEREOF,
+  </p>
+
+  <strong>10.  Intellectual Property.</strong>
+
+  <p>
+  All rights in and to the DNC APIs, including without limitation all intellectual property rights therein, are owned solely by the DNC.
+    </p>
+  <p>
+  Copyright (c) 2010 the Democratic National Committee. All rights reserved.
+  </p>
+
+  <strong>11.  Changes.</strong>
+
+  <p>
+  The DNC reserves the right to change these API Terms of Use at any time in its sole discretion by posting the new API Terms of Use on the API Information Page or by providing you with notice by other means which may include notice on the Open.Dems Google Group at http://groups.google.com/group/opendems-discuss.  You are responsible for regularly reviewing these API Terms of Use. Your continued use of any of the DNC APIs after the effective date of such changes will constitute acceptance of and agreement to any such changes. The DNC may modify, suspend or discontinue any or all of the DNC APIs at any time without notice.
+     </p>
+
+  <strong>12.  Termination.</strong>
+
+  <p>
+  The DNC may suspend or terminate your use of any or all of the DNC APIs and may deactivate your API Key at any time in its sole discretion, with or without notice.
+  </p>
+
+
+  <strong>13.  Choice of Law; Disputes.</strong>
+
+  <p>
+  These API Terms of Use are governed by the laws of the District of Columbia without giving effect to its conflict of laws provisions. You agree to submit to exclusive jurisdiction and venue in the state and federal courts sitting in the District of Columbia for any and all disputes, claims and actions arising from or in connection with the DNC APIs or these API Terms of Use.
+  </p>
+
+  <strong>14.  General.</strong>
+
+  <p>
+  You agree not to export from anywhere any part of the DNC APIs provided to you or any direct product thereof except in compliance with, and with all licenses and approvals required under, applicable export laws, rules and regulations. If any part of these API Terms of Use is determined to be invalid or unenforceable, then the invalid or unenforceable provision will be replaced with a valid, enforceable provision that most closely matches the intent of the original provision and the remainder of these API Terms of Use will continue in effect. The section titles in these API Terms of Use are solely used for the convenience of the parties and have no legal or contractual significance. the DNC may assign these API Terms of Use, in whole or in part, at any time with or without notice to you.  You may not transfer, assign, or delegate the API Terms of Use and your API Key to any third party.  The DNC's failure to act with respect to a breach by you or others does not waive its right to act with respect to subsequent or similar breaches. Except as expressly stated herein, these API Terms of Use constitute the entire agreement between you and the DNC with respect to the DNC APIs and supersede all prior or contemporaneous communications of any kind between you and the DNC.
+  </p>
+
+  <%= f.check_box :terms_of_service, :label => 'Accept the DNC API Terms of Use' %>
+
+
+  <%= f.submit 'Save' %>
 <% end %>

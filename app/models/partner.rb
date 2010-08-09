@@ -34,7 +34,7 @@
 class Partner < ActiveRecord::Base
 
   has_and_belongs_to_many :protected_applications
-
+  validates_acceptance_of :terms_of_service, :on => :create
 
   class CredentialStore
     def [](access_key_id)

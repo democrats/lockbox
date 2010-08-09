@@ -588,3 +588,21 @@ div.content-wrapper {
   margin: 10px;
 }
 
+
+.entry-content h1 {font-size:1.5em;line-height:1;margin-bottom:0.5em;}
+.entry-content h2 {font-size:1.2em;margin-bottom:0.75em;}
+.entry-content h3 {font-size:1.1em;line-height:1;margin-bottom:1em;}
+.entry-content h4 {font-size:1.05em;line-height:1.25;margin-bottom:1.25em;}
+.entry-content h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
+.entry-content h6 {font-size:1em;font-weight:bold;}
+
+.entry-content li ul, .entry-content li ol {margin:0;}
+.entry-content ul, .entry-content ol {margin:0 1.5em 1.5em 0;padding-left:3.333em;}
+.entry-content ul {list-style-type:disc;}
+.entry-content ol {list-style-type:decimal;}
+
+.entry-content pre {margin:1.5em 0;white-space:pre;}
+.entry-content pre, .entry-content code, .entry-content tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+
+.entry-content strong {font-weight:bold;}
+.entry-content em, .entry-content dfn {font-style:italic;}

@@ -26,6 +26,6 @@ module HelperMethods
    end
 
    def admin_login
-     @request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("admin:10ckb0X")
+     @request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("admin:somethingcute")
    end
 end
