@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'rack/test'
 require 'lockbox_middleware'
+require 'digest/md5'
+require 'cgi'
 
 describe 'LockBox' do
   include Rack::Test::Methods
@@ -194,7 +196,7 @@ describe 'LockBox' do
   
   end
   
-  context "hitting API actions with HMAC auth" do
+  context "hitting API actions via GET requests with HMAC auth" do
     before :each do
       successful_response = mock("MockResponse")
       successful_response.stubs(:code).returns(200)
@@ -236,7 +238,54 @@ describe 'LockBox' do
       last_response.status.should == 401
     end
   end
-  
+
+  context "hitting API actions via POST requests with HMAC auth" do
+    before :each do
+      @content = "" # TODO: Rack::Test sucks at some stuff, like setting the request body when making a POST
+      @content_md5 = Digest::MD5.hexdigest(CGI::escape(@content))
+      
+      successful_response = mock("MockResponse")
+      successful_response.stubs(:code).returns(200)
+      successful_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
+      Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
+      valid_headers = {'X-Referer-Method' => 'POST', 'X-Referer-Content-Type' => 'application/x-www-form-urlencoded', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC key-id:+qPzK7cJdJbhsiCRcXa8A8LLrF8='], 'Referer' => 'http://example.org/api/some_controller/some_action', 'X-Referer-Content-MD5' => @content_md5}
+      LockBox.stubs(:get).with("/authentication/hmac", {:headers => valid_headers, :request => {:application_name => 'test'}}).returns(successful_response)
+      
+      bad_response = mock("MockResponse")
+      bad_response.stubs(:code).returns(401)
+      bad_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
+      invalid_headers = {'X-Referer-Method' => 'POST', 'X-Referer-Content-Type' => 'application/x-www-form-urlencoded', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC key-id:u2Jlv0f6ZG59HQNGk+Bgq3/vHvM='], 'Referer' => 'http://example.org/api/some_controller/some_action', 'X-Referer-Content-MD5' => @content_md5}
+      LockBox.stubs(:get).with("/authentication/hmac", {:headers => invalid_headers, :request => {:application_name => 'test'}}).returns(bad_response)
+      
+      @path = "/api/some_controller/some_action"
+      
+      hmac_request = Net::HTTP::Post.new(@path, {'Date' => Time.now.httpdate})
+      hmac_request.body = @content
+      store = mock("MockStore")
+      store.stubs(:[]).with('key-id').returns("123456")
+      authhmac = AuthHMAC.new(store)
+      authhmac.sign!(hmac_request, 'key-id')
+      @hmac_headers = hmac_request.to_hash
+    end
+    
+    it "should return 200 for an HMAC request with a valid auth header" do
+      @hmac_headers.each_pair do |key,value|
+        header key, value
+      end
+      post @path, @content
+      last_response.status.should == 200
+    end
+    
+    it "should return 401 for an HMAC request with an invalid auth header" do
+      @hmac_headers['authorization'] = ['AuthHMAC key-id:u2Jlv0f6ZG59HQNGk+Bgq3/vHvM=']
+      @hmac_headers.each_pair do |key,value|
+        header key, value
+      end
+      post @path, @content
+      last_response.status.should == 401
+    end
+  end
+
   context "hitting actions without API" do
   
     it "should not try to authenticate a request that doesn't start with /api" do
