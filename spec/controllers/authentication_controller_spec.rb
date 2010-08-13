@@ -70,7 +70,6 @@ describe AuthenticationController do
         it "should return 200 with valid HMAC credentials from a POST with no body" do
           request.env['X-Referer-Method'] = 'POST'
           request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
-          require 'ruby-debug'
           get :show, :id => 'hmac'
           response.should be_success
         end
