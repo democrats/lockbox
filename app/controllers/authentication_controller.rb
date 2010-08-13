@@ -18,6 +18,7 @@ class AuthenticationController < ApplicationController
 
   def show
     if params[:id] == 'hmac'
+      
       hmac_request = HmacRequest.new
       hmac_request.env = request.headers
       {'Content-Type' => 'CONTENT-TYPE', 'Content-MD5' => 'CONTENT-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
@@ -57,6 +58,16 @@ class AuthenticationController < ApplicationController
       access_key_id = $1
       credential_store[access_key_id]
     else
+      #request.env.collect{important things}
+      #{'Content-Type' => 'CONTENT-TYPE', 'Content-MD5' => 'CONTENT-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
+      logger.error "Logging Lockbox HMAC authorization error:"
+      logger.error "Path: #{request.path}"      
+      ['CONTENT-TYPE', 'CONTENT-MD5', 'HTTP_DATE', 'REQUEST_METHOD', 'Authorization'].each do |header|
+        logger.error "#{header}: #{request.env[header]}"
+      end
+
+      logger.error "Canonical String: #{ AuthHMAC::CanonicalString.new(request).inspect}"
+
       false
     end
   end
