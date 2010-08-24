@@ -1,5 +1,4 @@
 .DS_*
-.idea/
 log/*
 tmp/*
 db/*sqlite3
@@ -8,9 +7,11 @@ db/schema.*
 config/database.yml
 config/lockbox.yml
 test/tmp
+.idea/*
 lockbox_middleware.gemspec
 *.gem
 pkg/
 .rvmrc
 .bundle/
+*.iml
 *.swp

@@ -47,6 +47,7 @@ describe Admin::PartnersController do
       assert_equal(1234, @partner.max_requests)
     end
 
+
     it "should not be able to update an invalud partner" do
       partner_email = @partner.email
       partner_max_requests = @partner.max_requests

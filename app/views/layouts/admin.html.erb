@@ -10,6 +10,15 @@
 
   <title><%= App[:title] %></title>
   <%= stylesheet_link_merged :admin %>
+  <script type="text/javascript">
+    Cufon.replace('h1#site_title');
+    Cufon.replace('h2#the', {
+      color: '-linear-gradient(0.1=#EEEEFF, 1=#FFFFFF)'
+    });
+    Cufon.replace('h1#democratic_party', {
+      color: '-linear-gradient(0.1=#EEEEFF, 1=#FFFFFF)'
+    });
+  </script>
   <!--[if IE]>
   <%= stylesheet_link_merged :ie %>
   <![endif]-->
@@ -38,5 +47,6 @@
     <div id="right" class="span-4 last">
     </div>
   </div>
+  <script type="text/javascript"> Cufon.now(); </script>
 </body>
 </html>

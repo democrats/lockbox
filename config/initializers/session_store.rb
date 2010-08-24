@@ -5,8 +5,8 @@
 # Make sure the secret is at least 30 characters and all random, 
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
-  :key         => '_lockbox_session',
-  :secret      => 'IshSopDuehequanyefdec6blavjuikcakUjodparajOgWujcavNapWaqueildinLypQuicImpenveocUtVethOafUspojyoccicnepIaciOrheHawAfDoSwitVukKuWy'
+  :key         => '_founding_father_session',
+  :secret      => 'f6cea57b457eb40c8de9f93a52eacfe1d69f25967ce4d4c2baafb135067f0a8367b14850d7571f16f831559805797bd42310ca2529ef1bace928f8b1ff7ddd8f'
 }
 
 # Use the database for sessions instead of the cookie-based default,

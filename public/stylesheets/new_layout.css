@@ -1,0 +1,608 @@
+/* header */
+
+body {
+  background: #fff url('http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_bg.png') repeat-x;
+  font-family: Helvetica, sans-serif;
+/*  padding-left: 5em;
+  padding-right: 5em;
+  padding: 0 10%;*/
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.logout {
+  margin-top: 2em;
+  float: right;
+  font-size: x-small;
+}
+
+#page {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size:1.6em;
+}
+
+a {
+  text-decoration: none;
+  color: #04346b;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #7dc0ff;
+}
+
+#site-logo {
+  margin: 0 0;
+}
+
+#tagline-prefix {
+  vertical-align: -15%;
+  font-size: small;
+}
+
+#tagline {
+  margin: -35px 0 0 12px;
+  color: #04346b;
+  font-size: x-small;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#open-api-link {
+  display: none;
+}
+
+#signup-link {
+  display: none;
+}
+
+div.menu {
+  margin-top: 2em;
+  height: 57px;
+  width: 100%;
+}
+
+div.menu ul {
+  width: 100%;
+}
+
+div.menu ul li {
+  display: inline;
+  float: left;
+  text-transform: uppercase;
+  padding: 17px 1em 0 1em;
+  margin: 0 1px 0 0;
+  height: 40px;
+  background: transparent url() no-repeat;
+  /* seems the same as the background of the page /*
+  /*  background: #fff url('images/opendems_btn_bg_hover.png') repeat-x;*/
+}
+
+div.menu ul li.current-page {
+  background: transparent url() no-repeat;
+  color: #7dc0ff;
+}
+
+div.menu ul li.current-page:hover {
+  background: transparent url() no-repeat;
+}
+
+div.menu ul li:hover {
+  display: inline;
+  float: left;
+  text-transform: uppercase;
+  padding: 17px 1em 0 1em;
+  height: 40px;
+  background: #fff url('http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_btn_bg.png') repeat-x;
+}
+
+
+/* loop */
+
+#container {
+  margin-bottom: 120px;
+  min-height: 600px;
+}
+
+.alignright {
+  float: right;
+}
+
+.alignleft {
+  float: left;
+}
+
+.post {
+  color: #969696;
+  font-size: 12pt;
+}
+
+ul.post-categories {
+  margin-bottom: 10px;
+  color: #e0f1ff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+ul.post-categories a {
+  color: #e0f1ff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.post-column {
+  margin-bottom: 2em;
+  padding: 40px 0;
+  background: #fff url('http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_crosshatch.png') repeat-x;
+}
+
+.post .main-loop {
+  border-top: 3px solid #e6e6e6;
+  padding-top: 1em;
+}
+
+.with-image {
+  min-height: 200px;
+}
+
+#first-post {
+  border-top: none;
+  padding-top: 0;
+}
+
+.post-inner {
+  margin: 0 5%;
+}
+
+.post img.alignright {
+  margin: 0 0 1em 1em;
+}
+
+h2.entry-title {
+  margin: 0 0 0 30px;
+}
+
+h2.entry-title a {
+  text-transform: uppercase;
+  color: #03346c;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.entry-excerpt {
+  margin-left: 30px;
+}
+
+.entry-excerpt p {
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  line-height: 1.5em;
+}
+
+.entry-content {
+  margin-left: 30px;
+}
+
+.entry-content p {
+  margin-top: 0.5em;
+  margin-bottom: 2em;
+  line-height: 120%;
+}
+
+.more-link {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #FD6F2B;
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+
+.excerpt-images {
+  margin: 0;
+  float: right;
+  margin-left: 1em;
+}
+
+.attachment-thumbnail {
+  border: 2px solid #d9ecfe;
+}
+
+.attachment-full {
+  border: 2px solid #d9ecfe;
+}
+
+.attachment-medium {
+  border: 2px solid #d9ecfe;
+}
+
+.comment-link {
+  background: #fff url('http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_comment_count.png') no-repeat;
+  width: 21px;
+  height: 26px;
+  float: left;
+  text-align: center;
+}
+
+.comment-link a {
+  color: #fff;
+  font-size: small;
+  vertical-align: -1px;
+}
+
+.post-edit-link {
+  font-size: x-small;
+}
+
+.category-what-we-do {
+  padding-bottom: 1em;
+}
+
+.category-what-we-do .entry-title {
+  color: #e0f1ff;
+  margin: 0 0 0.5em 0;
+}
+
+.category-what-we-do .entry-title a {
+  color: #e0f1ff;
+}
+
+.category-what-we-do .entry-excerpt p {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 32pt;
+  color: #D6D6D6;
+  line-height: 90%;
+  font-weight: bold;
+  letter-spacing: -2px;
+}
+
+#nav-below {
+  margin-bottom: 2em;
+}
+
+div.nav-previous {
+  display: inline;
+}
+
+div.nav-previous:after {
+  content: ' | ';
+}
+
+div.nav-next {
+  display: inline;
+}
+
+
+/* comments */
+
+#comments {
+  color: #969696;
+  padding: 0 2em;
+}
+
+#comments-title {
+  text-transform: uppercase;
+  color: #03346c;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin-bottom: 1em;
+}
+
+.commentlist {
+  width: 560px;
+}
+
+.comment {
+  padding: 1em;
+}
+
+.even {
+  background-color: #C9E7FF;
+}
+
+.odd {
+  
+}
+
+.comment div div {
+  margin-bottom: 1em;
+}
+
+.comment div p {
+  margin-bottom: 1em;
+  line-height: 1.5em;
+}
+
+.comment div.reply {
+  margin-bottom: 0;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+.comment-meta a {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#respond {
+  margin: 2em 0;
+  padding: 1em;
+  background-color: #d7e4ae;
+  width: 400px;
+}
+
+#reply-title {
+  text-transform: uppercase;
+  color: #969696;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin-bottom: 1em;
+}
+
+#respond form {
+  margin-left: 2em;
+}
+
+#respond form label {
+  display: block;
+}
+
+#respond .form-allowed-tags {
+  font-size: x-small;
+}
+
+#respond p {
+  margin-bottom: 10px;
+}
+
+#respond .logged-in-as {
+  font-size: 0.8em;
+}
+
+
+/* sidebar */
+
+.widget-area {
+  background: #fff url('http://open-staging.democrats.org/wp-content/themes/opendems/images/opendems_crosshatch.png') repeat-x;
+  float: right;
+  width: 312px;
+  padding-top: 2em;
+}
+
+h3.widget-title {
+  display: none;
+}
+
+.widget-container {
+  background-color: #d7e4ae;
+  margin-top: -4px;
+}
+
+.widget-container ul li {
+  border-bottom: 2px solid #fff;
+}
+
+.widget-container ul li {
+  padding: 1em;
+  font-size: small;
+}
+
+.widget-container ul li .entry-content a {
+  color: #03346c;
+  font-weight: bold;
+}
+
+.widget-container ul li .entry-content a:hover {
+  color: #fff;
+  font-weight: bold;
+}
+
+.widget-container ul li .entry-meta {
+  display: block;
+  margin-top: 0.5em;
+  text-transform: uppercase;
+  color: #969696;
+  font-size: 0.8em;
+}
+
+.widget-container ul li .entry-meta a {
+  color: #969696;
+  font-size: 0.8em;
+}
+
+.widget-container ul li .entry-meta a:hover {
+  color: #03346c;
+  font-size: 0.8em;
+}
+
+span.entry-content {
+  margin-left: 0;
+  color: #363636;
+  font-size: 0.9em;
+  line-height: 1.3em;
+}
+
+
+/* footer */
+
+#footer-content p {
+  margin: 0px;
+}
+
+#footer {
+  background-color: #a9a2a2;
+  height: 80px;
+  margin-top: -55px;
+  position: relative;
+  z-index: -1;
+}
+
+#footer-legal {
+  width: 550px;
+  padding: 0.5em 1em 0.5em 1em;
+  border: 1px solid #fff;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#footer-content {
+  margin-left: 30px;
+  width: 960px;
+  font-size: x-small;
+  color: #fff;
+}
+
+#footer-logo {
+  float: right;
+  width: 312px;
+  margin-top: -80px;
+  margin-right: 30px;
+}
+
+
+
+/* Tables */
+
+table.pretty-table
+{
+  font-size: 12px;
+  margin: 5px;
+  text-align: left;
+  border-collapse: collapse;
+}
+table.pretty-table th
+{
+  font-size: 14px;
+  font-weight: normal;
+  padding: 8px 8px;
+  color: #039;
+}
+table.pretty-table td
+{
+  padding: 8px;
+  color: #669;
+}
+table.pretty-table .odd
+{
+  background: #e8edff;
+}
+
+/* forms */
+
+
+form fieldset {
+  margin-bottom: 10px;
+}
+
+form legend {
+  padding: 0 2px;
+  font-weight: bold;
+}
+
+form div.field label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+  width: 210px;
+}
+
+form div.field {
+  margin-bottom: 5px;
+}
+
+form {
+  margin: 20px 0px 20px 4px;
+}
+
+
+div.fieldWithErrors {
+    display: inline;
+    color: #8A1F11;
+
+}
+
+div.fieldWithErrors input, div.fieldWithErrors textarea {
+    border-color: #FBC2C4;
+}
+
+div.errorExplanation  h2 {
+    color: #8A1F11;
+    text-transform: none;
+
+}
+
+div.errorExplanation {
+    background: #FBE3E4 none repeat scroll 0 0;
+    border-color: #FBC2C4;
+    color: #8A1F11;
+}
+#flash {
+  margin: 0;
+  padding-top:15px;
+  width:800px;
+}
+
+div#flash > div {
+  margin: 20px 20px 20px 0px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+}
+
+div.flash-notice {
+    background: #E6EFC2 none repeat scroll 0 0;
+    border-color: #C6D880;
+    color: #264409;
+}
+
+div.flash-error {
+    background: #FBE3E4 none repeat scroll 0 0;
+    border-color: #FBC2C4;
+    color: #8A1F11;
+}
+
+
+div.error, div.errorExplanation, div.notice {
+    border: 2px solid #DDDDDD;
+    margin-bottom: 1em;
+    padding: 0.8em;
+}
+
+#session_header {
+  float: right;
+}
+
+div.content-wrapper {
+  margin: 10px;
+}
+
+
+.entry-content h1 {font-size:1.5em;line-height:1;margin-bottom:0.5em;}
+.entry-content h2 {font-size:1.2em;margin-bottom:0.75em;}
+.entry-content h3 {font-size:1.1em;line-height:1;margin-bottom:1em;}
+.entry-content h4 {font-size:1.05em;line-height:1.25;margin-bottom:1.25em;}
+.entry-content h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
+.entry-content h6 {font-size:1em;font-weight:bold;}
+
+.entry-content li ul, .entry-content li ol {margin:0;}
+.entry-content ul, .entry-content ol {margin:0 1.5em 1.5em 0;padding-left:3.333em;}
+.entry-content ul {list-style-type:disc;}
+.entry-content ol {list-style-type:decimal;}
+
+.entry-content pre {margin:1.5em 0;white-space:pre;}
+.entry-content pre, .entry-content code, .entry-content tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+
+.entry-content strong {font-weight:bold;}
+.entry-content em, .entry-content dfn {font-style:italic;}

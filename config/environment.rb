@@ -11,7 +11,6 @@ Rails::Initializer.run do |config|
   App         = {}
   App[:name]  = "Lockbox"
   App[:title] = "Lockbox"
-  
 
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -21,6 +20,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Gems
+
   config.gem "paperclip"
   config.gem "authlogic"
   config.gem "dnclabs-auth-hmac", :lib => 'auth-hmac'
@@ -53,5 +53,6 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 end
 
-ExceptionNotifier.exception_recipients = %w() # space-separated list of email addresses
-ExceptionNotifier.email_prefix = '[LOCKBOX]'
+ExceptionNotifier.exception_recipients = %w(gilltots@gmail.com woodhull@gmail.com cap10morgan@gmail.com)
+ExceptionNotifier.email_prefix = "[LOCKBOX] "
+

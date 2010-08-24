@@ -1,8 +1,8 @@
 --- 
 production: 
-  base_uri: http://lockbox.foo.org
+  base_uri: http://lockbox.dnc.org
   application_name: test
-development: 
+development:
   base_uri: http://localhost:3001
   application_name: test
 cucumber: 

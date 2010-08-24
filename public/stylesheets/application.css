@@ -10,6 +10,7 @@ h1,h2,h3,h4 {
   width: 1250px;
 }
 body {
+  background-image: url('../images/horiz-tile-bg.jpg');
   background-repeat: repeat-x;
   background-color: #326698;
   font-family: "Lucida Grande", Georgia;
@@ -23,6 +24,7 @@ body {
 }
 
 #main_bottom {
+  background-image: url('../images/main-bottom-bg.jpg');
   background-repeat: repeat-x;
 }
 
@@ -36,10 +38,12 @@ body {
 
 #main_bottom_left {
   float: left;
+  background-image: url('../images/main-bottom-left-bg.jpg');
 }
 
 #main_bottom_right {
   float: right;
+  background-image: url('../images/main-bottom-right-bg.jpg');
 }
 
 #left, #right {
@@ -48,9 +52,11 @@ body {
 }
 
 #left {
+  background-image: url('../images/bg-left.jpg');
 }
 
 #right {
+  background-image: url('../images/bg-right.jpg');
 }
 
 #center {
@@ -58,18 +64,50 @@ body {
 }
 
 #header {
+  background-image: url('../images/header-bg-horiz.jpg');
   background-repeat: repeat-x;
   height: 67px;
 }
 
-#site_title_box:hover {
+#site_title_box:hover, #dem_party_title_box:hover {
   cursor: pointer;
 }
 
 #site_title_box {
+  background: url('../images/header-bg-right.jpg');
   float: right;
   width: 235px;
   height: 67px;
+}
+
+#dem_party_title_box {
+  float: left;
+  position: relative;
+  width: 300px;
+  height: 67px;
+}
+
+h2#the, h1#democratic_party {
+  color: #FFF;
+}
+
+h2#the {
+  font-size: 12px;
+  position: relative;
+  left: 52px;
+  top: 20px;
+}
+
+h1#democratic_party {
+  position: relative;
+  top: -1px;
+  left: 25px;
+  font-size: 22px;
+}
+
+h1 #party {
+  position: relative;
+  left: -5px;
 }
 
 .large-letter {
