@@ -129,7 +129,7 @@ class LockBox
     headers = {}
     headers['Referer'] = "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{env['PATH_INFO']}"
     headers['Referer'] << "?#{env['QUERY_STRING']}" unless env['QUERY_STRING'].blank?
-    {'Content-Type' => 'Content-Type', 'Content-MD5' => 'Content-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
+    {'Content-Type' => 'CONTENT-TYPE', 'Content-MD5' => 'CONTENT-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
       headers["X-Referer-#{h}"] = env[e] unless env[e].blank?
     end
     headers
