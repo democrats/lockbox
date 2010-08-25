@@ -6,7 +6,7 @@ begin
     gemspec.description = 'Rack middleware for the LockBox centralized API authorization service. Brought to you by the DNC Innovation Lab.'
     gemspec.email = 'innovationlab@dnc.org'
     gemspec.homepage = 'http://github.com/dnclabs/lockbox'
-    gemspec.authors = ['Chris Gill', 'Nathan Woodhull', 'Brian Cardarella', 'Wes Morgan']
+    gemspec.authors = ['Chris Gill', 'Nathan Woodhull', 'Brian Cardarella', 'Wes Morgan', 'Dave Steinberg']
     gemspec.files = FileList['lib/lockbox_middleware.rb', 'lib/lockbox_cache.rb']
     gemspec.test_files = FileList['spec/lib/*', 'spec/spec.opts', 'spec/spec_helper.rb', 'spec/support/*']
     gemspec.add_dependency 'httparty'
