@@ -228,6 +228,25 @@ describe 'LockBox' do
       get @path
       last_response.status.should == 200
     end
+
+    it "should return 200 for a valid HMAC request from a .NET client" do
+      # first test w/ a Date header too, then test w/o a separate Date header
+      @hmac_headers['X-AuthHMAC-Request-Date'] = @hmac_headers['Date']
+      @hmac_headers.each_pair do |key,value|
+        header key, value
+      end
+      get @path
+      last_response.status.should == 200
+    end
+
+    it "should return 200 for a valid HMAC request from a .NET client with no Date header" do
+      @hmac_headers['X-AuthHMAC-Request-Date'] = @hmac_headers.delete('Date')
+      @hmac_headers.each_pair do |key,value|
+        header key, value
+      end
+      get @path
+      last_response.status.should == 200
+    end
     
     it "should return 401 for an HMAC request with an invalid auth header" do
       @hmac_headers['authorization'] = 'foo'
