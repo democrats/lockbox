@@ -131,9 +131,11 @@ class LockBox
     headers['Referer'] = "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{env['PATH_INFO']}"
     headers['Referer'] << "?#{env['QUERY_STRING']}" unless env['QUERY_STRING'].blank?
     headers['X-Referer-Content-MD5'] = Digest::MD5.hexdigest(Rack::Request.new(env).body.read) if env['CONTENT_TYPE']
-    {'Content-Type' => 'CONTENT_TYPE', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
+    {'Content-Type' => 'CONTENT_TYPE', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD',
+     'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
       headers["X-Referer-#{h}"] = env[e] unless env[e].blank?
     end
+    headers["X-Referer-Date"] = env['HTTP_X_AUTHHMAC_REQUEST_DATE'] unless env['HTTP_X_AUTHHMAC_REQUEST_DATE'].blank?
     headers
   end
   
