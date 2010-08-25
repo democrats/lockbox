@@ -10,7 +10,6 @@ begin
     gemspec.files = FileList['lib/lockbox_middleware.rb', 'lib/lockbox_cache.rb']
     gemspec.test_files = FileList['spec/lib/*', 'spec/spec.opts', 'spec/spec_helper.rb', 'spec/support/*']
     gemspec.add_dependency 'httparty'
-    gemspec.add_dependency 'dnclabs-auth-hmac'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
