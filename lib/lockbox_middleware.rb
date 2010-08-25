@@ -1,6 +1,5 @@
 require 'httparty'
 require 'lockbox_cache'
-require 'auth-hmac'
 require 'digest/md5'
 
 class LockBox
