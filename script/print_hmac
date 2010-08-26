@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require File.expand_path('../../config/environment',  __FILE__)
+
+api_key = 'daad465deb7718a5d0db99345be41e3a1ea0de6d'
+get_fields = {
+  'HTTP_DATE' => Time.parse("2010-05-10 16:15:00 EDT").httpdate,
+}
+post_fields = {
+  'HTTP_DATE' => Time.parse("2010-05-10 16:15:00 EDT").httpdate,
+  'CONTENT_TYPE' => 'application/x-www-form-urlencoded',
+}
+
+def get_fields.request_method () "GET" end
+def get_fields.path () "/api/some_controller/some_action" end
+def post_fields.request_method () "POST" end
+def post_fields.path () "/api/some_controller/some_action" end
+
+puts "GET request: " + AuthHMAC.signature(get_fields, api_key)
+puts "POST request: " + AuthHMAC.signature(post_fields, api_key)

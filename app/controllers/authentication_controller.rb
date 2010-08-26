@@ -1,5 +1,6 @@
 class AuthenticationController < ApplicationController
   skip_before_filter :require_user
+  @@valid_date_window = 600 # seconds
 
   class HmacRequest
     attr_accessor :env
@@ -53,7 +54,7 @@ class AuthenticationController < ApplicationController
   def hmac_auth(request)
     credential_store = Partner.credential_store
     authhmac = AuthHMAC.new(credential_store)
-    if authhmac.authenticated?(request)
+    if authhmac.authenticated?(request) && (request.env['HTTP_DATE'].blank? || date_is_recent?(request) )
       request.env['HTTP_AUTHORIZATION'] =~ /^AuthHMAC ([^:]+):/
       access_key_id = $1
       credential_store[access_key_id]
@@ -69,6 +70,16 @@ class AuthenticationController < ApplicationController
       logger.error "Canonical String: #{ AuthHMAC::CanonicalString.new(request).inspect}"
 
       false
+    end
+  end
+
+  def date_is_recent?(request)
+    req_date = Time.httpdate(request.env['HTTP_DATE'])
+    if Time.now.to_i - req_date.to_i >= @@valid_date_window
+      logger.error "Request date #{req_date} is more than #{@@valid_date_window} seconds old"
+      false
+    else
+      true
     end
   end
 
