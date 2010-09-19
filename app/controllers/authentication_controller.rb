@@ -68,6 +68,13 @@ class AuthenticationController < ApplicationController
       end
 
       logger.error "Canonical String: #{ AuthHMAC::CanonicalString.new(request).inspect}"
+      request.env['HTTP_AUTHORIZATION'] =~ /^AuthHMAC ([^:]+):/
+      access_key_id = $1
+      if access_key_id.nil?
+        logger.error("HMAC failed because request is not signed")
+      else
+        logger.error("HMAC failed - expected #{AuthHMAC.signature(request,access_key_id)} but was #{request.env['HTTP_AUTHORIZATION']}")
+      end
 
       false
     end
