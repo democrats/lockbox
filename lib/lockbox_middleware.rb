@@ -1,3 +1,5 @@
+require 'rubygems'
+gem 'dnclabs-httparty'
 require 'httparty'
 require 'lockbox_cache'
 require 'digest/md5'
