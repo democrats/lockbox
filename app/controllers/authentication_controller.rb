@@ -81,7 +81,19 @@ class AuthenticationController < ApplicationController
   end
 
   def date_is_recent?(request)
-    req_date = Time.httpdate(request.env['HTTP_DATE'])
+    req_date = nil
+
+    begin
+      req_date = Time.httpdate(request.env['HTTP_DATE'])
+    rescue Exception => ex
+      if ex.message =~ /not RFC 2616 compliant/
+        # try rfc2822
+        req_date = Time.rfc2822(request.env['HTTP_DATE'])
+      else
+        raise ex
+      end
+    end
+
     if Time.now.to_i - req_date.to_i >= @@valid_date_window
       logger.error "Request date #{req_date} is more than #{@@valid_date_window} seconds old"
       false

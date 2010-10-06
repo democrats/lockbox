@@ -47,6 +47,17 @@ describe AuthenticationController do
           response.should be_success
         end
 
+        it "should return 200 with valid HMAC credentials and a bad referer date format" do
+          pending
+          request.env['HTTP_DATE'] = Time.now.rfc2822
+          request.env['X-Referer-Date'] = Time.now.rfc2822
+          puts ""
+          puts "my request env x-referer-date is: #{request.env['X-Referer-Date']}"
+          puts ""
+          get :show, :id => 'hmac'
+          response.should be_success
+        end
+
         it "should return 401 with a valid HMAC that is too old" do
           request.env['X-Referer-Date'] = Time.fifteen_minutes_ago.httpdate
           request.env['X-Referer-Authorization'] = 'AuthHMAC cherry tree cutters:2hYdDX0C74Fr9CBVy6ZYEUIWo5c='
