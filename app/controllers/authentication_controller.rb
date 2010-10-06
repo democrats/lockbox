@@ -68,12 +68,13 @@ class AuthenticationController < ApplicationController
       end
 
       logger.error "Canonical String: #{ AuthHMAC::CanonicalString.new(request).inspect}"
-      request.env['HTTP_AUTHORIZATION'] =~ /^AuthHMAC ([^:]+):/
+      request.env['HTTP_AUTHORIZATION'] =~ /^AuthHMAC ([^:]+):(.*)$/
       access_key_id = $1
+      hash = $2
       if access_key_id.nil?
         logger.error("HMAC failed because request is not signed")
       else
-        logger.error("HMAC failed - expected #{AuthHMAC.signature(request,access_key_id)} but was #{request.env['HTTP_AUTHORIZATION']}")
+        logger.error("HMAC failed - expected #{AuthHMAC.signature(request,access_key_id)} but was #{$2}")
       end
 
       false
@@ -96,9 +97,9 @@ class AuthenticationController < ApplicationController
 
     if Time.now.to_i - req_date.to_i >= @@valid_date_window
       logger.error "Request date #{req_date} is more than #{@@valid_date_window} seconds old"
-      false
+      return false
     else
-      true
+      return true
     end
   end
 
