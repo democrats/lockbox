@@ -5,6 +5,7 @@ set(:real_revision) { source.local.query_revision(revision) { |cmd| with_env("LA
 set :application,   "#{APP_NAME}"
 set :scm, :git
 set :repository,    "ssh://git@gitdev.dnc.org/#{APP_NAME}.git"
+set :branch,        "stable"
 set :deploy_to,     "/dnc/app/#{APP_NAME}"
 set :shared_path,   "#{deploy_to}/shared"
 set :user,          "deploy"
