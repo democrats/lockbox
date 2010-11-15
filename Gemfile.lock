@@ -1,8 +1,6 @@
 GEM
   remote: http://rubygems.org/
-  remote: http://gems.github.com/
   specs:
-    cpowell-SyslogLogger (1.4.1)
     crack (0.1.8)
     diff-lcs (1.1.2)
     dnclabs-auth-hmac (1.1.1.2010090201)
@@ -33,7 +31,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cpowell-SyslogLogger
   dnclabs-auth-hmac
   dnclabs-httparty
   httparty
