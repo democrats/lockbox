@@ -1,0 +1,45 @@
+GEM
+  remote: http://rubygems.org/
+  remote: http://gems.github.com/
+  specs:
+    cpowell-SyslogLogger (1.4.1)
+    crack (0.1.8)
+    diff-lcs (1.1.2)
+    dnclabs-auth-hmac (1.1.1.2010090201)
+    dnclabs-httparty (0.6.1.2010090201)
+      crack (= 0.1.8)
+    httparty (0.6.1)
+      crack (= 0.1.8)
+    jferris-mocha (0.9.8.20100526112143)
+      rake
+    net-ssh (2.0.23)
+    pg (0.9.0)
+    rack (1.1.0)
+    rack-test (0.5.6)
+      rack (>= 1.0)
+    rake (0.8.7)
+    rspec (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+      rspec-mocks (~> 2.0.1)
+    rspec-core (2.0.1)
+    rspec-expectations (2.0.1)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cpowell-SyslogLogger
+  dnclabs-auth-hmac
+  dnclabs-httparty
+  httparty
+  jferris-mocha
+  net-ssh
+  pg
+  rack (= 1.1.0)
+  rack-test
+  rspec
