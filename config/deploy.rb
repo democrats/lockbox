@@ -12,7 +12,7 @@ set :user,          "deploy"
 set :runner,        "deploy"
 set :keep_releases, 4
 
-ssh_options[:keys] = %w(~/.ssh/authorized_keys)
+#ssh_options[:keys] = %w(~/.ssh/authorized_keys)
 
 task :staging do
   set :rails_env, "staging"
