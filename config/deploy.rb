@@ -1,4 +1,7 @@
 require 'erb'
+$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
+require 'rvm/capistrano'
+require 'bundler/capistrano'
 APP_NAME = 'lockbox'
 
 set(:real_revision) { source.local.query_revision(revision) { |cmd| with_env("LANG", "C") { run_locally(cmd) } } }
@@ -11,6 +14,16 @@ set :shared_path,   "#{deploy_to}/shared"
 set :user,          "deploy"
 set :runner,        "deploy"
 set :keep_releases, 4
+
+task :testing do
+  set  :rvm_ruby_string, "ree"
+  set  :rails_env, "cucumber"
+  set  :user, "vagrant"
+  role :app,  "localhost:2222"
+  role :web,  "localhost:2222"
+  role :db,   "localhost:2222", :primary => true
+  role :cron, "localhost:2222"
+end
 
 task :staging do
   set :rails_env, "staging"
