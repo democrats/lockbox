@@ -6,18 +6,9 @@ gem "dnclabs-httparty"
 gem "httparty"
 gem "net-ssh"
 gem "pg"
-<<<<<<< Updated upstream
-=======
-gem "cpowell-SyslogLogger", :require=>'syslog_logger'
 gem "paperclip"
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-
-group :test do
-=======
 group :test, :cucumber do
->>>>>>> Stashed changes
   gem "rack-test"
   gem "rspec"
   gem "jferris-mocha"
