@@ -11,10 +11,16 @@ gem "pg"
 gem "cpowell-SyslogLogger", :require=>'syslog_logger'
 gem "paperclip"
 
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
 group :test do
+=======
+group :test, :cucumber do
+>>>>>>> Stashed changes
   gem "rack-test"
   gem "rspec"
   gem "jferris-mocha"
+  gem "factory_girl"
+  gem "shoulda"
 end
