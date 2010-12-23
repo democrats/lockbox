@@ -76,7 +76,7 @@ class AuthenticationController < ApplicationController
         logger.error "#{header}: #{request.env[header]}"
       end
 
-      logger.error "Canonical String: #{ AuthHMAC::CanonicalString.new(request).inspect}"
+      logger.error "HMAC Canonical String: #{ AuthHMAC::CanonicalString.new(request).inspect}"
       request.env['HTTP_AUTHORIZATION'] =~ /^AuthHMAC ([^:]+):(.*)$/
       access_key_id = $1
       hash = $2
