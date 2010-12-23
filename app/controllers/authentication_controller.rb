@@ -3,7 +3,7 @@ class AuthenticationController < ApplicationController
   @@valid_date_window = 600 # seconds
 
   class HmacRequest
-    attr_accessor :env
+    attr_accessor :env, :body
     
     def initialize
       @env = {}
@@ -17,11 +17,20 @@ class AuthenticationController < ApplicationController
     undef :method
   end
 
+  def has_body?(method)
+    case method
+      when "PUT", "POST"
+        true
+      else
+        false
+    end
+  end
+
   def show
     if params[:id] == 'hmac'
-      
       hmac_request = HmacRequest.new
       hmac_request.env = request.headers
+      hmac_request.body = request.body if has_body?(request.headers['REQUEST_METHOD'])
       {'Content-Type' => 'CONTENT-TYPE', 'Content-MD5' => 'CONTENT-MD5', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD', 'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
         hmac_request.env[e] = hmac_request.env["X-Referer-#{h}"] unless hmac_request.env["X-Referer-#{h}"].blank?
       end

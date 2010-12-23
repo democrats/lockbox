@@ -50,7 +50,7 @@ describe AuthenticationController do
         it "should return 200 with valid HMAC credentials and a bad referer date format" do
           request.env['HTTP_DATE'] = Time.now.rfc2822
           request.env['X-Referer-Date'] = Time.now.rfc2822
-          request.env["X-Referer-Authorization"] =  "AuthHMAC cherry tree cutters:GasKdSrREUednKGC9RTTLydvcDA="
+          request.env["X-Referer-Authorization"] =  "AuthHMAC cherry tree cutters:ZUiJgjYr6w0/gTtYT+v39rGpS3Q="
           get :show, :id => 'hmac'
           response.should be_success
         end
