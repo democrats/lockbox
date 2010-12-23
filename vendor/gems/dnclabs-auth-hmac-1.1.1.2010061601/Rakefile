@@ -1,3 +1,0 @@
-require 'config/requirements'
-
-Dir['tasks/**/*.rake'].each { |rake| load rake }
