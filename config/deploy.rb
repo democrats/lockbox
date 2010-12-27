@@ -17,7 +17,7 @@ set :keep_releases, 4
 
 task :testing do
   set  :rvm_ruby_string, "ree"
-  set  :rails_env, "cucumber"
+  set  :rails_env, "staging"
   set  :user, "vagrant"
   role :app,  "localhost:2222"
   role :web,  "localhost:2222"
