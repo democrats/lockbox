@@ -12,12 +12,12 @@ describe 'LockBox' do
     LockBox.new(Proc.new {|env| [200,{'Content-Type' => 'text/plain'},["successfully hit rails app"]]})
   end
   
-  def safely_edit_config_file(settings, env=nil)
+  def safely_edit_config_file(settings)
     Object.class_eval do
       remove_const LockBox.to_s if const_defined? :LockBox
     end
 
-    env ||= Rails.env if defined?(Rails)
+    env = Rails.env if defined?(Rails)
     env ||= ENV['RACK_ENV']
     env ||= 'test'
     @config_file = File.join(File.dirname(__FILE__),'..','..','config','lockbox.yml')
@@ -54,7 +54,7 @@ describe 'LockBox' do
     let(:path3) { "/lookup/?$" }
     
     before :each do
-      safely_edit_config_file({:protect_paths => [path1, path2, path3]}, 'all')
+      safely_edit_config_file({:protect_paths => [path1, path2, path3]})
       successful_response = mock("MockResponse")
       successful_response.stubs(:code).returns(200)
       successful_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})

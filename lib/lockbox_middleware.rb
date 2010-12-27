@@ -23,6 +23,7 @@ class LockBox
     environment ||= 'test'
     if !environment.nil?
       if !yaml_config['all'].nil?
+        $stderr.puts "The 'all' environment is deprecated in lockbox.yml; use built-in yaml convention instead."
         return_config = yaml_config['all']
         return_config.merge!(yaml_config[environment])
       else
