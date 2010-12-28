@@ -21,3 +21,7 @@ end
 group :test, :development, :cucumber do
   gem "ruby-debug"
 end
+
+group :development do
+  gem "jeweler"
+end
