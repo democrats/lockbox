@@ -23,6 +23,5 @@ group :test, :development, :cucumber do
 end
 
 group :development do
-  gem "jeweler"
   gem "geminabox"
 end

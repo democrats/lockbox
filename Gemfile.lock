@@ -23,11 +23,6 @@ GEM
     geminabox (0.2.9)
       builder
       sinatra
-    git (1.2.5)
-    jeweler (1.5.2)
-      bundler (~> 1.0.0)
-      git (>= 1.2.5)
-      rake
     jferris-mocha (0.9.8.20100526112143)
       rake
     linecache (0.43)
@@ -71,7 +66,6 @@ DEPENDENCIES
   dnclabs-httparty
   factory_girl
   geminabox
-  jeweler
   jferris-mocha
   net-ssh
   paperclip

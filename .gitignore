@@ -6,7 +6,6 @@ db/development_structure.*
 db/schema.*
 test/tmp
 .idea/*
-lockbox_middleware.gemspec
 *.gem
 pkg/
 .rvmrc
