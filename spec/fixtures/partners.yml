@@ -1,0 +1,16 @@
+---
+partner_1:
+  id: 1
+  name: "George Washington"
+  organization: "DNC"
+  email: "foo@bar.com"
+  phone_number: "1112223333"
+  max_requests: 1000
+  crypted_password: "foo"
+  password_salt: "bar"
+  persistence_token: "baz"
+  single_access_token: "qux"
+  perishable_token: "quux"
+  confirmed: true
+  api_key: "bleh"
+  slug: "blah"
