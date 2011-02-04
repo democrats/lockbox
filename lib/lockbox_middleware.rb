@@ -61,11 +61,11 @@ class LockBox
     protected_path = protected_paths.detect{|path| env['PATH_INFO'] =~ path}
     #if the requested path is protected, it needs to be authenticated
     if protected_path
-        request = Rack::Request.new(env)
+        request = HmacRequest.new_from_rack_env(env)
         if request['key'].present?
-          auth = auth_via_key(request['key'], env)
+          auth = auth_via_key(request['key'], request)
         else
-          auth = auth_via_hmac(env)
+          auth = auth_via_hmac(request)
         end
       
         if auth[:authorized]
@@ -81,23 +81,22 @@ class LockBox
     end
   end
 
-  def auth_via_key(api_key, env={})
+  def auth_via_key(api_key, request)
     cached_auth = check_key_cache(api_key)
     # currently we don't cache forward headers
     return {:authorized => cached_auth, :headers => {}} unless cached_auth.nil?
-    auth_response = self.class.get("/authentication/#{api_key}", {:headers => get_auth_headers(env), :request => {:application_name => LockBox.config['application_name']}})
+    auth_response = self.class.get("/authentication/#{api_key}", {:headers => request.get_xreferer_auth_headers, :request => {:application_name => LockBox.config['application_name']}})
     authorized = (auth_response.code == 200)
     cache_key_response_if_allowed(api_key, auth_response) if authorized
     {:authorized => authorized, :headers => response_headers(auth_response)}
   end
   
-  def auth_via_hmac(env={})
-    hmac_request = HmacRequest.new(env)
+  def auth_via_hmac(hmac_request)
     cached_auth = check_hmac_cache(hmac_request)
     if cached_auth
       return {:authorized => cached_auth, :headers => {}}
     end
-    auth_response = self.class.get("/authentication/hmac", {:headers => get_auth_headers(env), :request => {:application_name => LockBox.config['application_name']}})
+    auth_response = self.class.get("/authentication/hmac", {:headers => hmac_request.get_xreferer_auth_headers, :request => {:application_name => LockBox.config['application_name']}})
     authorized = (auth_response.code == 200)
     cache_hmac_response_if_allowed(hmac_request, auth_response) if authorized
     {:authorized => authorized, :headers => response_headers(auth_response)}
@@ -148,22 +147,6 @@ class LockBox
     headers
   end
 
-  #these are the X-Referer-Headers that get passed along to lockbox.dnc.org
-  def get_auth_headers(env)
-    headers = {}
-    headers['Referer'] = "#{env['rack.url_scheme']}://#{env['SERVER_NAME']}#{env['PATH_INFO']}"
-    headers['Referer'] << "?#{env['QUERY_STRING']}" unless env['QUERY_STRING'].blank?
-    headers['X-Referer-Content-MD5'] = Digest::MD5.hexdigest(Rack::Request.new(env).body.read) if env['CONTENT_TYPE']
-    {'Content-Type' => 'CONTENT_TYPE', 'Date' => 'HTTP_DATE', 'Method' => 'REQUEST_METHOD',
-     'Authorization' => 'HTTP_AUTHORIZATION'}.each_pair do |h,e|
-      headers["X-Referer-#{h}"] = env[e] unless env[e].blank?
-    end
-    headers["X-Referer-Date"] = env['HTTP_X_AUTHHMAC_REQUEST_DATE'] unless env['HTTP_X_AUTHHMAC_REQUEST_DATE'].blank?
-    headers
-  end
-  
-
-
   def check_key_cache(api_key)
     expiration = @cache.read(cache_string_for_key(api_key))
     return nil if expiration.nil?
@@ -189,8 +172,7 @@ class LockBox
     else
       #as long as the request is signed correctly, no need to contact the lockbox server to verify
       #just see if the request is signed properly and let it through if it is
-      authhmac = AuthHMAC.new(hmac_id => key)
-      return true if authhmac.authenticated?(hmac_request)
+      return true if hmac_request.hmac_auth({hmac_id => key}) == key
       return nil
     end
   end
