@@ -9,8 +9,7 @@ class LockBox
   
   @@config = nil
   @@protected_paths = nil
-  
-  attr_accessor :cache
+  @@cache = LockBoxCache::Cache.new
 
   def self.config
     return @@config if @@config
@@ -35,9 +34,12 @@ class LockBox
 
   def initialize(app)
     @app = app
-    @cache = LockBoxCache::Cache.new
   end
-
+  
+  def cache
+    @@cache
+  end
+  
   def call(env)
     dup.call!(env)
   end
@@ -112,7 +114,7 @@ class LockBox
     end
     caching_allowed = (cache_max_age > 0 && cache_public)
     expiration = Time.at(Time.now.to_i + cache_max_age)
-    @cache.write(cache_string_for_key(api_key), expiration.to_i) if caching_allowed
+    @@cache.write(cache_string_for_key(api_key), expiration.to_i) if caching_allowed
   end
   
   def cache_hmac_response_if_allowed(hmac_request, auth_response)
@@ -130,7 +132,7 @@ class LockBox
     expiration = Time.at(Time.now.to_i + cache_max_age)
     if caching_allowed
       api_key = auth_response.headers['X-LockBox-API-Key']
-      @cache.write(cache_string_for_hmac(hmac_request.hmac_id), [api_key, expiration.to_i])
+      @@cache.write(cache_string_for_hmac(hmac_request.hmac_id), [api_key, expiration.to_i])
     end
   end
 
@@ -143,11 +145,11 @@ class LockBox
   end
 
   def check_key_cache(api_key)
-    expiration = @cache.read(cache_string_for_key(api_key))
+    expiration = @@cache.read(cache_string_for_key(api_key))
     return nil if expiration.nil?
     expiration = Time.at(expiration)
     if expiration <= Time.now
-      @cache.delete(cache_string_for_key(api_key))
+      @@cache.delete(cache_string_for_key(api_key))
       nil
     else
       true
@@ -157,12 +159,12 @@ class LockBox
   def check_hmac_cache(hmac_request)
     hmac_id, hmac_hash = hmac_request.hmac_id, hmac_request.hmac_hash
     return nil if hmac_id.nil? || hmac_hash.nil?
-    cached_val = @cache.read(cache_string_for_hmac(hmac_id))  
+    cached_val = @@cache.read(cache_string_for_hmac(hmac_id))  
     return nil if cached_val.nil?
     key, expiration = cached_val
     expiration = Time.at(expiration)
     if expiration <= Time.now
-      @cache.delete(cache_string_for_hmac(hmac_id))
+      @@cache.delete(cache_string_for_hmac(hmac_id))
       nil
     else
       #as long as the request is signed correctly, no need to contact the lockbox server to verify
