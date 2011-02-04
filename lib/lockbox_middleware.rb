@@ -1,10 +1,7 @@
 require 'rubygems'
 require 'httpotato'
-gem 'dnclabs-auth-hmac'
-require 'auth-hmac'
 require 'lockbox_cache'
 require 'hmac_request'
-require 'digest/md5'
 
 class LockBox
   include HTTPotato
@@ -84,7 +81,7 @@ class LockBox
   def auth_via_key(api_key, request)
     cached_auth = check_key_cache(api_key)
     # currently we don't cache forward headers
-    return {:authorized => cached_auth, :headers => {}} unless cached_auth.nil?
+    return {:authorized => cached_auth, :headers => {}} if cached_auth
     auth_response = self.class.get("/authentication/#{api_key}", {:headers => request.get_xreferer_auth_headers, :request => {:application_name => LockBox.config['application_name']}})
     authorized = (auth_response.code == 200)
     cache_key_response_if_allowed(api_key, auth_response) if authorized
@@ -93,9 +90,7 @@ class LockBox
   
   def auth_via_hmac(hmac_request)
     cached_auth = check_hmac_cache(hmac_request)
-    if cached_auth
-      return {:authorized => cached_auth, :headers => {}}
-    end
+    return {:authorized => cached_auth, :headers => {}} if cached_auth
     auth_response = self.class.get("/authentication/hmac", {:headers => hmac_request.get_xreferer_auth_headers, :request => {:application_name => LockBox.config['application_name']}})
     authorized = (auth_response.code == 200)
     cache_hmac_response_if_allowed(hmac_request, auth_response) if authorized

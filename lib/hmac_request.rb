@@ -1,3 +1,8 @@
+require 'rubygems'
+gem 'dnclabs-auth-hmac'
+require 'auth-hmac'
+require 'digest/md5'
+
 class HmacRequest
   attr_accessor :request, :env, :body, :hmac_id, :hmac_hash
   undef :method
