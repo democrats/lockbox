@@ -1,21 +1,13 @@
 --- 
-development: 
-  base_uri: http://localhost:3001
-  application_name: test
-  protect_paths: &id001 
-    - ^/api/
-defaults: 
-  base_uri: http://localhost:3001
-  application_name: test
-  protect_paths: *id001
-cucumber: 
-  base_uri: http://localhost:3001
-  application_name: test
-  protect_paths: *id001
-test: 
+defaults: &defaults
   base_uri: http://localhost:3001
   application_name: test
   protect_paths: 
-  - ^/api/
-  - ^/foo/bar/
-  - /lookup/?$
+    - ^/api/
+
+development:
+  <<: *defaults
+cucumber: 
+  <<: *defaults
+test: 
+  <<: *defaults

@@ -1,7 +1,7 @@
 defaults: &defaults
   adapter: postgresql
   host: localhost
-  database: lockbox_development
+  database: lockbox
 
 development:
   <<: *defaults

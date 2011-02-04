@@ -99,7 +99,7 @@ describe 'LockBox' do
     end
   end
   
-  context "hitting API actions with key-based authentication" do
+  context "hitting API actions" do
     before :each do
       @max_age = 3600
       successful_response = mock("MockResponse")
@@ -214,7 +214,9 @@ describe 'LockBox' do
       @path = "/api/some_controller/some_action"
       
       hmac_request = Net::HTTP::Get.new(@path, {'Date' => Time.now.httpdate})
-      authhmac = AuthHMAC.new({"key-id" => "123456"})
+      store = mock("MockStore")
+      store.stubs(:[]).with('key-id').returns("123456")
+      authhmac = AuthHMAC.new(store)
       authhmac.sign!(hmac_request, 'key-id')
       @hmac_headers = hmac_request.to_hash
     end
@@ -226,7 +228,7 @@ describe 'LockBox' do
       get @path
       last_response.status.should == 200
     end
-  
+
     it "should return 200 for a valid HMAC request from a .NET client" do
       # first test w/ a Date header too, then test w/o a separate Date header
       @hmac_headers['X-AuthHMAC-Request-Date'] = @hmac_headers['Date']
@@ -236,7 +238,7 @@ describe 'LockBox' do
       get @path
       last_response.status.should == 200
     end
-  
+
     it "should return 200 for a valid HMAC request from a .NET client with no Date header" do
       @hmac_headers['X-AuthHMAC-Request-Date'] = @hmac_headers.delete('Date')
       @hmac_headers.each_pair do |key,value|
@@ -254,9 +256,8 @@ describe 'LockBox' do
       get @path
       last_response.status.should == 401
     end
-  
   end
-  
+
   context "hitting API actions via POST requests with HMAC auth" do
     before :each do
       @content = "" # TODO: Rack::Test sucks at some stuff, like setting the request body when making a POST
@@ -279,7 +280,9 @@ describe 'LockBox' do
       
       hmac_request = Net::HTTP::Post.new(@path, {'Date' => Time.now.httpdate})
       hmac_request.body = @content
-      authhmac = AuthHMAC.new({"key-id" => "123456"})
+      store = mock("MockStore")
+      store.stubs(:[]).with('key-id').returns("123456")
+      authhmac = AuthHMAC.new(store)
       authhmac.sign!(hmac_request, 'key-id')
       @hmac_headers = hmac_request.to_hash
     end
@@ -300,9 +303,8 @@ describe 'LockBox' do
       post @path, @content
       last_response.status.should == 401
     end
-    
   end
-  
+
   context "hitting actions without API" do
   
     it "should not try to authenticate a request that doesn't start with /api" do
@@ -311,68 +313,6 @@ describe 'LockBox' do
       last_response.body.should == "successfully hit rails app"
     end
   
-  end
-  
-  context "hitting API actions with HMAC auth caching" do
-    before :each do
-      Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
-      @response_with_caching = mock("MockResponse")
-      @response_with_caching.stubs(:code).returns(200)
-      @response_with_caching.stubs(:headers).returns({'Cache-Control' => "public,max-age=3600,must-revalidate", "X-LockBox-API-Key" => "123456"})
-
-      @response_without_caching = mock("MockResponse")
-      @response_without_caching.stubs(:code).returns(200)
-      @response_without_caching.stubs(:headers).returns({'Cache-Control' => 'public, no-cache', "X-LockBox-API-Key" => "123456"})
-
-      @bad_response = mock("MockResponse")
-      @bad_response.stubs(:code).returns(401)
-      @bad_response.stubs(:headers).returns({'Cache-Control' => 'public, no-cache'})
-
-      @path = "/api/some_controller/some_action"
-
-      hmac_request = Net::HTTP::Get.new(@path, {'Date' => Time.now.httpdate, 'Referer' =>'http://example.org/api/some_controller/some_action' })
-      authhmac = AuthHMAC.new({'key-id' => '123456'})
-      authhmac.sign!(hmac_request, 'key-id')
-      @hmac_headers = hmac_request.to_hash
-      @hmac_headers.each_pair do |key,value|
-        header key, value
-      end
-
-    end
-    
-    after :each do
-      app.cache.clear
-    end
-
-
-    it "should cache lockbox responses for max-age when Cache-Control allows it" do
-      LockBox.stubs(:get).returns(@response_with_caching)
-      get @path
-      last_response.status.should == 200
-      LockBox.stubs(:get).returns(@bad_response)
-      get @path
-      last_response.status.should == 200
-    end
-    
-    it "should expire cached lockbox responses when max-age seconds have passed" do
-      LockBox.stubs(:get).returns(@response_with_caching)
-      get @path
-      last_response.status.should == 200
-      expired_time = Time.at(Time.now.to_i + 3600)
-      Time.stubs(:now).returns(expired_time)
-      LockBox.stubs(:get).returns(@bad_response)
-      get @path
-      last_response.status.should == 401
-    end
-
-    it "should not cache lockbox responses when Cache-Control does not allow it" do
-      LockBox.stubs(:get).returns(@response_without_caching)
-      get @path
-      last_response.status.should == 200
-      LockBox.stubs(:get).returns(@bad_response)
-      get @path
-      last_response.status.should == 401
-    end    
   end
 
 end

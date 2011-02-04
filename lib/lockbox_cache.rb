@@ -3,7 +3,7 @@ require 'forwardable'
 module LockBoxCache
   class Cache
     extend Forwardable
-    def_delegators :@cache, :write, :read, :delete, :clear
+    def_delegators :@cache, :write, :read, :delete
     
     class RailsCache
       def write(key, value)
@@ -16,10 +16,6 @@ module LockBoxCache
 
       def delete(key)
         Rails.cache.delete(key)
-      end
-      
-      def clear
-        Rails.cache.clear
       end
     end
 
@@ -38,10 +34,6 @@ module LockBoxCache
 
       def delete(key)
         @store.delete(key)
-      end
-      
-      def clear
-        @store = {}
       end
     end
     
