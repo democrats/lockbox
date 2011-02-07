@@ -3,7 +3,7 @@ class AuthenticationController < ApplicationController
 
   def show
     if params[:id] == 'hmac'
-      key = HmacRequest.new(request.headers).hmac_auth()
+      key = HmacRequest.new_from_rails_request(request).hmac_auth(Partner.credential_store)
     else
       key = params[:id]
     end
