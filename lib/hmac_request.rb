@@ -20,7 +20,6 @@ class HmacRequest
     return r
   end
   
-  #used by rails, 
   def self.new_from_rails_request(request)
     r = self.new(request.headers)
     #pull stuff out of X-Referer, which is where the middleware sticks it
@@ -96,7 +95,7 @@ class HmacRequest
     end
 
     if Time.now.to_i - req_date.to_i >= @@valid_date_window
-      Rails.logger.error "Request date #{req_date} is more than #{@@valid_date_window} seconds old"
+      log "Request date #{req_date} is more than #{@@valid_date_window} seconds old"
       return false
     else
       return true
@@ -117,21 +116,30 @@ class HmacRequest
   end
   
   def log_auth_error(key)
-    Rails.logger.error "Logging Lockbox HMAC authorization error:"
-    Rails.logger.error "Path: #{self.path}"
+    log "Logging Lockbox HMAC authorization error:"
+    log "Path: #{self.path}"
 
     HTTP_HEADER_TO_ENV_MAP.values.each do |header|
-      Rails.logger.error "#{header}: #{@env[header]}"
+      log "#{header}: #{@env[header]}"
     end
 
-    Rails.logger.error "HMAC Canonical String: #{ AuthHMAC::CanonicalString.new(self).inspect}"
+    log "HMAC Canonical String: #{ AuthHMAC::CanonicalString.new(self).inspect}"
 
     if self.hmac_id.nil?
-      Rails.logger.error("HMAC failed because request is not signed")
-    else
-      Rails.logger.error("HMAC failed - expected #{AuthHMAC.signature(self,key)} but was #{self.hmac_hash}")
+      log("HMAC failed because request is not signed")
+    elsif key
+      log("HMAC failed - expected #{AuthHMAC.signature(self,key)} but was #{self.hmac_hash}")
     end
   end
 
+
+  def log(msg)
+    logger = nil
+    if defined?(Rails.logger)
+      Rails.logger.error msg
+    else
+      $stdout.puts msg
+    end
+  end
 
 end

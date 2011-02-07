@@ -4,6 +4,7 @@ development:
   application_name: test
   protect_paths: &id001 
     - ^/api/
+    - ^/test
 defaults: 
   base_uri: http://localhost:3001
   application_name: test
@@ -19,3 +20,4 @@ test:
   - ^/api/
   - ^/foo/bar/
   - /lookup/?$
+  - ^/test
