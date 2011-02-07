@@ -6,7 +6,9 @@ require 'hmac_request'
 class LockBox
   include HTTPotato
   include LockBoxCache
-  
+
+  attr_accessor :cache 
+
   @@config = nil
   @@protected_paths = nil
 
