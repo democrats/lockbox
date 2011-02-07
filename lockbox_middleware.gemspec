@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     "lib/lockbox_cache.rb",
-    "lib/lockbox_middleware.rb"
+    "lib/lockbox_middleware.rb",
+    "lib/hmac_request.rb"
   ]
   s.homepage = %q{http://github.com/dnclabs/lockbox}
   s.require_paths = ["lib"]
@@ -36,14 +37,17 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rack>, [">= 0"])
-      s.add_runtime_dependency(%q<dnclabs-httparty>, [">= 0"])
+      s.add_runtime_dependency(%q<httpotato>, [">= 0"])
+      s.add_runtime_dependency(%q<dnclabs-auth-hmac>, [">= 0"])
     else
       s.add_dependency(%q<rack>, [">= 0"])
-      s.add_dependency(%q<dnclabs-httparty>, [">= 0"])
+      s.add_dependency(%q<httpotato>, [">= 0"])
+      s.add_dependency(%q<dnclabs-auth-hmac>, [">= 0"])
     end
   else
     s.add_dependency(%q<rack>, [">= 0"])
-    s.add_dependency(%q<dnclabs-httparty>, [">= 0"])
+    s.add_dependency(%q<httpotato>, [">= 0"])
+    s.add_dependency(%q<dnclabs-auth-hmac>, [">= 0"])
   end
 end
 
