@@ -23,12 +23,13 @@ class LockBox
       config_file = File.join(Dir.pwd, 'config','lockbox.yml')
       all_configs =YAML.load_file(config_file)
       if !all_configs['all'].nil?
-        @@config = all_configs['all'].merge!(all_configs[env])
         $stderr.puts "The 'all' environment is deprecated in lockbox.yml; use built-in yaml convention instead."
+        @@config = all_configs['all'].merge!(all_configs[env])
       else
         @@config = all_configs[env]
       end
     end
+    return @@config
   end
 
   base_uri config['base_uri']
