@@ -7,7 +7,7 @@ class LockBox
   include HTTPotato
   include LockBoxCache
 
-  attr_accessor :cache 
+  attr_accessor :cache
 
   @@config = nil
   @@protected_paths = nil
@@ -15,13 +15,13 @@ class LockBox
   def self.config
     return @@config if @@config
     #use rails config if it's there
-    if defined?(Rails)
+    if defined?(Rails) && Rails.root
       config_file = Rails.root.join('config','lockbox.yml')
       @@config = YAML.load_file(config_file)[Rails.env]
     else
       env = ENV['RACK_ENV'] || "test"
       config_file = File.join(Dir.pwd, 'config','lockbox.yml')
-      all_configs =YAML.load_file(config_file)
+      all_configs = YAML.load_file(config_file)
       if !all_configs['all'].nil?
         $stderr.puts "The 'all' environment is deprecated in lockbox.yml; use built-in yaml convention instead."
         @@config = all_configs['all'].merge!(all_configs[env])
@@ -42,15 +42,15 @@ class LockBox
   def call(env)
     dup.call!(env)
   end
-  
+
   def cache_string_for_key(api_key)
     "lockbox_key_#{api_key}"
   end
-  
+
   def cache_string_for_hmac(hmac_id)
     "lockbox_hmac_#{hmac_id.gsub(/[^a-z0-9]/i,'_')}"
   end
-  
+
   def protected_paths
     @@protect_paths ||= self.class.config['protect_paths'].map{ |path| Regexp.new(path) }
   end
@@ -65,7 +65,7 @@ class LockBox
         else
           auth = auth_via_hmac(request)
         end
-      
+
         if auth[:authorized]
           app_response = @app.call(env)
           return [app_response[0], app_response[1].merge(auth[:headers]), app_response[2]]
@@ -88,7 +88,7 @@ class LockBox
     cache_key_response_if_allowed(api_key, auth_response) if authorized
     {:authorized => authorized, :headers => response_headers(auth_response)}
   end
-  
+
   def auth_via_hmac(hmac_request)
     cached_auth = check_hmac_cache(hmac_request)
     return {:authorized => cached_auth, :headers => {}} if cached_auth
@@ -97,9 +97,9 @@ class LockBox
     cache_hmac_response_if_allowed(hmac_request, auth_response) if authorized
     {:authorized => authorized, :headers => response_headers(auth_response)}
   end
-  
+
   private
-  
+
   def cache_key_response_if_allowed(api_key, auth_response)
     cache_control = auth_response.headers['Cache-Control'].split(/,\s*/)
     cache_max_age = 0
@@ -115,7 +115,7 @@ class LockBox
     expiration = Time.at(Time.now.to_i + cache_max_age)
     @cache.write(cache_string_for_key(api_key), expiration.to_i) if caching_allowed
   end
-  
+
   def cache_hmac_response_if_allowed(hmac_request, auth_response)
     cache_control = auth_response.headers['Cache-Control'].split(/,\s*/)
     cache_max_age = 0
@@ -154,7 +154,7 @@ class LockBox
       true
     end
   end
-  
+
   def check_hmac_cache(hmac_request)
     hmac_id, hmac_hash = hmac_request.hmac_id, hmac_request.hmac_hash
     return nil if hmac_id.nil? || hmac_hash.nil?
@@ -172,5 +172,4 @@ class LockBox
       return nil
     end
   end
-  
 end
