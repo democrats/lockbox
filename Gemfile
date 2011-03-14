@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "2.3.8"
+gem "rails", "2.3.11"
 gem "rack", "1.1.0"
 gem "dnclabs-auth-hmac", :require => "auth-hmac"
 gem "httpotato"
