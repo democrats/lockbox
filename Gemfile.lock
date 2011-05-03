@@ -57,6 +57,7 @@ GEM
     sinatra (1.2.0)
       rack (~> 1.1)
       tilt (< 2.0, >= 1.2.2)
+    statsd-client (0.0.4)
     tilt (1.2.2)
 
 PLATFORMS
@@ -79,3 +80,4 @@ DEPENDENCIES
   rspec-rails
   ruby-debug
   shoulda
+  statsd-client

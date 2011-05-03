@@ -136,6 +136,7 @@ describe 'LockBox' do
         env = Rack::MockRequest.env_for "/api/some_controller/some_action?key=123456"
         app.call(env)[1].should include('Content-Type')
       end
+
     end
     
     it "should cache lockbox responses for max-age when Cache-Control allows it" do
@@ -375,4 +376,38 @@ describe 'LockBox' do
     end    
   end
 
+  context "logging to statsd / graphite" do
+    before(:each) do
+      @graphite_path = "foo.bar"
+      safely_edit_config_file({:statsd_host => "localhost", :statsd_port => 8125, :graphite_path => @graphite_path})
+
+      @max_age = 3600
+      successful_response = mock("MockResponse")
+      successful_response.stubs(:code).returns(200)
+      successful_response.stubs(:headers).returns({'Cache-Control' => "public,max-age=#{@max_age},must-revalidate"})
+      LockBox.stubs(:get).with("/authentication/123456", any_parameters).returns(successful_response)
+      bad_response = mock("MockResponse")
+      bad_response.stubs(:code).returns(401)
+      bad_response.stubs(:headers).returns({'Cache-Control' => 'public,no-cache'})
+      LockBox.stubs(:get).with("/authentication/blah", any_parameters).returns(bad_response)
+
+      Statsd.stubs(:timing)
+      Statsd.stubs(:increment)
+    end
+
+    it "should record timing data for the overall request" do
+      get "/api/some_controller/some_action?key=123456"
+      Statsd.should have_received( :timing ).with("#{@graphite_path}.call", anything)
+    end
+
+    it "should record a successful authorization" do
+      get "/api/some_controller/some_action?key=123456"
+      Statsd.should have_received( :increment ).with("#{@graphite_path}.key.authorized", anything)
+    end
+
+    it "should record denied requests" do
+      get "/api/some_controller/some_action?key=blah"
+      Statsd.should have_received( :increment ).with("#{@graphite_path}.key.denied", anything)
+    end
+  end
 end

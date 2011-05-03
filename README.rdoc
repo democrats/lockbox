@@ -38,20 +38,31 @@ to protect with LockBox.
 
 Here's an example lockbox.yml:
 
+  common: &COMMON
+    protected_paths:
+      - ^/api/
   production: 
+    <<: *COMMON
     base_uri: http://lockbox.foo.org
   development: 
+    <<: *COMMON
     base_uri: http://localhost:3001
   cucumber: 
+    <<: *COMMON
     base_uri: http://localhost:3001
   test: 
+    <<: *COMMON
     base_uri: http://localhost:3001
-  all:
-    protect_paths: 
-      - ^/api/
 
-The 'all' section of the yaml file is a LockBox-specific shortcut so you can DRY up your protected path definitions.
-Settings in more specific environments will override those in the 'all' section.
+== Graphite Integration
+
+The lockbox-middleware gem supports sending runtime metrics to Graphite (http://graphite.wikidot.com/) via statsd-client.
+This is off by default, but can be turned on by adding the keys 'statsd_host', 'statsd_port', and 'graphite_prefix' to
+your lockbox.yml file.  For example:
+
+  statsd_host:      statsd.example.com
+  statsd_port:      8125
+  graphite_prefix:  my.app.lockbox_middleware
 
 == Server Installation
 
@@ -81,6 +92,7 @@ Github: http://github.com/dnclabs/lockbox/tree/master
 - Chris Gill
 - Brian Cardarella
 - Wes Morgan
+- Dave Steinberg
 
 Copyright 2010 Democratic National Committee,
 All Rights Reserved.

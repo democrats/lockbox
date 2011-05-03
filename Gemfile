@@ -8,6 +8,7 @@ gem "net-ssh"
 gem "pg"
 gem "paperclip"
 gem "authlogic"
+gem "statsd-client"
 
 group :test, :cucumber do
   gem "rack-test"
