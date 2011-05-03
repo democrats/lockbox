@@ -394,6 +394,12 @@ describe 'LockBox' do
       Statsd.stubs(:timing)
       Statsd.stubs(:increment)
     end
+    
+    after :each do
+      if @tmp_config_file && @config_file
+        FileUtils.mv(@tmp_config_file, @config_file)
+      end
+    end
 
     it "should record timing data for the overall request" do
       get "/api/some_controller/some_action?key=123456"

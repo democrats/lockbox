@@ -71,17 +71,17 @@ class LockBox
         end
 
         if auth[:authorized]
-          Statsd.increment( "#{graphite_path}.#{auth_type}.authorized" ) if @graphite
+          record_it("#{auth_type}.authorized")
           app_response = @app.call(env)
           return [app_response[0], app_response[1].merge(auth[:headers]), app_response[2]]
         else
-          Statsd.increment( "#{graphite_path}.#{auth_type}.denied" ) if @graphite
+          record_it("#{auth_type}.denied")
           message = "Access Denied"
           return [401, {'Content-Type' => 'text/plain', 'Content-Length' => "#{message.length}"}, [message]]
         end
     else
       #pass everything else straight through to app
-      Statsd.increment( "#{graphite_path}.unprotected" ) if @graphite
+      record_it("unprotected")
       return @app.call(env)
     end
   end
@@ -165,11 +165,11 @@ class LockBox
     return nil if expiration.nil?
     expiration = Time.at(expiration)
     if expiration <= Time.now
-      Statsd.increment( "#{graphite_path}.key.cache_expired" ) if @graphite
+      record_it("key.cache_expired")
       @cache.delete(cache_string_for_key(api_key))
       nil
     else
-      Statsd.increment( "#{graphite_path}.key.cache_hit" ) if @graphite
+      record_it("key.cache_hit")
       true
     end
   end
@@ -182,14 +182,14 @@ class LockBox
     key, expiration = cached_val
     expiration = Time.at(expiration)
     if expiration <= Time.now
-      Statsd.increment( "#{graphite_path}.hmac.cache_expired" ) if @graphite
+      record_it("hmac.cache_expired")
       @cache.delete(cache_string_for_hmac(hmac_id))
       nil
     else
       #as long as the request is signed correctly, no need to contact the lockbox server to verify
       #just see if the request is signed properly and let it through if it is
       if hmac_request.hmac_auth({hmac_id => key}) == key
-        Statsd.increment( "#{graphite_path}.hmac.cache_hit" ) if @graphite
+        record_it("hmac.cache_hit")
         return true
       else
         return nil
@@ -208,7 +208,12 @@ class LockBox
     Statsd.port = self.class.config["statsd_port"]
     Statsd
   end
-  def time_it (data_path)
+
+  def record_it(data_path)
+    Statsd.increment("#{graphite_path}.#{data_path}") if @graphite
+  end
+
+  def time_it(data_path)
     start_ts = Time.now
     rv = yield
 
