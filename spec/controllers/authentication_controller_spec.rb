@@ -8,7 +8,7 @@ describe AuthenticationController do
       @partner = Factory(:partner)
     end
     subject { @partner }
-    
+
     it "should return 200 for successful authentication" do
       get :show, :id => subject.api_key
       response.should be_success
@@ -18,13 +18,13 @@ describe AuthenticationController do
       get :show, :id => subject.api_key
       response.headers['X-LockBox-API-Key'].should == subject.api_key
     end
-    
+
     it "should return 401 for unsuccessful authentication" do
       get :show, :id => 'potato'
       response.should_not be_success
       response.status.should =~ /401/
     end
-    
+
     context "using HMAC authentication" do
 
       context "on a GET request" do
@@ -41,7 +41,7 @@ describe AuthenticationController do
             request.env[e] = value
           end
         end
-        
+
         it "should return 200 with valid HMAC credentials" do
           get :show, :id => 'hmac'
           response.should be_success
@@ -119,15 +119,15 @@ describe AuthenticationController do
         end
 
       end
-    
+
     end
-    
+
     it "should increment current_request_count for this partner after successful auth" do
       count = subject.current_request_count
       get :show, :id => subject.api_key
       subject.current_request_count.should == count+1
     end
-    
+
     it "should return 420 once max_requests has been reached" do
       # 420 is the code the Twitter rate limiting API uses
       subject.requests_remaining.times do
@@ -137,7 +137,7 @@ describe AuthenticationController do
       response.should_not be_success
       response.status.should =~ /420/
     end
-    
+
     it "should include an error message in the body when rate limited" do
       subject.requests_remaining.times do
         subject.increment_request_count
@@ -145,13 +145,13 @@ describe AuthenticationController do
       get :show, :id => subject.api_key
       response.body.should =~ /Too many requests/
     end
-    
+
     it "should return Cache-Control header after successful auth" do
       get :show, :id => subject.api_key
       expected_cc_header = ['public', 'no-cache']
       response.headers['Cache-Control'].split(/,\s*/).sort.should eql(expected_cc_header.sort)
     end
-    
+
     it "should return Twitter-style rate limit headers after successful auth" do
       # these headers are documented here: http://apiwiki.twitter.com/Rate-limiting
       get :show, :id => subject.api_key
@@ -200,20 +200,20 @@ describe AuthenticationController do
       get :show, :id => subject.api_key
       response.should be_success
     end
-    
+
     it "should not return rate limit headers after successful auth" do
       get :show, :id => subject.api_key
       response.headers.each_key do |header|
         header.should_not =~ /^X-RateLimit-/
       end
     end
-    
+
     it "should return Cache-Control header after successful auth" do
       get :show, :id => subject.api_key
       expected_cc_header = ['public', "max-age=#{subject.max_response_cache_time}", 'must-revalidate']
       response.headers['Cache-Control'].split(/,\s*/).sort.should eql(expected_cc_header.sort)
     end
-    
+
   end
 
 
