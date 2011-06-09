@@ -2,13 +2,13 @@
 module ApplicationHelper
 
   def flash_helper
-    returning("") do |helpers|
+    "".tap do |helpers|
       flash.each do |key, message|
         helpers << content_tag(:div, message, :class => "flash-#{key}")
       end
     end
   end
-  
+
   def session_header
     if current_user
       render :partial => "shared/logged_in_menu"
@@ -16,7 +16,6 @@ module ApplicationHelper
       render :partial => "shared/logged_out_menu"
     end
   end
-
 
   def table_helper(collection, fields)
     builder = Builder::XmlMarkup.new
@@ -45,6 +44,5 @@ module ApplicationHelper
     end
     builder
   end
-  
 
 end
