@@ -94,7 +94,7 @@ class HmacRequest
       end
     end
 
-    if Time.now.to_i - req_date.to_i >= @@valid_date_window
+    if (Time.now.to_i - req_date.to_i).abs >= @@valid_date_window
       log "Request date #{req_date} is more than #{@@valid_date_window} seconds old"
       return false
     else

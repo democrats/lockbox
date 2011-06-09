@@ -36,8 +36,11 @@ describe AuthenticationController do
           Partner.stubs(:find_by_api_key).returns(subject)
 
           Time.stubs(:fifteen_minutes_ago).returns(Time.parse("2010-05-10 16:15:00 EDT"))
+          Time.stubs(:fifteen_minutes_from_now).returns(Time.parse("2010-05-10 16:45:00 EDT"))
           Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
-          {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
+          {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate],
+           'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:GurpT6GfwItXF3Co4Ut1a3I+3iI='],
+           'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
             request.env[e] = value
           end
         end
@@ -63,6 +66,14 @@ describe AuthenticationController do
           response.status.should =~ /401/
         end
 
+        it "should return 401 with a valid HMAC that is from the future" do
+          request.env['X-Referer-Date'] = Time.fifteen_minutes_from_now.httpdate
+          request.env['X-Referer-Authorization'] = 'AuthHMAC cherry tree cutters:W3UzdCMZBCW+NM11vNZ8B2nvoGI='
+          get :show, :id => 'hmac'
+          response.should_not be_success
+          response.status.should =~ /401/
+        end
+
         it "should return 401 with invalid HMAC credentials" do
           request.env['X-Referer-Authorization'] = ['AuthHMAC foo:bar']
           get :show, :id => 'hmac'
@@ -77,24 +88,25 @@ describe AuthenticationController do
 
         before do
           subject.stubs(:api_key).returns('daad465deb7718a5d0db99345be41e3a1ea0de6d')
-           Partner.stubs(:find_by_slug).returns(subject)
-           Partner.stubs(:find_by_api_key).returns(subject)
-           Time.stubs(:fifteen_minutes_ago).returns(Time.parse("2010-05-10 16:15:00 EDT"))
-           Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
-           {'X-Referer-Method' => 'GET', 'X-Referer-Date' => [Time.now.httpdate], 'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:e1ADdHE14mG8jb8G64ax2VflT6k='], 'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
-             request.env[e] = value
+          Partner.stubs(:find_by_slug).returns(subject)
+          Partner.stubs(:find_by_api_key).returns(subject)
+          Time.stubs(:fifteen_minutes_ago).returns(Time.parse("2010-05-10 16:15:00 EDT"))
+          Time.stubs(:fifteen_minutes_from_now).returns(Time.parse("2010-05-10 16:45:00 EDT"))
+          Time.stubs(:now).returns(Time.parse("2010-05-10 16:30:00 EDT"))
+          {'X-Referer-Method' => 'POST', 'X-Referer-Date' => [Time.now.httpdate],
+           'X-Referer-Authorization' => ['AuthHMAC cherry tree cutters:e1ADdHE14mG8jb8G64ax2VflT6k='],
+           'Referer' => 'http://example.org/api/some_controller/some_action'}.each_pair do |e,value|
+            request.env[e] = value
           end
         end
 
         it "should return 200 with valid HMAC credentials from a POST with no body" do
-          request.env['X-Referer-Method'] = 'POST'
           request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
           get :show, :id => 'hmac'
           response.should be_success
         end
 
         it "should return 401 on a valid HMAC digest from a POST that is too old" do
-          request.env['X-Referer-Method'] = 'POST'
           request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
           request.env['X-Referer-Date'] = Time.fifteen_minutes_ago.httpdate
           request.env['X-Referer-Authorization'] = 'AuthHMAC cherry tree cutters:gzB20BqWINwJpO/jJdphbFgCJLE='
@@ -103,8 +115,16 @@ describe AuthenticationController do
           response.status.should =~ /401/
         end
 
+        it "should return 401 with a valid HMAC digest from a POST that is from the future" do
+          request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
+          request.env['X-Referer-Date'] = Time.fifteen_minutes_from_now.httpdate
+          request.env['X-Referer-Authorization'] = 'AuthHMAC cherry tree cutters:Tqsw/Sa5hLGwbApSlm8tjDbvI0Y='
+          get :show, :id => 'hmac'
+          response.should_not be_success
+          response.status.should =~ /401/
+        end
+
         it "should return 200 with valid HMAC credentials from a POST with a body" do
-          request.env['X-Referer-Method'] = 'POST'
           request.env['X-Referer-Content-Type'] = 'application/x-www-form-urlencoded'
           request.env['X-Referer-Content-MD5'] = '7677da04ebf69f3c5ad4bfaf6528e1d7'
           request.env['X-Referer-Authorization'] = ['AuthHMAC cherry tree cutters:WCHbGQJZfAyiU65kyulX3E2D6bk=']
@@ -113,7 +133,6 @@ describe AuthenticationController do
         end
 
         it "should return 401 with valid HMAC credentials from a POST with no Content-Type header" do
-          request.env['X-Referer-Method'] = 'POST'
           get :show, :id => 'hmac'
           response.status.should =~ /401/
         end
