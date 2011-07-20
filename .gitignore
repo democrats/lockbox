@@ -8,7 +8,6 @@ test/tmp
 .idea/*
 *.gem
 pkg/
-.rvmrc
 .bundle/
 *.iml
 *.swp
