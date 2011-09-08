@@ -403,7 +403,7 @@ describe 'LockBox' do
 
     it "should record timing data for the overall request" do
       get "/api/some_controller/some_action?key=123456"
-      Statsd.should have_received( :timing ).with("#{@graphite_path}.call", anything)
+      Statsd.should have_received( :timing ).with("#{@graphite_path}.key.authorized", anything)
     end
 
     it "should record a successful authorization" do

@@ -42,7 +42,7 @@ class LockBox
   end
 
   def call(env)
-    time_it("call") { dup.call!(env) }
+    dup.call!(env)
   end
 
   def cache_string_for_key(api_key)
@@ -58,6 +58,7 @@ class LockBox
   end
 
   def call!(env)
+    start_ts = Time.now
     protected_path = protected_paths.detect{|path| env['PATH_INFO'] =~ path}
     #if the requested path is protected, it needs to be authenticated
     if protected_path
@@ -72,16 +73,19 @@ class LockBox
 
         if auth[:authorized]
           record_it("#{auth_type}.authorized")
+          record_timing("#{auth_type}.authorized", start_ts, Time.now)
           app_response = @app.call(env)
           return [app_response[0], app_response[1].merge(auth[:headers]), app_response[2]]
         else
           record_it("#{auth_type}.denied")
+          record_timing("#{auth_type}.denied", start_ts, Time.now)
           message = "Access Denied"
           return [401, {'Content-Type' => 'text/plain', 'Content-Length' => "#{message.length}"}, [message]]
         end
     else
       #pass everything else straight through to app
       record_it("unprotected")
+      record_timing("unprotected", start_ts, Time.now)
       return @app.call(env)
     end
   end
@@ -213,13 +217,17 @@ class LockBox
     Statsd.increment("#{graphite_path}.#{data_path}") if @graphite
   end
 
+  def record_timing(data_path, start_ts, end_ts)
+    Statsd.timing("#{graphite_path}.#{data_path}", (end_ts - start_ts) * 1_000) if @graphite
+  end
+
   def time_it(data_path)
     start_ts = Time.now
     rv = yield
 
     if @graphite
       #puts "Calling #timing with #{graphite_path}.#{data_path}"
-      Statsd.timing( "#{graphite_path}.#{data_path}", (Time.now - start_ts) * 1000 )
+      record_timing( data_path, start_ts, Time.now )
     end
 
     rv
